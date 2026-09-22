@@ -79,8 +79,9 @@ def main():
     mp_pose = mp.solutions.pose
     with mp_pose.Pose(
         static_image_mode=False,
-        model_complexity=1,
+        model_complexity=2,
         min_detection_confidence=args.min_detection_confidence,
+        min_tracking_confidence=0.6,
     ) as pose:
         with open(args.manifest, newline="") as f:
             rows = list(csv.DictReader(f))
