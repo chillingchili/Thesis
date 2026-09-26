@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Agent / tooling (not thesis content)
+.kilo/
+
+# Android build outputs
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+*.apk
+
+# Derived experiment outputs
+another try/**/video_outputs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local experiment noise
+*.log
+.ipynb_checkpoints/
