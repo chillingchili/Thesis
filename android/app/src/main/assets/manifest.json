@@ -1,0 +1,46 @@
+{
+  "classes": [
+    "drive",
+    "lob",
+    "topspin"
+  ],
+  "seq_len": 128,
+  "n_features": 10,
+  "ensemble": [
+    "gru_fold1.tflite",
+    "gru_fold2.tflite",
+    "gru_fold3.tflite",
+    "gru_fold4.tflite",
+    "gru_fold5.tflite"
+  ],
+  "single": "gru_single.tflite",
+  "select_tf_ops": true,
+  "note": "GRU TensorListReserve requires SELECT_TF_OPS on Android (org.tensorflow:tensorflow-lite-select-tf-ops).",
+  "feature_mean": [
+    0.409567,
+    -0.785721,
+    0.346026,
+    0.829384,
+    0.317485,
+    -0.897765,
+    -0.022519,
+    0.995263,
+    -0.072595,
+    0.935538
+  ],
+  "feature_std": [
+    0.298994,
+    0.354287,
+    0.290247,
+    0.328938,
+    0.255036,
+    0.167984,
+    0.092836,
+    0.022432,
+    0.268456,
+    0.217962
+  ],
+  "n_train_frames": 59417,
+  "moment_matching": true,
+  "note_moment": "Per-channel mean/std of 10-dim sin/cos joint-angle features over valid training frames. On-device moment-matching TTA: align live window stats to these before GRU inference."
+}

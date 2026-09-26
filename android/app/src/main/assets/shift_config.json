@@ -1,0 +1,26 @@
+{
+  "metric": "hip_x_range_body_height_norm",
+  "smooth_window": 5,
+  "p_low": 5.0,
+  "p_high": 95.0,
+  "threshold_rule": "coach_p10",
+  "threshold": 0.1438,
+  "n_coach_clips": 142,
+  "coach_detection_rate": 0.894,
+  "beginner_false_positive_rates": {
+    "Beg4": 0.022,
+    "Beginner1": 0.295,
+    "Beginner2": 0.0,
+    "Beginner3": 0.024
+  },
+  "hip_landmarks": [
+    23,
+    24
+  ],
+  "nose_landmark": 0,
+  "ankle_landmarks": [
+    27,
+    28
+  ],
+  "note": "coach good-form clips = all CoachA clips (no good/bad annotation exists)"
+}
