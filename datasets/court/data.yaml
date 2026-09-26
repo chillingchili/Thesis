@@ -1,0 +1,9 @@
+path: datasets/court
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: court
+kpt_shape:
+- 14
+- 3
