@@ -47,14 +47,12 @@ def label_for(ann: dict, task: str) -> str:
         for b in ann.get("boxes", []):
             lines.append(f"{int(b[0])} {b[1]:.6f} {b[2]:.6f} {b[3]:.6f} {b[4]:.6f}")
         return "\n".join(lines)
-    # pose: [cls, cx, cy, w, h, x,y,v ...]
+    # pose: [cls, cx, cy, w, h, x,y,v ...] -> all 5 + nkpt*ndim columns
     pose = ann.get("pose", [])
     out = []
     for arr in pose:
-        cls = int(arr[0])
-        kpts = arr[5:]
-        vals = " ".join(f"{v:.6f}" for v in kpts)
-        out.append(f"{cls} {vals}")
+        vals = " ".join(f"{v:.6f}" if i else str(int(v)) for i, v in enumerate(arr))
+        out.append(vals)
     return "\n".join(out)
 
 
