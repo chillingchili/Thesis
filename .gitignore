@@ -19,6 +19,9 @@ android/captures/
 
 # Derived experiment outputs
 another try/**/video_outputs/
+runs/
+videoTest/
+outputs/
 
 # OS
 .DS_Store
@@ -26,4 +29,5 @@ Thumbs.db
 
 # Local experiment noise
 *.log
+*.err
 .ipynb_checkpoints/
