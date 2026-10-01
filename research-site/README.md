@@ -1,7 +1,7 @@
 # The Serve Study
 
 A static, local research showcase for the Pascua–Leones thesis. Open `index.html`
-directly, or launch `Research Website.bat` from the project root and visit
+directly, or launch `launchers/Research Website.bat` from the project root and visit
 http://127.0.0.1:7863.
 
 The site includes the original reported experiments, bundled GRU/kNN/hybrid,

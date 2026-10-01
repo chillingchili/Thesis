@@ -159,5 +159,5 @@ server transfers body weight laterally, derived **only from CoachA's good-form c
 
 **Docs**
 
-- `RESULTS_SUMMARY.md` — this file
+- `docs/RESULTS_SUMMARY.md` — this file
 - `README.md` — repository guide and directory map

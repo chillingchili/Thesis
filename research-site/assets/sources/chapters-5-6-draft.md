@@ -290,7 +290,7 @@ Project results are drawn from the following saved artifacts. These are primary 
 
 | Draft content | Study record |
 |---|---|
-| Original model families and exploratory adaptations | [September results summary](../RESULTS_SUMMARY.md) |
+| Original model families and exploratory adaptations | [September results summary](../../../docs/RESULTS_SUMMARY.md) |
 | Original GRU score reconstruction and Heavy/Lite qualifications | [Pose/classifier audit](POSE_CLASSIFIER_AUDIT.md) |
 | Retraining counts, CV, diagnostic results and limitations | [Retraining report](GRU_RETRAINING_V2.md), [CV metrics](../models/serve_v2_fixed/cv_results.json) |
 | Original hybrid and confidence coverage | [Hybrid audit](HYBRID_CLASSIFIER_AUDIT.md) |

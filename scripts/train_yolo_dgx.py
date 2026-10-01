@@ -9,11 +9,11 @@ Usage:
 Self-locating: chdirs to this file's folder, so you can run it from anywhere.
 Self-healing: rewrites data.yaml paths to absolute before training.
 
-Offline note (DGX blocks github.com): keep these files NEXT TO this script
-so nothing ever needs the network:
-  yolo26s.pt        model weights for ball training
-  yolo26s-pose.pt   model weights for court training
-  yolo26n.pt        tiny model used by ultralytics' AMP self-check
+Offline note (DGX blocks github.com): copy the weights/ directory from the
+repository root so training does not need to download pretrained weights:
+  weights/yolo26s.pt        model weights for ball and paddle training
+  weights/yolo26s-pose.pt   model weights for court training
+  weights/yolo26n.pt        tiny model used by ultralytics' AMP self-check
 """
 import os
 import sys
@@ -43,7 +43,7 @@ def prepare(name: str) -> str:
             sys.exit(
                 f"MISSING: {need}\n"
                 f"Expected layout next to train_yolo_dgx.py:\n"
-                f"  yolo26s.pt\n"
+                f"  weights/yolo26s.pt\n"
                 f"  datasets/{name}/data.yaml\n"
                 f"  datasets/{name}/images/train/\n"
                 f"  datasets/{name}/images/val/\n"
@@ -77,7 +77,7 @@ def gpu_check() -> None:
 
 
 def train_ball() -> None:
-    model = YOLO(str(ROOT / "yolo26s.pt"))
+    model = YOLO(str(ROOT / "weights" / "yolo26s.pt"))
     model.train(
         data=prepare("ball"),
         epochs=EPOCHS,
@@ -90,13 +90,14 @@ def train_ball() -> None:
 
 
 def train_court() -> None:
-    # yolo26s-pose.pt found next to this script (or downloaded) - no GitHub needed
+    # Prefer the checked-in local weight; fall back to Ultralytics' download.
     try:
-        model = YOLO(str(ROOT / "yolo26s-pose.pt")) if (ROOT / "yolo26s-pose.pt").exists() else YOLO("yolo26s-pose.pt")
+        pose_weights = ROOT / "weights" / "yolo26s-pose.pt"
+        model = YOLO(str(pose_weights)) if pose_weights.exists() else YOLO("yolo26s-pose.pt")
     except Exception:
-        print("yolo26s-pose.pt unavailable, warm-starting a pose model from yolo26s.pt")
+        print("yolo26s-pose.pt unavailable, warm-starting a pose model from weights/yolo26s.pt")
         model = YOLO("yolo11-pose.yaml")  # pose task (needed for pose labels)
-        model.load(str(ROOT / "yolo26s.pt"))
+        model.load(str(ROOT / "weights" / "yolo26s.pt"))
     model.train(
         data=prepare("court"),
         epochs=EPOCHS,
@@ -109,7 +110,7 @@ def train_court() -> None:
 
 
 def train_paddle() -> None:
-    model = YOLO(str(ROOT / "yolo26s.pt"))
+    model = YOLO(str(ROOT / "weights" / "yolo26s.pt"))
     model.train(
         data=prepare("paddle"),
         epochs=EPOCHS,

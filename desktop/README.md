@@ -1,6 +1,6 @@
 # Serve Lab desktop tester
 
-Double-click **Serve Lab.bat** in the project root. A local Python server opens
+Double-click **launchers/Serve Lab.bat** in the project root. A local Python server opens
 the interface at http://127.0.0.1:7861. Keep its console open while analyzing;
 Ctrl+C closes the server. This is a local browser application, not a packaged
 Windows executable. It does not send your videos to a cloud service.

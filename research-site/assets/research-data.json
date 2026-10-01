@@ -2529,7 +2529,7 @@
       "diagnostic": {
         "accuracy": 0.449
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_1",
@@ -2545,7 +2545,7 @@
       "diagnostic": {
         "accuracy": 0.489
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_2",
@@ -2561,7 +2561,7 @@
       "diagnostic": {
         "accuracy": 0.48100000000000004
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_3",
@@ -2574,7 +2574,7 @@
       "diagnostic": {
         "accuracy": 0.48700000000000004
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_4",
@@ -2590,7 +2590,7 @@
       "diagnostic": {
         "accuracy": 0.38
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website. The group-CV value comes from an older group run, not the stratified ensemble checkpoints."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website. The group-CV value comes from an older group run, not the stratified ensemble checkpoints."
     },
     {
       "id": "archive_5",
@@ -2600,7 +2600,7 @@
       "stratified": {
         "accuracy": 0.8540000000000001
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_6",
@@ -2610,7 +2610,7 @@
       "stratified": {
         "accuracy": 0.84
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_7",
@@ -2626,7 +2626,7 @@
       "diagnostic": {
         "accuracy": 0.485
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_8",
@@ -2639,7 +2639,7 @@
       "diagnostic": {
         "accuracy": 0.561
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website. The raw kNN CV entry and distance-weighted diagnostic variant are family-level results, not a matched ablation."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website. The raw kNN CV entry and distance-weighted diagnostic variant are family-level results, not a matched ablation."
     },
     {
       "id": "archive_9",
@@ -2652,7 +2652,7 @@
       "diagnostic": {
         "accuracy": 0.415
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_10",
@@ -2662,7 +2662,7 @@
       "diagnostic": {
         "accuracy": 0.52
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_11",
@@ -2672,7 +2672,7 @@
       "diagnostic": {
         "accuracy": 0.583
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_12",
@@ -2682,7 +2682,7 @@
       "diagnostic": {
         "accuracy": 0.5720000000000001
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_13",
@@ -2692,7 +2692,7 @@
       "diagnostic": {
         "accuracy": 0.551
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_14",
@@ -2702,7 +2702,7 @@
       "diagnostic": {
         "accuracy": 0.557
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     },
     {
       "id": "archive_15",
@@ -2712,7 +2712,7 @@
       "diagnostic": {
         "accuracy": 0.5660000000000001
       },
-      "detail": "Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
+      "detail": "Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website."
     }
   ],
   "detectors": [
@@ -4393,7 +4393,7 @@
       "sha256": "7edc9d3f21c4bf88a554499ae83b601ff95a797e4481eceadaae4c3e113ddc21",
       "download": "assets/sources/chapters-5-6-draft.docx"
     },
-    "RESULTS_SUMMARY.md": {
+    "docs/RESULTS_SUMMARY.md": {
       "sha256": "f12e772dfe2cc68b5c8604047b3b0555825c5f43b311ca11b133271616cce77e",
       "download": "assets/sources/original-experiments.md"
     },
@@ -4425,7 +4425,7 @@
       "sha256": "5f98b1110dd00712f397a4b5aef1fec92d332d7a0ffcbc3a72a42b557059ea6c",
       "download": "assets/sources/refinement-comparison.png"
     },
-    "Pascua-Leones_Thesis.md": {
+    "docs/Pascua-Leones_Thesis.md": {
       "sha256": "3023552644ef272211b42ad2183f15bf0e6e7c47829dac0021b909e81bfe7622",
       "download": "assets/sources/thesis.md"
     },

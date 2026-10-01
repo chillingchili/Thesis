@@ -11,7 +11,7 @@ No model was trained, no checkpoint or threshold was chosen using these results,
 - Used manifest serve-type labels. The 205 available Coach B annotated clips have 0 label conflicts with their manifest labels. There is no manual landmark ground truth or identified Coach C 30-clip annotation set in this audit.
 - OOF is reconstructed from the current manifest order, StratifiedKFold(5, shuffle=True, random_state=42), and saved fold checkpoints. Original fold IDs were not saved; the reconstruction reproduces the previously reported fold scores but is conditional on that order/seed. Validation also guided early stopping. Players occur on both sides of stratified folds, so this does not measure generalization to a new player.
 - Four of five models have seen each training clip. Ensemble training accuracy is a resubstitution diagnostic, not an independent evaluation.
-- The existing RESULTS_SUMMARY.md and analysis scripts already examined Beginners 3/4 and compared adaptation methods on them. Treat these as previously inspected test sets, not a pristine final holdout.
+- The existing docs/RESULTS_SUMMARY.md and analysis scripts already examined Beginners 3/4 and compared adaptation methods on them. Treat these as previously inspected test sets, not a pristine final holdout.
 
 ## Full-dataset results
 

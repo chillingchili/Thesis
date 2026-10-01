@@ -55,7 +55,7 @@ def main():
         "weights": "distance",
         "k": 5,
         "scaling": "none",
-        "note": "kNN5 raw (no scaling) — best holdout mean (56.1%) in RESULTS_SUMMARY.md",
+        "note": "kNN5 raw (no scaling) — best holdout mean (56.1%) in docs/RESULTS_SUMMARY.md",
     }
     meta_path = "android/app/src/main/assets/knn_meta.json"
     with open(meta_path, "w") as fh:

@@ -68,7 +68,7 @@ def main():
              "so this does not measure generalization to a new player.",
              "- Four of five models have seen each training clip. Ensemble training accuracy is a "
              "resubstitution diagnostic, not an independent evaluation.",
-             "- The existing RESULTS_SUMMARY.md and analysis scripts already examined Beginners 3/4 "
+             "- The existing docs/RESULTS_SUMMARY.md and analysis scripts already examined Beginners 3/4 "
              "and compared adaptation methods on them. Treat these as previously inspected test sets, "
              "not a pristine final holdout.", "",
              "## Full-dataset results", "",

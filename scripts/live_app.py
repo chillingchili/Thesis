@@ -3,7 +3,7 @@
 Run:      python scripts/live_app.py                 (webcam 0)
           python scripts/live_app.py 1               (camera index)
           python scripts/live_app.py path\to\vid.mp4 (video, source-speed playback)
-Drag-drop: drop a video onto "Play with Tracker.bat"
+Drag-drop: drop a video onto "launchers/Play with Tracker.bat"
 Keys: q/ESC quit, s screenshot, r reset bounce & trails, SPACE pause (video)
 """
 from __future__ import annotations

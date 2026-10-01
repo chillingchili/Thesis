@@ -33,6 +33,7 @@ outputs/
 Thumbs.db
 
 # Local experiment noise
+/logs/
 *.log
 *.err
 ~$*.docx

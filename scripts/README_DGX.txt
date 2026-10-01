@@ -6,7 +6,7 @@ WHAT THIS IS
 datasets/ball/   11,120 images  ball detection  (YOLO detect labels)
 datasets/court/  3,615 images   court keypoints (YOLO pose labels, 14 kpts)
 datasets/paddle/ ~6,000 images  paddle detection (YOLO detect labels, 1 class)
-yolo26s.pt       pretrained weights (from repo root)
+weights/        pretrained YOLO weights (from repo root)
 scripts/train_yolo_dgx.py   training entry point
 
 WORKFLOW
@@ -14,11 +14,8 @@ WORKFLOW
 1) WinSCP (SFTP, same login as your ssh):
    Copy these INTO a folder on the DGX, e.g. ~/balltrack/
      datasets/                       (the whole folder, ~1.1 GB)
-     yolo26s.pt                      (ball training weights)
-     yolo26s-pose.pt                 (court training weights)
-     yolo26n.pt                      (ultralytics AMP self-check - DGX
-                                       cannot reach github.com, so this
-                                       MUST sit next to train_yolo_dgx.py)
+     weights/                        (contains yolo26s.pt, yolo26s-pose.pt,
+                                       and yolo26n.pt for offline training)
      scripts/train_yolo_dgx.py
 
 2) ssh into the DGX, then:
@@ -69,5 +66,5 @@ NOTES
   as long as you run train_yolo_dgx.py from ~/balltrack (the folder
   that contains datasets/). NEVER use "path: ." - ultralytics resolves
   it to your current shell folder and training fails.
-- Court model falls back to warm-starting from yolo26s.pt if
+- Court model falls back to warm-starting from weights/yolo26s.pt if
   yolo26s-pose.pt cannot be downloaded on the DGX (air-gapped setups).

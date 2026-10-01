@@ -158,7 +158,7 @@ document.getElementById('dlBtn').onclick = () => {
   a.download = 'labels.json';
   a.click();
   URL.revokeObjectURL(a.href);
-  msg('Saved <b>labels.json</b> &mdash; put it in the repo root when done.');
+  msg('Saved <b>labels.json</b> &mdash; put it in the label_tool folder when done.');
 };
 window.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }

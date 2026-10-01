@@ -21,7 +21,7 @@ from coach_annotations import WORKBOOK
 DEST = ROOT/'outputs/coach_c_evaluation_v1'
 SEED = 20261001
 QUOTAS = {'CoachA':2, 'Beginner3':4, 'Beginner4':4}
-PAPER = ROOT/'Pascua-Leones_Thesis.md'
+PAPER = ROOT/'docs/Pascua-Leones_Thesis.md'
 
 
 def csv_write(path, rows):

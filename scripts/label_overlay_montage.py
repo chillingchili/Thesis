@@ -4,7 +4,7 @@ Random sample (seeded) of labeled frames with red boxes, for visual
 verification of label quality before fine-tuning.
 
 Usage:
-  python scripts/label_overlay_montage.py --labels labels.json \
+  python scripts/label_overlay_montage.py --labels label_tool/labels.json \
       --frames label_tool/frames --manifest label_tool/frames.js \
       --out outputs/label_qa_montage.jpg --n 12 --seed 3
 """

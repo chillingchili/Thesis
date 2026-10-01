@@ -132,7 +132,7 @@ def main():
     for index, (name, strat, player, diagnostic) in enumerate(historical):
         rows.append({'id': f'archive_{index}', 'group': 'archive', 'name': name, 'mode': 'all',
                      **{key: {'accuracy': value / 100} for key, value in [('stratified', strat), ('player', player), ('diagnostic', diagnostic)] if value is not None},
-                     'detail': 'Reported in RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website.' + (' The raw kNN CV entry and distance-weighted diagnostic variant are family-level results, not a matched ablation.' if name.startswith('kNN5 family') else '') + (' The group-CV value comes from an older group run, not the stratified ensemble checkpoints.' if name.startswith('Original GRU') else '')})
+                     'detail': 'Reported in docs/RESULTS_SUMMARY.md, 24 Sep 2026. Diagnostic column is the mean of Beginner 3 and 4 accuracies, not pooled clip accuracy. Cached features and older protocols; exploratory adaptation reused these diagnostic players. Rounded historical scores have not been rerun for this website.' + (' The raw kNN CV entry and distance-weighted diagnostic variant are family-level results, not a matched ablation.' if name.startswith('kNN5 family') else '') + (' The group-CV value comes from an older group run, not the stratified ensemble checkpoints.' if name.startswith('Original GRU') else '')})
     detectors = []
     for path, title, task in [
         ('runs/detect/ball_yolo26s/results.csv', 'Ball detector', 'Box detection'),
@@ -173,7 +173,7 @@ def main():
     for name, dest in [
         ('analysis/THESIS_CHAPTERS_5_6_DRAFT.md', 'chapters-5-6-draft.md'),
         ('analysis/THESIS_CHAPTERS_5_6_DRAFT.docx', 'chapters-5-6-draft.docx'),
-        ('RESULTS_SUMMARY.md', 'original-experiments.md'),
+        ('docs/RESULTS_SUMMARY.md', 'original-experiments.md'),
         ('analysis/POSE_CLASSIFIER_AUDIT.md', 'pose-audit.md'),
         ('analysis/HYBRID_CLASSIFIER_AUDIT.md', 'hybrid-audit.md'),
         ('analysis/GRU_RETRAINING_V2.md', 'gru-retraining.md'),
@@ -184,7 +184,7 @@ def main():
         ('outputs/serve_study_v3/comparison.png', 'augmentation-comparison.png'),
         ('outputs/serve_refinement_v4/comparison.png', 'refinement-comparison.png')]:
         copy_source(name, dest)
-    copy_source('Pascua-Leones_Thesis.md', 'thesis.md')
+    copy_source('docs/Pascua-Leones_Thesis.md', 'thesis.md')
     # Status only. No blind IDs, researcher key or Coach C staging videos are exported.
     status = read('outputs/coach_c_evaluation_v2/status.json')
     data = {'snapshot': '2026-10-01', 'rows': rows, 'detectors': detectors, 'samples': samples,
