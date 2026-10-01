@@ -4425,7 +4425,7 @@ window.RESEARCH_DATA = {
       "sha256": "5f98b1110dd00712f397a4b5aef1fec92d332d7a0ffcbc3a72a42b557059ea6c",
       "download": "assets/sources/refinement-comparison.png"
     },
-    "Pascua-Leones Thesis (5).md": {
+    "Pascua-Leones_Thesis.md": {
       "sha256": "3023552644ef272211b42ad2183f15bf0e6e7c47829dac0021b909e81bfe7622",
       "download": "assets/sources/thesis.md"
     },

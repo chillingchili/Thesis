@@ -23,6 +23,7 @@ android/captures/
 
 # Derived experiment outputs
 another try/**/video_outputs/
+archive/legacy_pickleball_analytics/video_outputs/
 runs/
 videoTest/
 outputs/

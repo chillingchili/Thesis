@@ -184,7 +184,7 @@ def main():
         ('outputs/serve_study_v3/comparison.png', 'augmentation-comparison.png'),
         ('outputs/serve_refinement_v4/comparison.png', 'refinement-comparison.png')]:
         copy_source(name, dest)
-    copy_source('Pascua-Leones Thesis (5).md', 'thesis.md')
+    copy_source('Pascua-Leones_Thesis.md', 'thesis.md')
     # Status only. No blind IDs, researcher key or Coach C staging videos are exported.
     status = read('outputs/coach_c_evaluation_v2/status.json')
     data = {'snapshot': '2026-10-01', 'rows': rows, 'detectors': detectors, 'samples': samples,
