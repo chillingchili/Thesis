@@ -1,0 +1,92 @@
+{
+  "classes": [
+    "drive",
+    "lob",
+    "topspin"
+  ],
+  "seq_len": 128,
+  "n_features": 10,
+  "ensemble": [
+    "gru_fold1.tflite",
+    "gru_fold2.tflite",
+    "gru_fold3.tflite",
+    "gru_fold4.tflite",
+    "gru_fold5.tflite"
+  ],
+  "single": "gru_single.tflite",
+  "select_tf_ops": true,
+  "moment_matching": false,
+  "preprocessing": {
+    "version": "serve_sequence_v2",
+    "pose_model": "pose_landmarker_lite.task",
+    "pose_mode": "VIDEO",
+    "detection_confidence": 0.5,
+    "presence_confidence": 0.5,
+    "tracking_confidence": 0.5,
+    "reset_per_clip": true,
+    "seq_len": 128,
+    "n_features": 10,
+    "features": "right_arm_elbow_shoulder_wrist_torso_twist_sin_cos",
+    "coordinates": "normalized_image_xy",
+    "window": "complete_selected_serve",
+    "resampling": "linear_sin_cos_then_unit_normalize",
+    "visibility_min": 0.5,
+    "min_source_frames": 32,
+    "min_valid_fraction": 0.8,
+    "moment_matching": false,
+    "max_clip_seconds": 12,
+    "temporal_axis": "elapsed_time",
+    "pose_sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+  },
+  "contract_fingerprint": "c111f7b8af1eb1f6b41c70520a70cd36530950df47674def066cb26b5d45cd22",
+  "cv_target_met": true,
+  "cv_accuracy": 0.9090909090909091,
+  "participant_cv_accuracy": 0.36363636363636365,
+  "training_config_sha256": "2f4202f9287d9e6762c46f0c84ef0646a81a2e35647185c3a0725909d57b5828",
+  "deployment_status": "research_candidate_pending_independent_evaluation",
+  "final_coach_c_evaluation": "not_available",
+  "parity": [
+    {
+      "file": "gru_fold1.tflite",
+      "windows": 210,
+      "max_probability_diff": 2.8908252716064453e-06,
+      "label_disagreements": 0,
+      "sha256": "c87c95fb438f47c415e596437d1bbba6bbae2f830464f2a01fcfad260a18354d"
+    },
+    {
+      "file": "gru_fold2.tflite",
+      "windows": 210,
+      "max_probability_diff": 1.7881393432617188e-06,
+      "label_disagreements": 0,
+      "sha256": "bd8651eaa1df2c4ebcf9a6ca645b6ea6ebe0ac118929ed662d1a428c75e8c60f"
+    },
+    {
+      "file": "gru_fold3.tflite",
+      "windows": 210,
+      "max_probability_diff": 1.1920928955078125e-06,
+      "label_disagreements": 0,
+      "sha256": "0110931cd087d787999f149a0fa2bc43b9bfc5214d0b6e3c91a752b2439f4a10"
+    },
+    {
+      "file": "gru_fold4.tflite",
+      "windows": 210,
+      "max_probability_diff": 1.2516975402832031e-06,
+      "label_disagreements": 0,
+      "sha256": "c445593b8405102f7c06935f53842204ff033565b87beebf2bfb3f2ee2901145"
+    },
+    {
+      "file": "gru_fold5.tflite",
+      "windows": 210,
+      "max_probability_diff": 9.238719940185547e-07,
+      "label_disagreements": 0,
+      "sha256": "abed96a5f6d25d8ec8667beb8262cd8356c67a3f9b4a3c59a800567be615448f"
+    },
+    {
+      "file": "gru_single.tflite",
+      "windows": 210,
+      "max_probability_diff": 1.2516975402832031e-06,
+      "label_disagreements": 0,
+      "sha256": "bbc51f6d3e9d5e9397beab958daece6367cce7499de9c523de5c61e485568638"
+    }
+  ]
+}

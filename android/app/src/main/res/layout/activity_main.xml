@@ -57,18 +57,23 @@
     </LinearLayout>
 
     <!-- Center prediction overlay -->
+    <ScrollView
+        android:id="@+id/resultsScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="false"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
     <LinearLayout
         android:id="@+id/predictionOverlay"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#CC000000"
-        android:padding="16dp"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/classLabel"
@@ -103,6 +108,38 @@
             android:gravity="center"
             android:fontFamily="monospace"
             android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/paddleLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PADDLE: --"
+            android:textColor="#B0BEC5"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/feedbackTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COACHING FEEDBACK · RESEARCH PREVIEW"
+            android:textColor="#FFD54F"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/feedbackLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Record a serve to receive feedback."
+            android:textColor="#ECEFF1"
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp"
+            android:accessibilityLiveRegion="polite" />
 
         <!-- Per-class probability bars -->
         <TextView
@@ -161,6 +198,7 @@
             android:progress="0"
             android:progressTint="#FF9800" />
     </LinearLayout>
+    </ScrollView>
 
     <!-- Bottom controls -->
     <LinearLayout
@@ -190,6 +228,24 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:text="Reset Buffer"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/replayButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Replay Serve"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/landingButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Landing Zone"
             android:textSize="12sp" />
     </LinearLayout>
 

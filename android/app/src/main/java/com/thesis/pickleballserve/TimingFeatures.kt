@@ -56,10 +56,10 @@ object TimingFeatures {
                 if (ang[t][k] > amax) { amax = ang[t][k]; iPk = t }
                 if (ang[t][k] < amin) { amin = ang[t][k]; iTr = t }
             }
-            // velocity = diff with prepend 0
+            // Match the training extractor: first velocity is zero, not ang[0].
             var iVel = 0
             var vmax = 0f
-            var prev = 0f
+            var prev = ang[0][k]
             for (t in 0 until L) {
                 val v = ang[t][k] - prev
                 prev = ang[t][k]

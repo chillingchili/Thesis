@@ -77,7 +77,7 @@ def main():
         "--model", nargs="+", required=True, help="One or more .keras checkpoints"
     )
     parser.add_argument("--seq_len", type=int, default=128)
-    parser.add_argument("--threshold", type=float, default=0.40,
+    parser.add_argument("--threshold", type=float, default=CONFIDENCE_THRESHOLD,
                         help="Confidence threshold for abstention (lower = fewer abstains)")
     args = parser.parse_args()
 
@@ -99,15 +99,20 @@ def main():
 
     print(f"\n{abstained.sum()}/{len(y)} clips abstained (below {args.threshold} confidence)")
 
-    print("\n--- Scored on all clips (abstains counted as wrong) ---")
-    print(classification_report(y, preds, target_names=CLASSES, zero_division=0))
+    print("\n--- Argmax classification on all clips (before abstention) ---")
+    print(classification_report(y, preds, labels=list(range(len(CLASSES))),
+                                target_names=CLASSES, zero_division=0))
+    confident = ~abstained
+    print(f"Coverage at {args.threshold:.2f}: {confident.mean():.3%}")
+    print(f"Accuracy with abstentions counted as wrong: {((preds == y) & confident).mean():.3%}")
+    print(f"Confident wrong predictions: {int(((preds != y) & confident).sum())}/{int(confident.sum())}")
 
     if 0 < abstained.sum() < len(y):
         print("--- Scored only on clips the model was confident about ---")
-        confident = ~abstained
         print(
             classification_report(
-                y[confident], preds[confident], target_names=CLASSES, zero_division=0
+                y[confident], preds[confident], labels=list(range(len(CLASSES))),
+                target_names=CLASSES, zero_division=0
             )
         )
 

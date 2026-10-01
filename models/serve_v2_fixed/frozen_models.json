@@ -1,0 +1,14 @@
+{
+  "model_hashes": {
+    "stratified/fold1/model.keras": "079243862631198dec7829faae8e67db19671333b8520ae4cd663415f5fb3f15",
+    "stratified/fold2/model.keras": "3dfbbc2d65020d8e09a6cd86ad899d6f015d51dd45af9d80009bbe09006848c2",
+    "stratified/fold3/model.keras": "203dd7404c99afe78b42a02b555845f55eff9122624124ec3513ffe02a63529e",
+    "stratified/fold4/model.keras": "eddbeae5448b01701e1184f9fa653444e0354332cbcdde78bbcc810b3737c637",
+    "stratified/fold5/model.keras": "2001163cb49268868a1f41ae3e426a82ecd916b2ea047e03de361b93b99e3aea",
+    "single.keras": "27381e7b1aa2eedc2d3d3a78e4035080e6d40fb331e5675868c74dad455438db"
+  },
+  "single_epochs": 100,
+  "training_config_sha256": "2f4202f9287d9e6762c46f0c84ef0646a81a2e35647185c3a0725909d57b5828",
+  "test_data_used_for_training": false,
+  "cv_target_met": true
+}

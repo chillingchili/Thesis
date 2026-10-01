@@ -1,6 +1,7 @@
 package com.thesis.pickleballserve
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -18,11 +19,14 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.thesis.pickleballserve.databinding.ActivityMainBinding
+import com.thesis.pickleballserve.landing.LandingActivity
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2
+
+private const val RIGHT_WRIST = 16
 
 /**
  * Live demo: camera -> BlazePose -> joint angles -> [GRU | GRU+kNN5 hybrid]
@@ -30,7 +34,7 @@ import kotlin.math.atan2
  * Modes (cycle via Toggle):
  *   SINGLE    - one GRU fold (fastest)
  *   ENSEMBLE  - avg of 5 GRU folds + moment matching
- *   HYBRID    - avg( GRU ensemble , kNN5-on-timing-features )  <- best holdout
+ *   HYBRID    - avg( GRU ensemble , kNN5-on-timing-features )
  */
 class MainActivity : AppCompatActivity() {
 
@@ -42,9 +46,13 @@ class MainActivity : AppCompatActivity() {
     private var gru: GruClassifier? = null
     private var knn: KnnClassifier? = null
     private var shiftDetector: ShiftDetector? = null
+    private var paddleStream: PaddleStream? = null
+    private var feedbackEngine: FeedbackEngine? = null
+    private var paddleFailed = false
+    @Volatile private var resultGeneration = 0L
     private val angleBuffer = AngleBuffer(seqLen = 128, featDim = 10)
 
-    private var mode = RunMode.HYBRID  // default to hybrid (best holdout)
+    private var mode = RunMode.HYBRID  // existing deployment; new models use recorded replay
     private var inferCooldownMs = 0L
     private val minInferIntervalMs = 100L
 
@@ -108,10 +116,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         shiftDetector = ShiftDetector.load(this)
+        paddleStream = PaddleStream.load(this)
+        feedbackEngine = try {
+            FeedbackEngine.fromJson(assets.open("feedback_rules.json").bufferedReader().use { it.readText() })
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Feedback rules unavailable", e)
+            null
+        }
 
         updateModeLabel()
 
         binding.modeToggle.setOnClickListener {
+            synchronized(this) {
             mode = when (mode) {
                 RunMode.SINGLE -> RunMode.ENSEMBLE
                 RunMode.ENSEMBLE -> if (knn != null) RunMode.HYBRID else RunMode.SINGLE
@@ -125,10 +141,14 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "GRU reload failed: ${e.message}", Toast.LENGTH_LONG).show()
             }
             updateModeLabel()
+            binding.resetButton.performClick()
             Toast.makeText(this, "Mode: $mode", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.resetButton.setOnClickListener {
+            synchronized(this) {
+            resultGeneration++
             angleBuffer.clear()
             emaProbs = null
             gateActive = false
@@ -140,6 +160,7 @@ class MainActivity : AppCompatActivity() {
             motionRingIdx = 0
             motionRingCount = 0
             shiftDetector?.clear()
+            paddleStream?.clear()
             binding.framesLabel.text = "READY (waiting for serve)"
             binding.classLabel.text = "--"
             binding.confLabel.text = "Conf: --"
@@ -147,14 +168,29 @@ class MainActivity : AppCompatActivity() {
             binding.confLabel.setTextColor(Color.parseColor("#B0BEC5"))
             binding.shiftLabel.text = "WEIGHT SHIFT: --"
             binding.shiftLabel.setTextColor(Color.parseColor("#B0BEC5"))
+            binding.paddleLabel.text = "PADDLE: --"
+            binding.paddleLabel.setTextColor(Color.parseColor("#B0BEC5"))
+            binding.feedbackLabel.text = "Record a serve to receive feedback."
             binding.probDriveBar.progress = 0
             binding.probLobBar.progress = 0
             binding.probTopspinBar.progress = 0
+            binding.probDrive.text = "Drive   --%"
+            binding.probLob.text = "Lob     --%"
+            binding.probTopspin.text = "Topspin --%"
+            }
+        }
+
+        binding.landingButton.setOnClickListener {
+            startActivity(Intent(this, LandingActivity::class.java))
+        }
+
+        binding.replayButton.setOnClickListener {
+            startActivity(Intent(this, ServeReplayActivity::class.java))
         }
 
         posePipeline = PosePipeline(
             context = this,
-            onPose = { pts -> onPoseDetected(pts) },
+            onPose = { pts, bmp -> onPoseDetected(pts, bmp) },
             onError = { msg ->
                 runOnUiThread { binding.poseLabel.text = "POSE ERR: $msg" }
             }
@@ -225,7 +261,8 @@ class MainActivity : AppCompatActivity() {
      *           maxActiveFrames force-timeout. Final inference, then clear buffer +
      *           EMA but HOLD displayed labels (result stays on screen).
      */
-    private fun onPoseDetected(landmarks: Array<PointF>) {
+    @Synchronized
+    private fun onPoseDetected(landmarks: Array<PointF>, bitmap: Bitmap?) {
         val feats = JointAngles.fromLandmarks(landmarks) ?: return
         val motion = smoothMotion(computeMotion(feats))
         val now = SystemClock.uptimeMillis()
@@ -236,16 +273,25 @@ class MainActivity : AppCompatActivity() {
                 gateActive = true
                 lowMotionStreak = 0
                 activeFrameCount = 1
+                resultGeneration++
+                paddleFailed = false
                 angleBuffer.clear()
                 emaProbs = null
                 shiftDetector?.clear()
+                paddleStream?.clear()
                 angleBuffer.add(feats)
                 shiftDetector?.let { s ->
                     landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
                 }
+                addPaddleSample(landmarks, bitmap)
                 runOnUiThread {
                     binding.poseLabel.text = "Pose: OK"
                     binding.framesLabel.text = "WARMUP 1 / $minFramesForInfer"
+                    binding.feedbackLabel.text = "Analyzing this serve..."
+                    binding.shiftLabel.text = "WEIGHT SHIFT: ANALYZING"
+                    binding.paddleLabel.text = "PADDLE: ANALYZING"
+                    binding.classLabel.text = "--"
+                    binding.confLabel.text = "Conf: --"
                 }
             } else {
                 // absorb standing noise (and any recovery swing during refractory)
@@ -267,6 +313,7 @@ class MainActivity : AppCompatActivity() {
         shiftDetector?.let { s ->
             landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
         }
+        addPaddleSample(landmarks, bitmap)
         activeFrameCount++
         if (motion < endArm()) {
             lowMotionStreak++
@@ -282,8 +329,20 @@ class MainActivity : AppCompatActivity() {
         val ended = lowMotionStreak >= lowHoldFrames || activeFrameCount >= maxActiveFrames
         if (ended) {
             // Serve ended: one final inference, then reset gate (labels stay visible)
-            if (frames >= finalMinFrames) runInference(frames)
+            val finalPrediction = if (frames >= finalMinFrames) runInference(frames, finalResult = true) else null
             updateShiftLabel()
+            updatePaddleLabel()
+            updateFeedback(finalPrediction)
+            if (finalPrediction == null) runOnUiThread {
+                binding.classLabel.text = "UNAVAILABLE"
+                binding.confLabel.text = "Insufficient serve classification data"
+                binding.probDriveBar.progress = 0
+                binding.probLobBar.progress = 0
+                binding.probTopspinBar.progress = 0
+                binding.probDrive.text = "Drive   --%"
+                binding.probLob.text = "Lob     --%"
+                binding.probTopspin.text = "Topspin --%"
+            }
             gateActive = false
             lowMotionStreak = 0
             activeFrameCount = 0
@@ -291,6 +350,7 @@ class MainActivity : AppCompatActivity() {
             angleBuffer.clear()
             emaProbs = null
             shiftDetector?.clear()
+            paddleStream?.clear()
             runOnUiThread {
                 binding.poseLabel.text = "Pose: OK"
                 binding.framesLabel.text = "DONE (result held)"
@@ -333,11 +393,10 @@ class MainActivity : AppCompatActivity() {
 
     /** Deterministic shift verdict computed once at serve end, held on screen. */
     private fun updateShiftLabel() {
-        val detector = shiftDetector ?: return  // config missing → label stays --
-        val ok = detector.passed()
+        val ok = shiftDetector?.passed()
         runOnUiThread {
             if (ok == null) {
-                binding.shiftLabel.text = "WEIGHT SHIFT: --"
+                binding.shiftLabel.text = "WEIGHT SHIFT: UNAVAILABLE"
                 binding.shiftLabel.setTextColor(Color.parseColor("#B0BEC5"))
             } else if (ok) {
                 binding.shiftLabel.text = "WEIGHT SHIFT: \u2713"
@@ -346,6 +405,62 @@ class MainActivity : AppCompatActivity() {
                 binding.shiftLabel.text = "WEIGHT SHIFT: \u2717"
                 binding.shiftLabel.setTextColor(Color.parseColor("#F44336"))
             }
+        }
+    }
+
+    /** Paddle-orientation verdict computed once at serve end, held on screen. */
+    private fun updatePaddleLabel() {
+        val stream = paddleStream.takeUnless { paddleFailed }
+        val state = stream?.let {
+            FeedbackEngine.paddleState(it.computeForFeedback(), it.low, it.high, it.directionValidated)
+        }
+        val color = when {
+            state == null -> Color.parseColor("#B0BEC5")
+            state != FeedbackEngine.PaddleState.OPTIMAL -> Color.parseColor("#F44336")
+            else -> Color.parseColor("#4CAF50")
+        }
+        val text = when (state) {
+            null -> "PADDLE: UNAVAILABLE"
+            FeedbackEngine.PaddleState.OPTIMAL -> "PADDLE: WITHIN RANGE"
+            FeedbackEngine.PaddleState.OUTSIDE_BASELINE -> "PADDLE: OUTSIDE RANGE"
+            FeedbackEngine.PaddleState.TOO_OPEN -> "PADDLE: TOO OPEN"
+            FeedbackEngine.PaddleState.TOO_CLOSED -> "PADDLE: TOO CLOSED"
+        }
+        runOnUiThread {
+            binding.paddleLabel.text = text
+            binding.paddleLabel.setTextColor(color)
+        }
+    }
+
+    /** Evaluate the same completed serve before any stream buffers are cleared. */
+    private fun updateFeedback(prediction: Pair<String, Float>?) {
+        val generation = resultGeneration
+        val paddle = paddleStream.takeUnless { paddleFailed }?.let {
+            FeedbackEngine.paddleState(it.computeForFeedback(), it.low, it.high, it.directionValidated)
+        }
+        val result = feedbackEngine?.evaluate(FeedbackEngine.Input(
+            serveType = prediction?.first, gruConfidence = prediction?.second,
+            shiftSufficient = shiftDetector?.passed(), paddle = paddle,
+            // LandingActivity analyzes a separate clip, not a synchronized secondary stream.
+            placementActive = false,
+        ))
+        Log.i("Feedback", "version=${result?.version} status=${result?.status} rules=${result?.ruleIds}")
+        runOnUiThread {
+            if (generation != resultGeneration) return@runOnUiThread
+            binding.feedbackTitle.text = if (result?.validationStatus == "pending_coach_c")
+                "COACHING FEEDBACK · RESEARCH PREVIEW" else "COACHING FEEDBACK"
+            binding.feedbackLabel.text = result?.text ?: "Coaching feedback unavailable: rules could not be loaded."
+        }
+    }
+
+    private fun addPaddleSample(landmarks: Array<PointF>, bitmap: Bitmap?) {
+        if (paddleFailed) return
+        try {
+            paddleStream?.add(landmarks[RIGHT_WRIST].x, landmarks[RIGHT_WRIST].y, bitmap)
+        } catch (e: Exception) {
+            paddleFailed = true
+            paddleStream?.clear()
+            Log.e("MainActivity", "Paddle unavailable for this serve; other streams continue", e)
         }
     }
 
@@ -378,27 +493,27 @@ class MainActivity : AppCompatActivity() {
         return acc / motionRingCount
     }
 
-    private fun runInference(validFrames: Int) {
-        val g = gru ?: return
+    private fun runInference(validFrames: Int, finalResult: Boolean = false): Pair<String, Float>? {
+        val g = gru ?: return null
+        val generation = resultGeneration
         val window = angleBuffer.toInputTensor()
         try {
             val gruProbs = g.infer(window, validFrames = validFrames)
 
-            val combined = when {
+            val knnProbs = when {
                 mode == RunMode.HYBRID && knn != null -> {
                     val knnFeats = TimingFeatures.fromFlatWindow(
                         flattenWindow(window), validFrames
                     )
-                    val knnProbs = knn!!.predictProba(knnFeats)
-                    // simple average
-                    FloatArray(3) { i -> 0.5f * gruProbs[i] + 0.5f * knnProbs[i] }
+                    knn!!.predictProba(knnFeats)
                 }
-                else -> gruProbs
+                else -> null
             }
+            val combined = HybridPrediction.combine(gruProbs, knnProbs)
 
             // EMA smoothing
             val prev = emaProbs
-            val smoothed = if (prev == null || prev.size != combined.size) {
+            val smoothed = if (finalResult || prev == null || prev.size != combined.size) {
                 combined.copyOf()
             } else {
                 FloatArray(combined.size) { i ->
@@ -415,9 +530,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             runOnUiThread {
+                if (generation != resultGeneration) return@runOnUiThread
                 binding.classLabel.text = label.uppercase()
                 binding.classLabel.setTextColor(confColor)
-                binding.confLabel.text = "Conf: ${"%.1f".format(conf * 100f)}%"
+                val finalSource = if (knnProbs != null) "Final hybrid" else "Final GRU"
+                binding.confLabel.text = "${if (finalResult) finalSource else "Conf"}: ${"%.1f".format(conf * 100f)}%"
                 binding.confLabel.setTextColor(confColor)
                 binding.probDrive.text = "Drive   ${"%.0f".format(smoothed[0] * 100)}%"
                 binding.probLob.text = "Lob     ${"%.0f".format(smoothed[1] * 100)}%"
@@ -426,9 +543,11 @@ class MainActivity : AppCompatActivity() {
                 binding.probLobBar.progress = (smoothed[1] * 100).toInt()
                 binding.probTopspinBar.progress = (smoothed[2] * 100).toInt()
             }
+            return g.predict(combined)
         } catch (e: Throwable) {
             Log.e("MainActivity", "Inference failed", e)
             runOnUiThread { binding.confLabel.text = "INFER ERR: ${e.message}" }
+            return null
         }
     }
 
@@ -452,5 +571,6 @@ class MainActivity : AppCompatActivity() {
         cameraExecutor.shutdown()
         posePipeline?.stop()
         gru?.close()
+        paddleStream?.close()
     }
 }

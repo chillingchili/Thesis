@@ -1,0 +1,634 @@
+{
+  "configuration": {
+    "condition": "lean_thesis_aug",
+    "train_ids": [
+      "CoachA_Drive_001",
+      "CoachA_Drive_002",
+      "CoachA_Drive_003",
+      "CoachA_Drive_004",
+      "CoachA_Drive_005",
+      "CoachA_Drive_006",
+      "CoachA_Drive_007",
+      "CoachA_Drive_008",
+      "CoachA_Drive_009",
+      "CoachA_Drive_010",
+      "CoachA_Drive_011",
+      "CoachA_Drive_012",
+      "CoachA_Drive_013",
+      "CoachA_Drive_014",
+      "CoachA_Drive_015",
+      "CoachA_Drive_016",
+      "CoachA_Drive_017",
+      "CoachA_Drive_019",
+      "CoachA_Drive_020",
+      "CoachA_Drive_021",
+      "CoachA_Drive_022",
+      "CoachA_Drive_023",
+      "CoachA_Drive_024",
+      "CoachA_Topspin_001",
+      "CoachA_Topspin_002",
+      "CoachA_Topspin_003",
+      "CoachA_Topspin_004",
+      "CoachA_Topspin_005",
+      "CoachA_Topspin_006",
+      "CoachA_Topspin_007",
+      "CoachA_Topspin_008",
+      "CoachA_Topspin_009",
+      "CoachA_Topspin_010",
+      "CoachA_Topspin_011",
+      "CoachA_Topspin_012",
+      "CoachA_Topspin_013",
+      "CoachA_Topspin_014",
+      "CoachA_Topspin_015",
+      "CoachA_Topspin_016",
+      "CoachA_Topspin_017",
+      "CoachA_Topspin_018",
+      "CoachA_Topspin_019",
+      "CoachA_Topspin_020",
+      "CoachA_Topspin_021",
+      "CoachA_Topspin_022",
+      "CoachA_Topspin_023",
+      "CoachA_Topspin_024",
+      "CoachA_Lob_001",
+      "CoachA_Lob_002",
+      "CoachA_Lob_003",
+      "CoachA_Lob_004",
+      "CoachA_Lob_005",
+      "CoachA_Lob_006",
+      "CoachA_Lob_007",
+      "CoachA_Lob_008",
+      "CoachA_Lob_009",
+      "CoachA_Lob_010",
+      "CoachA_Lob_011",
+      "CoachA_Lob_012",
+      "CoachA_Lob_013",
+      "CoachA_Lob_014",
+      "CoachA_Lob_015",
+      "CoachA_Lob_016",
+      "CoachA_Lob_017",
+      "CoachA_Lob_018",
+      "CoachA_Lob_019",
+      "CoachA_Lob_020",
+      "CoachA_Lob_021",
+      "CoachA_Lob_022",
+      "CoachA_Lob_023",
+      "CoachA_Lob_024",
+      "Beginner1_Drive_001",
+      "Beginner1_Drive_002",
+      "Beginner1_Drive_003",
+      "Beginner1_Drive_004",
+      "Beginner1_Drive_005",
+      "Beginner1_Drive_006",
+      "Beginner1_Drive_007",
+      "Beginner1_Drive_008",
+      "Beginner1_Drive_009",
+      "Beginner1_Drive_010",
+      "Beginner1_Drive_011",
+      "Beginner1_Drive_012",
+      "Beginner1_Drive_013",
+      "Beginner1_Drive_014",
+      "Beginner1_Drive_015",
+      "Beginner1_Drive_016",
+      "Beginner1_Drive_017",
+      "Beginner1_Drive_018",
+      "Beginner1_Drive_019",
+      "Beginner1_Drive_020",
+      "Beginner1_Drive_021",
+      "Beginner1_Drive_022",
+      "Beginner1_Drive_023",
+      "Beginner1_Topspin_001",
+      "Beginner1_Topspin_002",
+      "Beginner1_Topspin_003",
+      "Beginner1_Topspin_004",
+      "Beginner1_Topspin_005",
+      "Beginner1_Topspin_006",
+      "Beginner1_Topspin_007",
+      "Beginner1_Topspin_008",
+      "Beginner1_Topspin_009",
+      "Beginner1_Topspin_010",
+      "Beginner1_Topspin_011",
+      "Beginner1_Topspin_012",
+      "Beginner1_Topspin_013",
+      "Beginner1_Topspin_014",
+      "Beginner1_Topspin_015",
+      "Beginner1_Topspin_016",
+      "Beginner1_Topspin_017",
+      "Beginner1_Topspin_018",
+      "Beginner1_Topspin_019",
+      "Beginner1_Topspin_020",
+      "Beginner1_Topspin_021",
+      "Beginner1_Topspin_022",
+      "Beginner1_Topspin_023",
+      "Beginner1_Lob_001",
+      "Beginner1_Lob_002",
+      "Beginner1_Lob_003",
+      "Beginner1_Lob_004",
+      "Beginner1_Lob_005",
+      "Beginner1_Lob_006",
+      "Beginner1_Lob_007",
+      "Beginner1_Lob_008",
+      "Beginner1_Lob_009",
+      "Beginner1_Lob_010",
+      "Beginner1_Lob_011",
+      "Beginner1_Lob_012",
+      "Beginner1_Lob_013",
+      "Beginner1_Lob_014",
+      "Beginner1_Lob_015",
+      "Beginner1_Lob_016",
+      "Beginner1_Lob_017",
+      "Beginner1_Lob_018",
+      "Beginner1_Lob_019",
+      "Beginner1_Lob_020",
+      "Beginner1_Lob_021",
+      "Beginner1_Lob_022",
+      "Beginner1_Lob_023",
+      "Beginner2_Drive_001",
+      "Beginner2_Drive_002",
+      "Beginner2_Drive_003",
+      "Beginner2_Drive_004",
+      "Beginner2_Drive_005",
+      "Beginner2_Drive_006",
+      "Beginner2_Drive_007",
+      "Beginner2_Drive_008",
+      "Beginner2_Drive_009",
+      "Beginner2_Drive_010",
+      "Beginner2_Drive_011",
+      "Beginner2_Drive_012",
+      "Beginner2_Drive_013",
+      "Beginner2_Drive_014",
+      "Beginner2_Drive_015",
+      "Beginner2_Drive_016",
+      "Beginner2_Drive_017",
+      "Beginner2_Drive_018",
+      "Beginner2_Drive_019",
+      "Beginner2_Drive_020",
+      "Beginner2_Drive_021",
+      "Beginner2_Drive_022",
+      "Beginner2_Drive_023",
+      "Beginner2_Topspin_001",
+      "Beginner2_Topspin_002",
+      "Beginner2_Topspin_003",
+      "Beginner2_Topspin_004",
+      "Beginner2_Topspin_005",
+      "Beginner2_Topspin_006",
+      "Beginner2_Topspin_007",
+      "Beginner2_Topspin_008",
+      "Beginner2_Topspin_009",
+      "Beginner2_Topspin_010",
+      "Beginner2_Topspin_011",
+      "Beginner2_Topspin_012",
+      "Beginner2_Topspin_013",
+      "Beginner2_Topspin_014",
+      "Beginner2_Topspin_015",
+      "Beginner2_Topspin_016",
+      "Beginner2_Topspin_017",
+      "Beginner2_Topspin_018",
+      "Beginner2_Topspin_019",
+      "Beginner2_Topspin_020",
+      "Beginner2_Topspin_021",
+      "Beginner2_Topspin_022",
+      "Beginner2_Topspin_023",
+      "Beginner2_Lob_001",
+      "Beginner2_Lob_002",
+      "Beginner2_Lob_003",
+      "Beginner2_Lob_004",
+      "Beginner2_Lob_005",
+      "Beginner2_Lob_006",
+      "Beginner2_Lob_007",
+      "Beginner2_Lob_008",
+      "Beginner2_Lob_009",
+      "Beginner2_Lob_010",
+      "Beginner2_Lob_011",
+      "Beginner2_Lob_012",
+      "Beginner2_Lob_013",
+      "Beginner2_Lob_014",
+      "Beginner2_Lob_015",
+      "Beginner2_Lob_016",
+      "Beginner2_Lob_017",
+      "Beginner2_Lob_018",
+      "Beginner2_Lob_019",
+      "Beginner2_Lob_020",
+      "Beginner2_Lob_021",
+      "Beginner2_Lob_022",
+      "Beginner2_Lob_023"
+    ],
+    "validation_ids": [],
+    "train_subjects": [
+      "Beginner1",
+      "Beginner2",
+      "CoachA"
+    ],
+    "validation_subjects": [],
+    "seed": 20263002,
+    "protocol_sha256": "f77233e5c79d2f04bc658135ea0715c87f673758cad36fbda3263a228efb1e87",
+    "trainer_sha256": "337085f78a0161190fe897e547a68d5b6861d00dcbc8144ba09b1816ca2ced48",
+    "feature_sha256": "c1b55731058b7f17d314c5da73cb2f936652c52f6363c6087f160aeeda1ccf1c",
+    "variants_sha256": "7c6282263b821604f0a1728638046a6ec7c499c07c306e35bf0e93a10ee3f139"
+  },
+  "model_sha256": "edabd1ebbf302f78fcad2ee3a56dcd7fa4ca61a9f50902bb497a57c8c5ca694a",
+  "parameters": 7683,
+  "elapsed_seconds": 40.9380000000001,
+  "history": [
+    {
+      "accuracy": 0.339712917804718,
+      "loss": 1.1385412216186523
+    },
+    {
+      "accuracy": 0.3971291780471802,
+      "loss": 1.0846641063690186
+    },
+    {
+      "accuracy": 0.49760764837265015,
+      "loss": 1.0653092861175537
+    },
+    {
+      "accuracy": 0.4880382716655731,
+      "loss": 1.0519760847091675
+    },
+    {
+      "accuracy": 0.5167464017868042,
+      "loss": 1.0405551195144653
+    },
+    {
+      "accuracy": 0.5215311050415039,
+      "loss": 1.025285243988037
+    },
+    {
+      "accuracy": 0.5789473652839661,
+      "loss": 0.9928982257843018
+    },
+    {
+      "accuracy": 0.5789473652839661,
+      "loss": 0.9789448976516724
+    },
+    {
+      "accuracy": 0.5837320685386658,
+      "loss": 0.953839123249054
+    },
+    {
+      "accuracy": 0.5885167717933655,
+      "loss": 0.9356541037559509
+    },
+    {
+      "accuracy": 0.6028708219528198,
+      "loss": 0.8947075605392456
+    },
+    {
+      "accuracy": 0.6937798857688904,
+      "loss": 0.8812313675880432
+    },
+    {
+      "accuracy": 0.660287082195282,
+      "loss": 0.851973831653595
+    },
+    {
+      "accuracy": 0.7129186391830444,
+      "loss": 0.7767917513847351
+    },
+    {
+      "accuracy": 0.6842105388641357,
+      "loss": 0.7454243302345276
+    },
+    {
+      "accuracy": 0.7464115023612976,
+      "loss": 0.6636908054351807
+    },
+    {
+      "accuracy": 0.7320573925971985,
+      "loss": 0.646077573299408
+    },
+    {
+      "accuracy": 0.7511961460113525,
+      "loss": 0.603305459022522
+    },
+    {
+      "accuracy": 0.7224880456924438,
+      "loss": 0.6223576664924622
+    },
+    {
+      "accuracy": 0.760765552520752,
+      "loss": 0.577715277671814
+    },
+    {
+      "accuracy": 0.8181818127632141,
+      "loss": 0.5161344408988953
+    },
+    {
+      "accuracy": 0.8086124658584595,
+      "loss": 0.5006205439567566
+    },
+    {
+      "accuracy": 0.8086124658584595,
+      "loss": 0.48459717631340027
+    },
+    {
+      "accuracy": 0.779904305934906,
+      "loss": 0.5027109980583191
+    },
+    {
+      "accuracy": 0.8086124658584595,
+      "loss": 0.44873520731925964
+    },
+    {
+      "accuracy": 0.8468899726867676,
+      "loss": 0.40022650361061096
+    },
+    {
+      "accuracy": 0.8373205661773682,
+      "loss": 0.41321566700935364
+    },
+    {
+      "accuracy": 0.8468899726867676,
+      "loss": 0.4294104278087616
+    },
+    {
+      "accuracy": 0.8325358629226685,
+      "loss": 0.3952404260635376
+    },
+    {
+      "accuracy": 0.8612440228462219,
+      "loss": 0.38758590817451477
+    },
+    {
+      "accuracy": 0.8468899726867676,
+      "loss": 0.4139968752861023
+    },
+    {
+      "accuracy": 0.9043062329292297,
+      "loss": 0.3187222182750702
+    },
+    {
+      "accuracy": 0.880382776260376,
+      "loss": 0.3065786361694336
+    },
+    {
+      "accuracy": 0.8899521827697754,
+      "loss": 0.2944822907447815
+    },
+    {
+      "accuracy": 0.89952152967453,
+      "loss": 0.2999889850616455
+    },
+    {
+      "accuracy": 0.8708133697509766,
+      "loss": 0.3573150038719177
+    },
+    {
+      "accuracy": 0.8899521827697754,
+      "loss": 0.31404197216033936
+    },
+    {
+      "accuracy": 0.8755980730056763,
+      "loss": 0.3146774470806122
+    },
+    {
+      "accuracy": 0.9186602830886841,
+      "loss": 0.2768457531929016
+    },
+    {
+      "accuracy": 0.9282296895980835,
+      "loss": 0.2510889172554016
+    },
+    {
+      "accuracy": 0.9043062329292297,
+      "loss": 0.2678934931755066
+    },
+    {
+      "accuracy": 0.8755980730056763,
+      "loss": 0.347127765417099
+    },
+    {
+      "accuracy": 0.8851674795150757,
+      "loss": 0.32574382424354553
+    },
+    {
+      "accuracy": 0.9330143332481384,
+      "loss": 0.23066794872283936
+    },
+    {
+      "accuracy": 0.9186602830886841,
+      "loss": 0.23187236487865448
+    },
+    {
+      "accuracy": 0.8277512192726135,
+      "loss": 0.4768136441707611
+    },
+    {
+      "accuracy": 0.8708133697509766,
+      "loss": 0.3687063753604889
+    },
+    {
+      "accuracy": 0.9043062329292297,
+      "loss": 0.286888062953949
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.17745499312877655
+    },
+    {
+      "accuracy": 0.9473684430122375,
+      "loss": 0.1916865110397339
+    },
+    {
+      "accuracy": 0.9569377899169922,
+      "loss": 0.1874973177909851
+    },
+    {
+      "accuracy": 0.9473684430122375,
+      "loss": 0.18153415620326996
+    },
+    {
+      "accuracy": 0.9377990365028381,
+      "loss": 0.1784994751214981
+    },
+    {
+      "accuracy": 0.9569377899169922,
+      "loss": 0.1764819175004959
+    },
+    {
+      "accuracy": 0.9521530866622925,
+      "loss": 0.17563427984714508
+    },
+    {
+      "accuracy": 0.9234449863433838,
+      "loss": 0.19904904067516327
+    },
+    {
+      "accuracy": 0.9521530866622925,
+      "loss": 0.16832207143306732
+    },
+    {
+      "accuracy": 0.9521530866622925,
+      "loss": 0.15682227909564972
+    },
+    {
+      "accuracy": 0.9330143332481384,
+      "loss": 0.19415998458862305
+    },
+    {
+      "accuracy": 0.9473684430122375,
+      "loss": 0.1756340116262436
+    },
+    {
+      "accuracy": 0.9473684430122375,
+      "loss": 0.1726446896791458
+    },
+    {
+      "accuracy": 0.9377990365028381,
+      "loss": 0.2216961681842804
+    },
+    {
+      "accuracy": 0.9617224931716919,
+      "loss": 0.17440368235111237
+    },
+    {
+      "accuracy": 0.9521530866622925,
+      "loss": 0.17010870575904846
+    },
+    {
+      "accuracy": 0.9712918400764465,
+      "loss": 0.1321968287229538
+    },
+    {
+      "accuracy": 0.9617224931716919,
+      "loss": 0.1308981478214264
+    },
+    {
+      "accuracy": 0.9617224931716919,
+      "loss": 0.14886005222797394
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.11410042643547058
+    },
+    {
+      "accuracy": 0.9569377899169922,
+      "loss": 0.12275172024965286
+    },
+    {
+      "accuracy": 0.9425837397575378,
+      "loss": 0.17032736539840698
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.1369679719209671
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.12304423749446869
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.10678491741418839
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.09744042903184891
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.1087675392627716
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.09317829459905624
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.09854790568351746
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.1190098375082016
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.14339381456375122
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.09088998287916183
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.12102462351322174
+    },
+    {
+      "accuracy": 0.8660287261009216,
+      "loss": 0.3330115079879761
+    },
+    {
+      "accuracy": 0.9186602830886841,
+      "loss": 0.1986759901046753
+    },
+    {
+      "accuracy": 0.9282296895980835,
+      "loss": 0.1743299812078476
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.14374706149101257
+    },
+    {
+      "accuracy": 0.9521530866622925,
+      "loss": 0.19579528272151947
+    },
+    {
+      "accuracy": 0.9138755798339844,
+      "loss": 0.2008977234363556
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.132369264960289
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.08589769899845123
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.10821902006864548
+    },
+    {
+      "accuracy": 0.9665071964263916,
+      "loss": 0.10522668063640594
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.08291172981262207
+    },
+    {
+      "accuracy": 0.9856459498405457,
+      "loss": 0.08728192746639252
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.07069103419780731
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.09313733875751495
+    },
+    {
+      "accuracy": 0.9760765433311462,
+      "loss": 0.10172895342111588
+    },
+    {
+      "accuracy": 0.9904305934906006,
+      "loss": 0.06674157083034515
+    },
+    {
+      "accuracy": 0.980861246585846,
+      "loss": 0.080042764544487
+    },
+    {
+      "accuracy": 0.9712918400764465,
+      "loss": 0.07789898663759232
+    },
+    {
+      "accuracy": 0.9856459498405457,
+      "loss": 0.06451360136270523
+    }
+  ],
+  "outer_validation_passed_to_fit": false
+}

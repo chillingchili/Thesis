@@ -1,0 +1,10 @@
+{
+  "n_samples": 209,
+  "n_features": 32,
+  "k": 5,
+  "classes": [
+    "drive",
+    "lob",
+    "topspin"
+  ]
+}

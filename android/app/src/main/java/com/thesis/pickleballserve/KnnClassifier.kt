@@ -33,6 +33,13 @@ class KnnClassifier private constructor(
         fun load(context: Context): KnnClassifier {
             val metaJson = context.assets.open("knn_meta.json")
                 .bufferedReader().use { it.readText() }
+            val bytes = context.assets.open("knn_train.bin").use { it.readBytes() }
+            val model = fromBytes(metaJson, bytes)
+            Log.i(TAG, "Loaded kNN n=${model.n} f=${model.f} k=${model.k} classes=${model.classes.joinToString()}")
+            return model
+        }
+
+        internal fun fromBytes(metaJson: String, bytes: ByteArray): KnnClassifier {
             val meta = JSONObject(metaJson)
             val n = meta.getInt("n_samples")
             val f = meta.getInt("n_features")
@@ -40,7 +47,6 @@ class KnnClassifier private constructor(
             val classesArr = meta.getJSONArray("classes")
             val classes = Array(classesArr.length()) { classesArr.getString(it) }
 
-            val bytes = context.assets.open("knn_train.bin").use { it.readBytes() }
             val buf = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
             val nFile = buf.int
             val fFile = buf.int
@@ -53,7 +59,6 @@ class KnnClassifier private constructor(
             val y = IntArray(n)
             for (i in 0 until n) y[i] = buf.int
 
-            Log.i(TAG, "Loaded kNN n=$n f=$f k=$k classes=${classes.joinToString()}")
             return KnnClassifier(X, y, n, f, k, classes)
         }
     }

@@ -3,6 +3,7 @@
 Usage:
   python train_yolo_dgx.py ball    # ball detection  -> runs/detect/ball_yolo26s/weights/best.pt
   python train_yolo_dgx.py court   # court keypoints -> runs/pose/court_yolo26s/weights/best.pt
+  python train_yolo_dgx.py paddle  # paddle detect   -> runs/detect/paddle_yolo26s/weights/best.pt
   python train_yolo_dgx.py both
 
 Self-locating: chdirs to this file's folder, so you can run it from anywhere.
@@ -107,12 +108,27 @@ def train_court() -> None:
     print("COURT best:", (ROOT / "runs/pose/court_yolo26s/weights/best.pt"))
 
 
+def train_paddle() -> None:
+    model = YOLO(str(ROOT / "yolo26s.pt"))
+    model.train(
+        data=prepare("paddle"),
+        epochs=EPOCHS,
+        imgsz=IMGSZ,
+        batch=BATCH,
+        name="paddle_yolo26s",
+        exist_ok=True,
+    )
+    print("PADDLE best:", (ROOT / "runs/detect/paddle_yolo26s/weights/best.pt"))
+
+
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "both"
-    if what not in ("ball", "court", "both"):
+    if what not in ("ball", "court", "paddle", "both"):
         sys.exit(__doc__)
     gpu_check()
     if what in ("ball", "both"):
         train_ball()
     if what in ("court", "both"):
         train_court()
+    if what == "paddle":
+        train_paddle()

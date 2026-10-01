@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paddle label tool</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #16181d; color: #e6e6e6; font-family: Consolas, monospace; }
+  header { display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: #1f232b; flex-wrap: wrap; }
+  header b { color: #7cc7ff; }
+  .grow { flex: 1; }
+  button { background: #2b3242; color: #e6e6e6; border: 1px solid #44506a; border-radius: 4px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  button:hover { background: #39415a; }
+  button.warn { border-color: #a05; }
+  #stage { display: flex; justify-content: center; padding: 12px; }
+  #wrap { position: relative; display: inline-block; max-width: 96vw; }
+  canvas { display: block; max-width: 96vw; max-height: 84vh; cursor: crosshair; background: #000; }
+  #msg { padding: 6px 14px; color: #9aa4b5; }
+  #msg.err { color: #ff7b7b; }
+  .badge { padding: 3px 9px; border-radius: 10px; background: #2b3242; }
+  .badge.done { background: #1d5c2e; color: #b6ffcb; }
+  .badge.skipped { background: #5c4a1d; color: #ffe3a1; }
+  kbd { background: #2b3242; border: 1px solid #44506a; border-radius: 3px; padding: 0 5px; }
+</style>
+</head>
+<body>
+<header>
+  <b>Paddle label tool</b>
+  <span id="prog" class="badge">0 / 259</span>
+  <span id="state" class="badge">unlabeled</span>
+  <span id="meta" class="grow"></span>
+  <button id="prev">&#8592; prev</button>
+  <button id="next">next &#8594;</button>
+  <button id="skipBtn">skip (S)</button>
+  <button id="clearBtn">clear (Del)</button>
+  <button id="dlBtn">Download labels.json</button>
+  <button id="helpBtn">help (H)</button>
+</header>
+<div id="msg">Draw a tight box around the <b>paddle</b> (face + handle, include blur). <kbd>&#8592;</kbd><kbd>&#8594;</kbd> navigate, <kbd>S</kbd> = no paddle visible, <kbd>Del</kbd> clears. Progress auto-saves in this browser &mdash; <b>Download labels.json when finished</b>.</div>
+<div id="stage"><div id="wrap"><canvas id="cv"></canvas></div></div>
+<script src="frames.js"></script>
+<script>
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const img = new Image();
+const KEY = 'paddle_labels_v1';
+let boxes = {};
+try { boxes = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { boxes = {}; }
+let idx = 0, start = null, cur = null, imgW = 0, imgH = 0;
+
+function stateOf(id) {
+  if (!boxes[id]) return 'unlabeled';
+  if (boxes[id].skip) return 'skipped';
+  return 'done';
+}
+function save() { localStorage.setItem(KEY, JSON.stringify(boxes)); }
+function countBy(st) { return FRAMES.filter(f => stateOf(f.id) === st).length; }
+function progress() {
+  document.getElementById('prog').textContent =
+    (countBy('done') + countBy('skipped')) + ' / ' + FRAMES.length;
+}
+function msg(t, err) {
+  const m = document.getElementById('msg');
+  m.innerHTML = t; m.className = err ? 'err' : '';
+}
+function load() {
+  const f = FRAMES[idx];
+  document.getElementById('meta').textContent =
+    f.id + '  |  ' + f.group + '  |  ' + f.serve + '  |  contact f' + f.contact +
+    '  |  [' + (idx + 1) + '/' + FRAMES.length + ']';
+  const st = stateOf(f.id);
+  const s = document.getElementById('state');
+  s.textContent = st;
+  s.className = 'badge ' + (st === 'done' ? 'done' : st === 'skipped' ? 'skipped' : '');
+  progress();
+  img.onload = () => { imgW = img.naturalWidth; imgH = img.naturalHeight; fit(); };
+  img.src = f.src;
+}
+function fit() {
+  const maxW = Math.min(window.innerWidth * 0.96, imgW);
+  const maxH = window.innerHeight * 0.84;
+  let scale = Math.min(maxW / imgW, maxH / imgH, 1);
+  cv.width = Math.round(imgW * scale);
+  cv.height = Math.round(imgH * scale);
+  draw();
+}
+function draw() {
+  ctx.drawImage(img, 0, 0, cv.width, cv.height);
+  const f = FRAMES[idx];
+  const b = boxes[f.id];
+  if (b && !b.skip) {
+    const x = b.x * cv.width, y = b.y * cv.height;
+    const w = b.w * cv.width, h = b.h * cv.height;
+    ctx.strokeStyle = '#ff3b30';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, w, h);
+    ctx.fillStyle = 'rgba(255,59,48,0.15)';
+    ctx.fillRect(x, y, w, h);
+  }
+  if (b && b.skip) {
+    ctx.fillStyle = 'rgba(255,200,0,0.85)';
+    ctx.font = 'bold 34px Consolas';
+    ctx.fillText('SKIP - no paddle', 20, 50);
+  }
+  if (start && cur) {
+    const x = Math.min(start.x, cur.x), y = Math.min(start.y, cur.y);
+    const w = Math.abs(start.x - cur.x), h = Math.abs(start.y - cur.y);
+    ctx.strokeStyle = '#38ff8c';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, w, h);
+  }
+}
+function pos(e) {
+  const r = cv.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * cv.width / r.width,
+           y: (e.clientY - r.top) * cv.height / r.height };
+}
+cv.addEventListener('mousedown', e => { start = pos(e); cur = start; draw(); });
+cv.addEventListener('mousemove', e => { if (start) { cur = pos(e); draw(); } });
+window.addEventListener('mouseup', e => {
+  if (!start) return;
+  const f = FRAMES[idx];
+  const x0 = Math.min(start.x, cur.x), y0 = Math.min(start.y, cur.y);
+  const w = Math.abs(start.x - cur.x), h = Math.abs(start.y - cur.y);
+  start = null; cur = null;
+  if (w < 6 || h < 6) { draw(); return; }
+  boxes[f.id] = { x: x0 / cv.width, y: y0 / cv.height, w: w / cv.width, h: h / cv.height };
+  save(); load(); draw();
+  msg('Box saved for <b>' + f.id + '</b> &mdash; press <kbd>&#8594;</kbd> for next.');
+});
+function go(d) {
+  idx = Math.max(0, Math.min(FRAMES.length - 1, idx + d));
+  load(); draw();
+}
+function toggleSkip() {
+  const f = FRAMES[idx];
+  if (boxes[f.id] && boxes[f.id].skip) delete boxes[f.id];
+  else boxes[f.id] = { skip: true };
+  save(); load(); draw();
+}
+function clearBox() {
+  const f = FRAMES[idx];
+  delete boxes[f.id];
+  save(); load(); draw();
+}
+document.getElementById('prev').onclick = () => go(-1);
+document.getElementById('next').onclick = () => go(1);
+document.getElementById('skipBtn').onclick = toggleSkip;
+document.getElementById('clearBtn').onclick = clearBox;
+document.getElementById('helpBtn').onclick = () => msg(
+  'Draw a tight box around the <b>paddle</b> (face + handle, include blur). ' +
+  '<kbd>&#8592;</kbd><kbd>&#8594;</kbd> navigate, <kbd>S</kbd> = no paddle visible, ' +
+  '<kbd>Del</kbd> clears. Auto-saves in browser &mdash; <b>Download labels.json when finished</b>.');
+document.getElementById('dlBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify(boxes, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'labels.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  msg('Saved <b>labels.json</b> &mdash; put it in the repo root when done.');
+};
+window.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  else if (e.key === 's' || e.key === 'S') toggleSkip();
+  else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); clearBox(); }
+});
+window.addEventListener('resize', fit);
+const firstUn = FRAMES.findIndex(f => stateOf(f.id) === 'unlabeled');
+idx = firstUn >= 0 ? firstUn : 0;
+load();
+</script>
+</body>
+</html>

@@ -96,6 +96,8 @@ def main():
                 continue
 
             print(f"[{i + 1}/{len(rows)}] extracting: {clip_id}")
+            # A new recording must not inherit tracking/smoothing from the last.
+            pose.reset()
             kpts = extract_clip_keypoints(clip_path, pose)
 
             nan_frac = np.isnan(kpts).any(axis=(1, 2)).mean()

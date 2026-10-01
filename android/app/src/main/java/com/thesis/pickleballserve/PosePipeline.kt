@@ -23,13 +23,14 @@ import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
  */
 class PosePipeline(
     context: Context,
-    private val onPose: (landmarks: Array<PointF>) -> Unit,
+    private val onPose: (landmarks: Array<PointF>, bitmap: Bitmap?) -> Unit,
     private val onError: (String) -> Unit = {}
 ) {
     companion object {
         private const val TAG = "PosePipeline"
         // Model asset: download pose_landmarker_lite.task (or _full / _heavy) into assets/
         private const val MODEL_ASSET = "pose_landmarker_lite.task"
+        private const val BITMAP_RING = 5
     }
 
     private var landmarker: PoseLandmarker? = null
@@ -37,6 +38,9 @@ class PosePipeline(
 
     // Cache landmark array to avoid per-frame allocation
     private val landmarkPts = Array(33) { PointF() }
+
+    private val ringLock = Any()
+    private val bitmapRing = ArrayDeque<Pair<Long, Bitmap>>()
 
     fun start(context: Context) {
         try {
@@ -75,6 +79,11 @@ class PosePipeline(
         val ts = if (now <= lastTimestampMs) lastTimestampMs + 1 else now
         lastTimestampMs = ts
 
+        synchronized(ringLock) {
+            bitmapRing.addLast(ts to bitmap)
+            while (bitmapRing.size > BITMAP_RING) bitmapRing.removeFirst()
+        }
+
         try {
             val mpImage = BitmapImageBuilder(bitmap).build()
             lm.detectAsync(mpImage, ts)
@@ -100,7 +109,10 @@ class PosePipeline(
             // interior/signed angles only depend on directions).
             landmarkPts[i].set(lm.x(), lm.y())
         }
-        onPose(landmarkPts)
+        val bitmap = synchronized(ringLock) {
+            bitmapRing.minByOrNull { kotlin.math.abs(it.first - timestampMs) }?.second
+        }
+        onPose(landmarkPts, bitmap)
     }
 
     fun stop() {

@@ -1,0 +1,52 @@
+{
+  "version": "serve_refinement_v4",
+  "seed": 20261002,
+  "epochs": 100,
+  "conditions": [
+    "angles_thesis_aug",
+    "lean_control",
+    "lean_thesis_aug",
+    "skeleton_thesis_aug",
+    "skeleton_motion_thesis_aug"
+  ],
+  "lean_joints": [
+    11,
+    12,
+    14,
+    16,
+    20,
+    23,
+    24
+  ],
+  "lean_features": "10 angles + 14 hip-centered aspect-corrected xy + 7 masks + 14 adjacent displacements",
+  "model": "GRU32, dropout .15, L2 .0001, Adam .001, batch16; v3 matched sampler",
+  "augmentation": "reuse all 418 frozen v3 pixel/video variants; split original IDs first",
+  "outer": "leave one of three training players out",
+  "inner": "leave one of the remaining two players out; base learner sees one player",
+  "weight_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "weight_selection": "maximum mean-player macro-F1; ties minimum mean-player log loss, then closest to .5",
+  "calibration": "one temperature on log of fused probabilities; minimize player-balanced inner OOF log loss, T in [.25,10]",
+  "confidence_selection": "max coverage at >=80% observed inner accuracy, >=20 cases, >=5 per inner player; otherwise disabled",
+  "confidence_grid": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    0.95
+  ],
+  "candidate_selection": "maximum outer mean-player macro-F1 of tuned calibrated hybrid; ties mean-player accuracy, condition order",
+  "final": "one full-training GRU per condition; deployment calibration fits participant OOF; distribution shift is reported",
+  "diagnostic": "previously inspected 175 clips, never used for fitting or selection",
+  "limitations": "only three players; inner base models train on one player; candidate selection can inflate winning outer score",
+  "v3_protocol_sha256": "ae92223b3b5243dc6af1fb24c965f9b60ac935e6f71f64accb80602447502040",
+  "train_sha256": "a23d647c4babfbda0f6341e29984af38a89cae4118c93acf893ca2a9a4c00e13",
+  "source_sha256": "eeabc5395c93f6bf3833697b54c356d642617caa9c24db7f3082fc708a786b6d"
+}

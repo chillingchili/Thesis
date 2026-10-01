@@ -40,7 +40,7 @@ def run(video_path: str, stride: int, progress=gr.Progress()):
 demo = gr.Interface(
     fn=run,
     inputs=[
-        gr.Video(sources=["upload", "webcam"], type="filepath", label="Drop video"),
+        gr.Video(sources=["upload", "webcam"], label="Drop video"),
         gr.Slider(1, 5, value=1, step=1, label="Frame stride (higher = faster, coarser)"),
     ],
     outputs=[
@@ -55,7 +55,6 @@ demo = gr.Interface(
         "Processing runs on CPU — expect roughly 10-20 min per 5-minute video at stride 1; "
         "use a higher stride for quick previews."
     ),
-    allow_flagging="never",
 )
 
 if __name__ == "__main__":

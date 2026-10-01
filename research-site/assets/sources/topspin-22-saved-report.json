@@ -1,0 +1,89 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 169,
+    "duration": 2.8194833333333333,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0.0,
+    "end": 2.8194833333333333
+  },
+  "options": {
+    "start": 0.0,
+    "end": null,
+    "model": "ensemble",
+    "moment_matching": true,
+    "landing": "off"
+  },
+  "warnings": [
+    "The legacy GRU uses only the first 128 frames. Its window differs from the retrained complete-serve model."
+  ],
+  "serve": {
+    "status": "ok",
+    "label": "topspin",
+    "confidence": 0.968558669090271,
+    "probabilities": {
+      "drive": 0.003677990986034274,
+      "lob": 0.027763301506638527,
+      "topspin": 0.968558669090271
+    },
+    "model": "ensemble",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 128,
+    "window_frames": 128,
+    "truncated_frames": 41,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {}
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.14467596971577584,
+    "threshold": 0.1542655138505721,
+    "sufficient": false
+  },
+  "paddle": {
+    "status": "unavailable",
+    "reason": "No usable paddle orientation within five frames of estimated contact."
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 110,
+    "seconds": 1.8351666666666666,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "CORRECTIVE",
+    "messages": [
+      "Transfer your weight forward through the serve instead of relying only on your arm."
+    ],
+    "notifications": [
+      "Paddle orientation unavailable."
+    ],
+    "rule_ids": [
+      "C4_WEIGHT_TRANSFER"
+    ],
+    "version": "coach-b-v1",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": 7.08,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "0c2c562f06344bbe133d9c33f606640139f594e5d1d9b5654eb30b46c37c5fb8",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [
+    "keypoints.npy",
+    "preview.mp4"
+  ],
+  "primary_filename": "Beginner1_Topspin_022.mp4",
+  "sample_purpose": "Curated website illustration; annotated training clip, not a performance estimate."
+}

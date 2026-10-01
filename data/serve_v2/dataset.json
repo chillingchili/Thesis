@@ -1,0 +1,3879 @@
+{
+  "contract": {
+    "version": "serve_sequence_v2",
+    "pose_model": "pose_landmarker_lite.task",
+    "pose_mode": "VIDEO",
+    "detection_confidence": 0.5,
+    "presence_confidence": 0.5,
+    "tracking_confidence": 0.5,
+    "reset_per_clip": true,
+    "seq_len": 128,
+    "n_features": 10,
+    "features": "right_arm_elbow_shoulder_wrist_torso_twist_sin_cos",
+    "coordinates": "normalized_image_xy",
+    "window": "complete_selected_serve",
+    "resampling": "linear_sin_cos_then_unit_normalize",
+    "visibility_min": 0.5,
+    "min_source_frames": 32,
+    "min_valid_fraction": 0.8,
+    "moment_matching": false,
+    "max_clip_seconds": 12,
+    "temporal_axis": "elapsed_time",
+    "pose_sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+  },
+  "contract_fingerprint": "c111f7b8af1eb1f6b41c70520a70cd36530950df47674def066cb26b5d45cd22",
+  "annotation_sha256": "d7d2735c8837fabb1c9d6a8f69bef08507f3dd9be3bc708284faf38b64fdbd06",
+  "final_evaluation_status": "Coach C annotated 30-clip set not supplied",
+  "clips": [
+    {
+      "clip_id": "CoachA_Drive_001",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_001.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "7d0f5fd2ee013623429a432a833b54f44388017b437a171d4ab0a704a4b6a37e"
+    },
+    {
+      "clip_id": "CoachA_Drive_002",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_002.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "4e7e4390d0b80dfc95ad3f8e18d9e837210045fed5533008b771cacd124feb6b"
+    },
+    {
+      "clip_id": "CoachA_Drive_003",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_003.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "6e52c1a43c8ae1af2d11a4c366b87a990c96220938b77640300713eac335873a"
+    },
+    {
+      "clip_id": "CoachA_Drive_004",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_004.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "6a432df891e2209c4745c44ae084274130cea57029a11cbf4a37076c02c2e3e3"
+    },
+    {
+      "clip_id": "CoachA_Drive_005",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_005.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "e190cc26bf43ead7758680d3727c9b65659c4e2d9f41d03fb895965c320cbb44"
+    },
+    {
+      "clip_id": "CoachA_Drive_006",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_006.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "7b2af34f84881ab6b549315f8909d018564fff02f50e22fd641f47a7c5f49a84"
+    },
+    {
+      "clip_id": "CoachA_Drive_007",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_007.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "89df7d3f35e4d2b26b6026373f27fbe4a6d575f0501cbdd787b915e5a6fe15a7"
+    },
+    {
+      "clip_id": "CoachA_Drive_008",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_008.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "0e2f06c2f06b9ee5f0ebe8b773c9bcbea555b803244c3cc170ada26f09e745d8"
+    },
+    {
+      "clip_id": "CoachA_Drive_009",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_009.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "477c2b94c9186ef6e6f6a96ea2781eca49c54b664acf88344372979c9ed21f57"
+    },
+    {
+      "clip_id": "CoachA_Drive_010",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_010.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "e80248dbdf4f84c07086be7a11035ab530ca02b554a3dabe45267eb967a49a32"
+    },
+    {
+      "clip_id": "CoachA_Drive_011",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_011.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "8326fe0fd92f317b3ab437350144b687b3723a39c1fc89a187c603c9c117ef73"
+    },
+    {
+      "clip_id": "CoachA_Drive_012",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_012.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "51c8e12c646ade85bd7d995afc29ed29ac134a9edf7d119cc7b163974beac35b"
+    },
+    {
+      "clip_id": "CoachA_Drive_013",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_013.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "902e6c39fe0b95e5472c4209a27835505f93a8f4a66ad185fec5b090623745aa"
+    },
+    {
+      "clip_id": "CoachA_Drive_014",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_014.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "122626e211bb304cd8c621a0a0e14643f90cf7794faf0911d39d75b5cd304680"
+    },
+    {
+      "clip_id": "CoachA_Drive_015",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_015.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "4d80d5fe3a9356c04ac8650d348b099c3d87580b2fcb1385f4f1e60c85eb833f"
+    },
+    {
+      "clip_id": "CoachA_Drive_016",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_016.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "ef1f87257148159dca83282b6bbee13cadb27054948f507ad4e8e1ed6d473fbc"
+    },
+    {
+      "clip_id": "CoachA_Drive_017",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_017.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "8785dc870dcf95022c7a289b39132edaccbf92ab4155e5acbe6f85830a5332ec"
+    },
+    {
+      "clip_id": "CoachA_Drive_018",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_018.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "901dca75541cc744ba851ad4c5a3d3dd9e1c4a0a859de4a7740c676e1040fcb7"
+    },
+    {
+      "clip_id": "CoachA_Drive_019",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_019.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "3fa4b006c6a346f3e702c2fcb67cebec78076e58f7e2040f9f591877febe8af2"
+    },
+    {
+      "clip_id": "CoachA_Drive_020",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_020.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "e45a42c10209f264bed2d84bdef856955dba575cc21d2ed6f93bf713a01cb822"
+    },
+    {
+      "clip_id": "CoachA_Drive_021",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_021.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "d050f4fd25a64cba3983e7335acd8f190fcf443bea0ab5868014d576de6a2ea0"
+    },
+    {
+      "clip_id": "CoachA_Drive_022",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_022.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "dcab8f2de38ba31f9c1681c36a7fdc0c33e551c8bf3df93ff88b109999042d27"
+    },
+    {
+      "clip_id": "CoachA_Drive_023",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_023.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "58456f84e2ee6bb88f8002d927a7e784c1953a4c0639dec766bc74cc099ced0e"
+    },
+    {
+      "clip_id": "CoachA_Drive_024",
+      "video": "data/training/raw/coach/drive/CoachA_Drive_024.mp4",
+      "label": "drive",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "13bdab6442e3d071c82e648e56d91e27a81abea6d5c4f4aab013ce436f4e7993"
+    },
+    {
+      "clip_id": "CoachA_Topspin_001",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_001.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "3b930ee13f2c92342810f799d16087fbca4ae6d438912f1a3ec3812aa370207f"
+    },
+    {
+      "clip_id": "CoachA_Topspin_002",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_002.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "0436122a30d10f8a73086f861179087f04a1f290f7291168c21efd7daae3e49c"
+    },
+    {
+      "clip_id": "CoachA_Topspin_003",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_003.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "e25429cdecaca6fc40aaf3e02853303e4c824c49e076ef7178e5e657e2b5e8b3"
+    },
+    {
+      "clip_id": "CoachA_Topspin_004",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_004.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "1d827d2e01613d9f57b9de490afeef359235f79c9c7d0eaeaf47fd7f40c0f7e7"
+    },
+    {
+      "clip_id": "CoachA_Topspin_005",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_005.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "cbe4e21ed6053584a00f6918038434e7f31a975020ad4a532c5b4c49313fcbb9"
+    },
+    {
+      "clip_id": "CoachA_Topspin_006",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_006.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "a20964091e22413775fc53a0c397225bd92b64775cc59b0742a6bc3c77bb5571"
+    },
+    {
+      "clip_id": "CoachA_Topspin_007",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_007.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "b61e43bb932bf686ce9f127b1cf800b2c1804ed734421d4d6e5739fe26eb3469"
+    },
+    {
+      "clip_id": "CoachA_Topspin_008",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_008.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "30af8fbc8a1aa1e00ec54d17664e084b211b87179a20a730711d5000bb015784"
+    },
+    {
+      "clip_id": "CoachA_Topspin_009",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_009.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "680bd51d4a15b9c7f2a91b0d82b7c1ee30517a77dd1afb1723d064f371ca5399"
+    },
+    {
+      "clip_id": "CoachA_Topspin_010",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_010.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "3723f93b2fbdb5d9ea34e4c1c553baffd0d83ed24c468ca031239aa50010908b"
+    },
+    {
+      "clip_id": "CoachA_Topspin_011",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_011.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "5e3d59db4923ee6a0570207e8d320f0bf10e0de7fe57c127d43e788608dd11b8"
+    },
+    {
+      "clip_id": "CoachA_Topspin_012",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_012.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "cc992c0fe67441d5b16ce69c2856ea006bd7f85c32bdc70242c5306fa4f4dcf7"
+    },
+    {
+      "clip_id": "CoachA_Topspin_013",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_013.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "da2947e321d01637db4abb3a47ddb08f730115069330349d18a50f318d409e9b"
+    },
+    {
+      "clip_id": "CoachA_Topspin_014",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_014.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "a8df2f3d2d88f1920c6d3ccd9f28620da2ed8d4bdc16cd4f6ff5a4ed7ba50f25"
+    },
+    {
+      "clip_id": "CoachA_Topspin_015",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_015.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "70440a0e50bdab11ffbd8b106be54106ac575898f04deb090e1d85b8c5302195"
+    },
+    {
+      "clip_id": "CoachA_Topspin_016",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_016.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "116c0af27b71f0dc32b1196df1feeb13081dd52d73d73f3e2dfc65ef6d41fc5b"
+    },
+    {
+      "clip_id": "CoachA_Topspin_017",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_017.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "38b96725f3357f1f3aa5501d8ea1fa18b8ce55926b00b7bade25f0b776ccb853"
+    },
+    {
+      "clip_id": "CoachA_Topspin_018",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_018.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "7e9dde517091dccafe291a53b935a8d0244c52114968a3ec28694ebae4108d57"
+    },
+    {
+      "clip_id": "CoachA_Topspin_019",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_019.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "c80c24f4a74d665da9b73e4d27546fd7fc4efe530bd3569142c898ef1ffc0f41"
+    },
+    {
+      "clip_id": "CoachA_Topspin_020",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_020.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "f947a47166003e3516807905baa491bf3d616e577aa421196fe6f851fb0ca277"
+    },
+    {
+      "clip_id": "CoachA_Topspin_021",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_021.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "9550dd6a7d4813e302635c032bb03ae303d80a7904dfe5fd6a2ee48712c19906"
+    },
+    {
+      "clip_id": "CoachA_Topspin_022",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_022.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "3bcb188619ab007dae826b32545384b5c24f9233c22e62633febc3883568662a"
+    },
+    {
+      "clip_id": "CoachA_Topspin_023",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_023.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "b9344cd01b9ff7134af8ca012c5217c89121f2a21d6fd1d3d1645f311cc9b879"
+    },
+    {
+      "clip_id": "CoachA_Topspin_024",
+      "video": "data/training/raw/coach/topspin/CoachA_Topspin_024.mp4",
+      "label": "topspin",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "452c322bac533349d7e63fce5260c2be65845bb6f45e2d49e28cf26dcea0dc34"
+    },
+    {
+      "clip_id": "CoachA_Lob_001",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_001.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "c7fec170aca0d3bfc7ac620c381281e8b251408b0c3000b1b224b38480638353"
+    },
+    {
+      "clip_id": "CoachA_Lob_002",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_002.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "8211a6d432901e8090133d65ec59c5f80e282339dffb8f14fd4b7e6dbfade8ab"
+    },
+    {
+      "clip_id": "CoachA_Lob_003",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_003.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "f73e071b61b036859e2afe6c2d2022c833e12efaa038915b6851ccbd3fb4a1d1"
+    },
+    {
+      "clip_id": "CoachA_Lob_004",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_004.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "7e411faee61eb38cd0cec5747ba34210ac4d54dec02353088728435435944431"
+    },
+    {
+      "clip_id": "CoachA_Lob_005",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_005.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "b57192d8dbb7ed3f4f0712626d1e7a2fb2a699347b2613dc840564b7c7f2565d"
+    },
+    {
+      "clip_id": "CoachA_Lob_006",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_006.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "07186e7f79d8515c421e2e531766f990b9ab96d88f7b8abccb23a93af96609fc"
+    },
+    {
+      "clip_id": "CoachA_Lob_007",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_007.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "97f5461cbeec889b520a42f81f18620130e78d3b0838a50337341afcc03d8157"
+    },
+    {
+      "clip_id": "CoachA_Lob_008",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_008.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "c42f07f84e0b25f34c330bd9fbe5cede3d3446a52942193e0fed9d42c02b75d9"
+    },
+    {
+      "clip_id": "CoachA_Lob_009",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_009.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "068f2caca67262aa054b935bf827e1f7bc41877373a34c26b7bb21cb3b00cf95"
+    },
+    {
+      "clip_id": "CoachA_Lob_010",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_010.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "a1ed925eac3c026ee7953641f6f7f63d42dcd95ee94bda6b685b2bc53994a152"
+    },
+    {
+      "clip_id": "CoachA_Lob_011",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_011.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "c78b901bb4902ead62428f3b3d8e5bf67ba7c805dae09a657edc4a857e7f3afc"
+    },
+    {
+      "clip_id": "CoachA_Lob_012",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_012.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "88785fe386ccc5e32d0647b2a70c631117911491820be3122cf4d23b5e16698f"
+    },
+    {
+      "clip_id": "CoachA_Lob_013",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_013.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "6dac0c4d22fda9f5a7cdb5ac6dce11131d791e4d297720f1241c099b03599bf7"
+    },
+    {
+      "clip_id": "CoachA_Lob_014",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_014.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "3e8db8b0640f15bfda74cd29495a79768cb7fe17778d090a4bf6c343d63dcaa8"
+    },
+    {
+      "clip_id": "CoachA_Lob_015",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_015.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "effbcf2bfbd40100038e8e5455b937671218cf1f9fee551ee4cd610f92faee5d"
+    },
+    {
+      "clip_id": "CoachA_Lob_016",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_016.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "afb898cebbc12de5400117a2456674160b8b9abb4a2b6cd136d6ee99cfa0b267"
+    },
+    {
+      "clip_id": "CoachA_Lob_017",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_017.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "464f3f11c4a2cf2e69ff32a9509a147ddea997bbbfe529030005ec3443652108"
+    },
+    {
+      "clip_id": "CoachA_Lob_018",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_018.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "b3c6aeb78d3b19d98c9e8ce931707843dee5e2fbed55bc62d9a26faa99785dda"
+    },
+    {
+      "clip_id": "CoachA_Lob_019",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_019.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "df7a060eceea32c8fc7b964edc1de90b41e815e7025c0a6781643cff5ae06ded"
+    },
+    {
+      "clip_id": "CoachA_Lob_020",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_020.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "1c0f4dc81ae6a7764af06d19e6533e342db398976656f705bfae9c3b9e558ef6"
+    },
+    {
+      "clip_id": "CoachA_Lob_021",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_021.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "c61a94865f44c144f102babef654307a27046dbaa88b5249a79ba3abd33b4419"
+    },
+    {
+      "clip_id": "CoachA_Lob_022",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_022.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "9caa7765924b237d152d5ceca04da212653e0133e7e3bb6206778b3656f6acb7"
+    },
+    {
+      "clip_id": "CoachA_Lob_023",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_023.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "6cb9a6cd8a466b15c95de427f6be81cea5575665efc3cd2ebf954f7d8f513faa"
+    },
+    {
+      "clip_id": "CoachA_Lob_024",
+      "video": "data/training/raw/coach/lob/CoachA_Lob_024.mp4",
+      "label": "lob",
+      "subject": "CoachA",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "4b623928dff90018b0c92304298a7f81eefe5a25807ca1b9ee0d67a07ecdaa50"
+    },
+    {
+      "clip_id": "Beginner1_Drive_001",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_001.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "2e9c613029de0e67b530227d5cb0644223243e253e2ec174c64c51ada3346ecc"
+    },
+    {
+      "clip_id": "Beginner1_Drive_002",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_002.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "535f8be1644aaa0afe2575d3ebd403351373ac41a7e10ae704860da6f342094f"
+    },
+    {
+      "clip_id": "Beginner1_Drive_003",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_003.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "db9349701145c813aaa46bca54bf2d2864ba5b86b7f08694a1f50a9f1bbe2165"
+    },
+    {
+      "clip_id": "Beginner1_Drive_004",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_004.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "8d9bd215668c3a3a870d3fa04ccb28048ec9e3c9c5f676a9fbcf38233aac41ba"
+    },
+    {
+      "clip_id": "Beginner1_Drive_005",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_005.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "55c2040afe60656f9a0768d56d65d3a3ae80093f721e74ebfc3397beb97c08a2"
+    },
+    {
+      "clip_id": "Beginner1_Drive_006",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_006.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b7a1a44ec845632f3585ba80fb98eabef7eefdb54e4e8cfee6a32bdb6345ab84"
+    },
+    {
+      "clip_id": "Beginner1_Drive_007",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_007.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "6af3c74c2cf4d9493dd7f4ee608f60747d07943f70d2078ae27f1613123eaec3"
+    },
+    {
+      "clip_id": "Beginner1_Drive_008",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_008.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "dd6060e636cf928d6ef7864c09d629a4e02754c6057ca6061e79e059703a1c8c"
+    },
+    {
+      "clip_id": "Beginner1_Drive_009",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_009.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "ea9d571486b7560d0d9b3ac89cfa0e6b131e3cf9d698af2917934712d62fbaa4"
+    },
+    {
+      "clip_id": "Beginner1_Drive_010",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_010.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "afdf56d5f70f0c2ee4b7713805f40c7dcee63e15f729103993d8312f812cee5d"
+    },
+    {
+      "clip_id": "Beginner1_Drive_011",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_011.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "9bab636c91d95e5a2a520831c9edc8f4c1a0725fc8f084f98c392a8e6e696418"
+    },
+    {
+      "clip_id": "Beginner1_Drive_012",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_012.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "2ac189ea21327e54aafad7287a6efc2bc036d1c12c0f65c1fb27421bb21cce5f"
+    },
+    {
+      "clip_id": "Beginner1_Drive_013",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_013.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "ad8bab33e16c58035d7db3c4abffa05cb6a57eea0077a994630f5dfe2c4e8508"
+    },
+    {
+      "clip_id": "Beginner1_Drive_014",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_014.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "0b09b0f3707e5fe8970dac729dd15a70beb91be11390487bbb29cc25b404cd0e"
+    },
+    {
+      "clip_id": "Beginner1_Drive_015",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_015.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "0ef75af7c857fe8e61403f78ffa52f6a1335b4d6338ca534022499b3b8880cf6"
+    },
+    {
+      "clip_id": "Beginner1_Drive_016",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_016.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "74192297b85eaed588401cf142a95970215091e7997451bb922e3c44120ae65e"
+    },
+    {
+      "clip_id": "Beginner1_Drive_017",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_017.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "7ba881c1b31a34247fbf654f32b8c1cf9e15d0f2831b03d4378a2738b61549ad"
+    },
+    {
+      "clip_id": "Beginner1_Drive_018",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_018.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "f16643a3db8d90cfb4656c6af702afcb56ff170e843a1ad216da2f247ab0ee4c"
+    },
+    {
+      "clip_id": "Beginner1_Drive_019",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_019.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "a1e0d1206322f12d0a3556e79f1f92d45c5f61a1b2ac887ed8623f84a8ce67e3"
+    },
+    {
+      "clip_id": "Beginner1_Drive_020",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_020.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "4a1a3b00b1d69b6f071d07f2b79b767659eb4c0469876e7ffeb4fdda1862ac3c"
+    },
+    {
+      "clip_id": "Beginner1_Drive_021",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_021.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "18662d0140a952bd05c23467cfd1e4453cf2a65ad0ed87133171861ed58e64b3"
+    },
+    {
+      "clip_id": "Beginner1_Drive_022",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_022.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "da40c34e07ab8fb4e5a8219fa547723200bd322a47e69e4087800e340aaa0777"
+    },
+    {
+      "clip_id": "Beginner1_Drive_023",
+      "video": "data/training/raw/beg1/Drive/Beginner1_Drive_023.mp4",
+      "label": "drive",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "c77d381ee5f183d7c7a0cff26d1f2cc14a01a4983ae663929b0f91df493b8745"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_001",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_001.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "1f106983eedcba5a157bede2173848f067ba4f062816395189f267021acff8b1"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_002",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_002.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "decbce314a466177ca1302727f2d5ceb056d2e1e0566ad28e41f603fab3e04a4"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_003",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_003.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "d2594e1ca34d0cf04a4eea4b53e860aff59c5aa66ab4b9639b15e4cad45f4e22"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_004",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_004.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "7830a31b3ac30d8d05682802eb2da16f49aa06fd7063514e01d25a65405e3361"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_005",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_005.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "12119e7926d873fd4f44db9c6dc38c53eaf0d5333c5ef30abcd3ce600bb6399e"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_006",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_006.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "6693b07d7e856c19000e3f6697c0c99e35f74d493e455e3070efde6dc5d1b3d6"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_007",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_007.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "85ed7b6ada724085e72618e289c7063437428591a806aeebe95a7bb4d15c4250"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_008",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_008.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "85db62af3e745ddcb675d9ce9758eef071b096a9174c08cf46f0e4744d63276b"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_009",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_009.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "0a685a565d6244eefc6186b421d3cb035df70b9f039c8078a52fcd0a0440ed4c"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_010",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_010.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "914f07d020c760699bfe7006a24ad96ba975cc346670d03d523ff884a143b234"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_011",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_011.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "52e07d00678dfd9f82975a3024922ccbbc7ba11ff38704d2566189d3ab94f1d1"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_012",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_012.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "8c9f5f06ab5b7632815b417b98328bab873b41890e2d5b01b32103380633a4b5"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_013",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_013.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "22ab40b52571b2f662a21715536cddcb26c9ccd0a2d4a445d33191e5186f69b1"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_014",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_014.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "55e0f56660e0de41d400ef305a470517c645ba99001205af4279f2db62d02e2b"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_015",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_015.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "0ce8f31208eb1f69a5610f1ecc83362640958514840ce218ee838c314bafbc1d"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_016",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_016.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "08d811c4e8029a8c13954d6fb7bbf0c81076896b35c652262945f473cc344e6a"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_017",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_017.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "8d47ef45c88d4b0e93ab9627aef484da2202e7587748ee8dedfbf506ac06b6a0"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_018",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_018.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "af01991196fad5f8c73e97b645d2398b22af73a1ec434a1919be15f33ca4f653"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_019",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_019.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "2a40f49eae68adb7ae17f119361056aec9b58fb8361ec4287a5ee00fa87e2a07"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_020",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_020.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "d60306a71958c688d83919bef91d726c2a7aa13853efcc4c6e53ac61ae0c8f18"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_021",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_021.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "fd5eeaa8602cdbdf7e31abbcd4a18ebd0279420d8abfd2a06c5c7b0548b177fe"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_022",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_022.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "171a7f3de4d704f08b650d2842b5cee8814e9b40a506820248e5d02df9869b85"
+    },
+    {
+      "clip_id": "Beginner1_Topspin_023",
+      "video": "data/training/raw/beg1/Topspin/Beginner1_Topspin_023.mp4",
+      "label": "topspin",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "48f3c4f7e76ad9bb50eaab7b1faa7090292d35bdd450eb7b88fc0a06edc8d336"
+    },
+    {
+      "clip_id": "Beginner1_Lob_001",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_001.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "653b3ca3794de36b9f86621e4787e0babcc34b1e4b82b00f4f74fd6566ca97c7"
+    },
+    {
+      "clip_id": "Beginner1_Lob_002",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_002.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "43ebe65ee821c6a8f88a8d9a934d0b04cca05e8df8253821bd1bed02a44d82c0"
+    },
+    {
+      "clip_id": "Beginner1_Lob_003",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_003.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "bdf7fd4cbe254054cd0df55373d42f004f8ef6cf27420ca697ccc03dbf4dedb4"
+    },
+    {
+      "clip_id": "Beginner1_Lob_004",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_004.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "f9a690914db1723594a0e7960b9f26a1687674bcdd3dd8d4ced6737424ae60f1"
+    },
+    {
+      "clip_id": "Beginner1_Lob_005",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_005.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "8eb34123714ae5016178dc66d5f3649058e960a2f114fa80955b7938772af8d3"
+    },
+    {
+      "clip_id": "Beginner1_Lob_006",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_006.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "fed860ef15585c079afe35ce7113ff62945cb98009de73cfa59228f9a101ee79"
+    },
+    {
+      "clip_id": "Beginner1_Lob_007",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_007.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "69c7085d047f0b580df9b2b1c80add73a2b36564d61137d82e6b3c6913f100d4"
+    },
+    {
+      "clip_id": "Beginner1_Lob_008",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_008.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "f573dbaa803c01736343883c5b01d962a410cfc31fe98a07f56872cdc6f7bffc"
+    },
+    {
+      "clip_id": "Beginner1_Lob_009",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_009.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "8a5bd5fcf822102366dc112cba6f4a3de4cad347b2161570595c67f273555c1f"
+    },
+    {
+      "clip_id": "Beginner1_Lob_010",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_010.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "309387cd1d41830e09e0d38947e69f3c5b9f488609482dfd04d61aff49c6502a"
+    },
+    {
+      "clip_id": "Beginner1_Lob_011",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_011.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "6c539709b08ba0ed550ad7a04b5844d22cea0fd4c64d90850ff104c4a8fdd69b"
+    },
+    {
+      "clip_id": "Beginner1_Lob_012",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_012.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "3a9073d2bcb40126d2adf7f1889ad10b317611b3f2c66a51b071cc3399ab8ee6"
+    },
+    {
+      "clip_id": "Beginner1_Lob_013",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_013.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "98803030ae8a37afbfe59353d379e215df170f504d8bece51482f307bc6787e9"
+    },
+    {
+      "clip_id": "Beginner1_Lob_014",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_014.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "7acb9dc549e00ac7b901c01bf3f69787e088b64baf7a95c1f8f30d68031e2543"
+    },
+    {
+      "clip_id": "Beginner1_Lob_015",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_015.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "26a714dcf938edb2d4df4e94845f55bb9f50c83557cc5ef494a93255b0b3da5d"
+    },
+    {
+      "clip_id": "Beginner1_Lob_016",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_016.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b58caa301f6b982b1ccc6301633fede78dbc65c8f8dc5453bfe15bb2466f1474"
+    },
+    {
+      "clip_id": "Beginner1_Lob_017",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_017.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "cd04fd2b9ce3f9647671beacd41fea2cf986c765601a1e099d06c889f1994ace"
+    },
+    {
+      "clip_id": "Beginner1_Lob_018",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_018.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "a076acd809271014b0d0669ad00908548d282381630bdddfbd6e022a369a1ba0"
+    },
+    {
+      "clip_id": "Beginner1_Lob_019",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_019.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b9a67816523210141fc456e77dbf48dce017ab84e9832400ffd70aca5476b2ea"
+    },
+    {
+      "clip_id": "Beginner1_Lob_020",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_020.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "1ecf6d3158c7d6e59af3059ccc2101f92707154b1ba31dd86e219318e866dee6"
+    },
+    {
+      "clip_id": "Beginner1_Lob_021",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_021.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "450eac524d0a4902eff1986939823dfb630ce8965e5b9ba8796ce935169b14d8"
+    },
+    {
+      "clip_id": "Beginner1_Lob_022",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_022.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "e42dbb025525d873dfd2d4312257888c31a7ceb8b6224ca35760dcd1ef193de0"
+    },
+    {
+      "clip_id": "Beginner1_Lob_023",
+      "video": "data/training/raw/beg1/Lob/Beginner1_Lob_023.mp4",
+      "label": "lob",
+      "subject": "Beginner1",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "61ed0f16648b55fb3a7baf74bb4417908963dd48382c7d3c470d1af760662f52"
+    },
+    {
+      "clip_id": "Beginner2_Drive_001",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_001.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "a7396bad965eaea7830e9cfe775b4804451423f57a74678348f83beb2629c8fe"
+    },
+    {
+      "clip_id": "Beginner2_Drive_002",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_002.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "ef4dd33d030f7ca2f76e5eda476faf0602aacd7379fb17b2b6727d0ac8a60596"
+    },
+    {
+      "clip_id": "Beginner2_Drive_003",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_003.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "211616827ad6a0932efe45568a2dc14553def24578cddfd2c234d12a30fa509d"
+    },
+    {
+      "clip_id": "Beginner2_Drive_004",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_004.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "66033842fa11a46b45642d89b4adc348c194f8e8545c530954c9faf6d449b588"
+    },
+    {
+      "clip_id": "Beginner2_Drive_005",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_005.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "c717059c2b3fdb3c415f32100cd87fcb792efcfacb5d0d354b0c8accbfe27eb0"
+    },
+    {
+      "clip_id": "Beginner2_Drive_006",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_006.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "c15b0b242615a57364807aa9fc0696f358d15e3ad420c2d6cdadce07f1f636bf"
+    },
+    {
+      "clip_id": "Beginner2_Drive_007",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_007.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "5ae1795276c21be451bc3d1a3deda068c8b3159a54d777130ea648da1b41b74a"
+    },
+    {
+      "clip_id": "Beginner2_Drive_008",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_008.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "3c77f1eff5b0d61433252ff040dc853ce56537106387fdfe821be50e52e0813c"
+    },
+    {
+      "clip_id": "Beginner2_Drive_009",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_009.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "abd7f91b033f8521fab02290603b18007653936b223e8c1560c8b0ffbd5678a5"
+    },
+    {
+      "clip_id": "Beginner2_Drive_010",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_010.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "2c301de10e07fcf3cf0014112c80c8ee0d6cb184928be8df5082ec6ebdaf8cee"
+    },
+    {
+      "clip_id": "Beginner2_Drive_011",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_011.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "62b129e35d9df1112795ff4d6799653a61e484542adb4bd3267a73975fe8b93f"
+    },
+    {
+      "clip_id": "Beginner2_Drive_012",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_012.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "005884586b5df5f5a8549f0ad5ada707ef38b81f2f50eccdd02ea47bf656732e"
+    },
+    {
+      "clip_id": "Beginner2_Drive_013",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_013.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "23af9413d74dda4cc6b95cd97d9aa29750d214c415de5a7356852375805adbc6"
+    },
+    {
+      "clip_id": "Beginner2_Drive_014",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_014.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "8034c5eff038faff69e0db69ed8b997fc2313edd4b3486e4cb81bedc87e769ca"
+    },
+    {
+      "clip_id": "Beginner2_Drive_015",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_015.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "f55e343f599aa045c8e8b937755b3a82e0f8bc387c465c3851fda13ca3cf26ac"
+    },
+    {
+      "clip_id": "Beginner2_Drive_016",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_016.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "097b12f717661d3327c67be2e3bbed70847b8f6771615c0856f627c9542a624e"
+    },
+    {
+      "clip_id": "Beginner2_Drive_017",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_017.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "eafad6a9babb4c3ef1fd461674cf6c7e6b2a50b81a4ec157aa21ff70f20f72f2"
+    },
+    {
+      "clip_id": "Beginner2_Drive_018",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_018.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "191937511eaa1277120ed9cb0c360415bc8aeb222f2c7ca3b81e9c240e022947"
+    },
+    {
+      "clip_id": "Beginner2_Drive_019",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_019.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b6bbdc7dac3d21fb90714951b45971a7d006bbd2d9d6bda19d9d63195d319d37"
+    },
+    {
+      "clip_id": "Beginner2_Drive_020",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_020.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "bb03c49f75b9e68946b43aa6d550ed5277097e0954d11b5aeb4c86d133bc135e"
+    },
+    {
+      "clip_id": "Beginner2_Drive_021",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_021.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "bdc4339eb56b3e9516ae0bda32f5f399ae7b3541cbdb07e0dc11b9313cf0e2b4"
+    },
+    {
+      "clip_id": "Beginner2_Drive_022",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_022.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "7cdf2190556f725b9c2638d6698da5a79162a54d88914cfc77106182e1b64c3c"
+    },
+    {
+      "clip_id": "Beginner2_Drive_023",
+      "video": "data/training/raw/beg2/Drive/Beginner2_Drive_023.mp4",
+      "label": "drive",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "208b6eccb996640883ede01d7a79ffe02ab7c1e48544f6da3e0b8b90363e241c"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_001",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_001.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "16ea0b724c5087bdc403af70fcaef99151f4d463292d577f58b4d58d1c0bbc10"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_002",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_002.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "cf01676de1d34c66a6bfe6030b0506e1a35fd6da1eb2fcf69a7d0ac22477e2dd"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_003",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_003.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "792891aa0bcf54f57973f0dbfe4836053e86c85ae8bb69275d9c685418a82e14"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_004",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_004.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "6da45da96a27a2abcd696706215738ab68db9c7873650de00c19f67c2653e9cf"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_005",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_005.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "0e4deca0d6999c02531052ba991a187c7b6bed7ed310589bcebba82ad72726e4"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_006",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_006.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "16bcaf06e57f03f1b46fa44a6a2f4188922d4dd338f8360c9b97feca2986c7cb"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_007",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_007.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "56d378b8246d2b1e390f4af9bcd3e23bd46dd303aac50a53059a6435ede6c82b"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_008",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_008.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "e19003f4bb49606ff91aab77458427a54798591585c8db25ba11d08f09db37d7"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_009",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_009.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "bed85097e1445e0dae22fbf1b5fe2f067ce0850c39b10ad74f483430cd877e88"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_010",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_010.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "486a170a450dd7800df12ee96ed416ea10d13df9fe82f4f5a01d69d880a072de"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_011",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_011.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "26b86be4718bcf006f84a0a10c5ab26937f842148a5b9195fa0252a2278edd6f"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_012",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_012.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "e51e5ab3763180f9e272b410192f337b2d9c0d33db13133d8446b64b61898c7b"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_013",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_013.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "a31208f8bd1502d78ab3cf10f614e95ba9ade61d65b703ee659433a5cf2ab4ea"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_014",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_014.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "029c45865a2a3202da3b3820ed6ea966a8539d223844fee8afd677b38983287a"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_015",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_015.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "64adb03ebbf168c70f2807a918a347571071b34698f8f07978d564c2e752e738"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_016",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_016.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "ab6192d6de82a9a2457a3fb262767b0d09bf9008b099e95bd9db270d78fdbf25"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_017",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_017.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "3adf73e7c0058a44526b0d962fb4c209c298b142494d8696f6978a4967698557"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_018",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_018.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "72cd4ba72f9ebbdb1e0b0fa57c04d9258fc6ce7e1a8fa879b8de90238ad2d004"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_019",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_019.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "7ce9290916860cec2fc47f11cdb629c5ea1bcb61108d37d0382d821db7883b47"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_020",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_020.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "cda3f5869e959159c4398b3599c64908c90ff5659b91bdf75b2a100fa81663e5"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_021",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_021.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b7bec1fd7d78fc8dcd99e9980bdb3081f3b71bd31bdb6af870a03f7a01e2bd25"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_022",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_022.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "4681e1df78378939394b8cd1b11fc721cd84ff64b8bd6afdab88abee840f690a"
+    },
+    {
+      "clip_id": "Beginner2_Topspin_023",
+      "video": "data/training/raw/beg2/Topspin/Beginner2_Topspin_023.mp4",
+      "label": "topspin",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "824b432eab2be65d806a920dc34d8390c2f2f7fd4c7f945ac470c4fc903b38fe"
+    },
+    {
+      "clip_id": "Beginner2_Lob_001",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_001.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "e6416ce96ebfd2fd1449fcf2f9ffc6ae67a734bb9ea6bb848e51419523287bf1"
+    },
+    {
+      "clip_id": "Beginner2_Lob_002",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_002.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "2a169de309f27b18723b6f906350f54f88c2cec7d67ef1e5c96b59e7035a92c9"
+    },
+    {
+      "clip_id": "Beginner2_Lob_003",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_003.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "d0ba5860a82ef59ac82a8de0faba3e49e242ce2ff041cc9fcbd220bb4cbe91f1"
+    },
+    {
+      "clip_id": "Beginner2_Lob_004",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_004.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "83a097e680659b27519371e5abdc9f1cc78884040251689e3ff3058cf0657bba"
+    },
+    {
+      "clip_id": "Beginner2_Lob_005",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_005.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "566a97f32d5ae5ae13c77b892fe1f475844c56b40f9ce021409ddc69b82e10ca"
+    },
+    {
+      "clip_id": "Beginner2_Lob_006",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_006.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "f865955eb6598b9f95a76b50d9d428e7f3e29a3dcf05a741cef0f729056d3f83"
+    },
+    {
+      "clip_id": "Beginner2_Lob_007",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_007.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "abdd892144ee83e90a2b0802790a05e900b8f9bb63d6437f3e047348a986c720"
+    },
+    {
+      "clip_id": "Beginner2_Lob_008",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_008.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "581e711a44baf2ada7c864db43b0ff9122231610a00a55a1deb8f1bedf95dd11"
+    },
+    {
+      "clip_id": "Beginner2_Lob_009",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_009.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "92ef0de0bf4409794b9d9a753e5c4fc5c7ae6ce509c5ec079d35a5bccd578622"
+    },
+    {
+      "clip_id": "Beginner2_Lob_010",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_010.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "bda0e2076f3467c54eee0882a5ada8a3fc51213f95a99c883a28cf802b59cc3d"
+    },
+    {
+      "clip_id": "Beginner2_Lob_011",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_011.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "2e557a0be3c9481e490ce0aa5f131189ab4e9221dba80c848f605defd18782aa"
+    },
+    {
+      "clip_id": "Beginner2_Lob_012",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_012.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "50335749907c25dfcbcb16762e9dead4b5b740aea1a7d7a418b2321ddd91e80f"
+    },
+    {
+      "clip_id": "Beginner2_Lob_013",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_013.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "90bc3206c672a24c6018a89b968d5561a6f4cd5392e535fa91404df8896d9e3c"
+    },
+    {
+      "clip_id": "Beginner2_Lob_014",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_014.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "d5b4b9c67cea06698b3a16a90e2d67c683c448b34420f273f402cae26e51a78e"
+    },
+    {
+      "clip_id": "Beginner2_Lob_015",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_015.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "eab740a994a128c6af9e9b953ea9ab593b33426bb6690cf8366ed116ff2bf4d9"
+    },
+    {
+      "clip_id": "Beginner2_Lob_016",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_016.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "dc823012030ddc80b6f27ddb8e0b8ed0099d90427fcb30d57920c9a0bcb2a3b0"
+    },
+    {
+      "clip_id": "Beginner2_Lob_017",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_017.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "c9a67542303582df5c7be95522266875e1c09965368cce7ecaf5ecedc4004071"
+    },
+    {
+      "clip_id": "Beginner2_Lob_018",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_018.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "69ad6dbe9d3ab2b1bdbd9be3ccc6864ffccd2b340c2fd6f8c6f988b9594a4fff"
+    },
+    {
+      "clip_id": "Beginner2_Lob_019",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_019.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b0e468d4726945008e5467db7cd2032acafbc91ff4840600ec07ccbe77219885"
+    },
+    {
+      "clip_id": "Beginner2_Lob_020",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_020.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "63f227b897bf02d9ecd17aef307013f790c6c8c3536cdca1d83b26c825f533c9"
+    },
+    {
+      "clip_id": "Beginner2_Lob_021",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_021.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "370ebe2993835ceb1495df77c90e8223f4624d20b401da26ef8007e5d2b37ef1"
+    },
+    {
+      "clip_id": "Beginner2_Lob_022",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_022.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Bad Form",
+      "video_sha256": "b303ae2126963e34a2df0641adb586484da389b09800cb201c4fece1ef72eb40"
+    },
+    {
+      "clip_id": "Beginner2_Lob_023",
+      "video": "data/training/raw/beg2/Lob/Beginner2_Lob_023.mp4",
+      "label": "lob",
+      "subject": "Beginner2",
+      "split": "train",
+      "label_source": "Coach B workbook",
+      "form": "Good Form",
+      "video_sha256": "76fc416706e3e745b5c6f2259a9780af06b9cf3ec1a5cb1fffbb50a3a4d5c1cf"
+    },
+    {
+      "clip_id": "Beginner3_Drive_001",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_001.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8382eb053d95e02d85a34d1d829010972d0455b1c8cc8d3c9ae3f67a92565b41"
+    },
+    {
+      "clip_id": "Beginner3_Drive_002",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_002.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "c8a4576a1b9d51647bd4e36e338b82d837ccf8440d056f6885ad4795cb457f7e"
+    },
+    {
+      "clip_id": "Beginner3_Drive_003",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_003.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "fbf53b7245fd8d5e1bde10619c76e8637a7382b34b829566d6de066e255f2b99"
+    },
+    {
+      "clip_id": "Beginner3_Drive_004",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_004.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "be3fd82ced8a7773ca48c80b0bde399edd629dfe6fca8a3ad6d460175c71abf5"
+    },
+    {
+      "clip_id": "Beginner3_Drive_005",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_005.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "06b9ede410e9954256ec92f18c0eb1227820858362c894e13920d5efaffc0a17"
+    },
+    {
+      "clip_id": "Beginner3_Drive_006",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_006.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "05f81453b7630ce144ec5ddab1e3e6a88d305aa5cfa81011cf44d455deda4062"
+    },
+    {
+      "clip_id": "Beginner3_Drive_007",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_007.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "557c6a857514d1c4050dbb8802fba0401ef1484b335e290e3d3bfac1fbd0e4a1"
+    },
+    {
+      "clip_id": "Beginner3_Drive_008",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_008.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "9251180191d2ce57314cf7e2310c060dfe07e5c8b4dc8d15194f4bbd2dce3748"
+    },
+    {
+      "clip_id": "Beginner3_Drive_009",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_009.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f0ab326a1bdaeff986151ef7c20f8c39bc02c63cae44cce9a3e9896353e668b4"
+    },
+    {
+      "clip_id": "Beginner3_Drive_010",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_010.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d5f76cbf5113b79292b7318ea82b5fa07e8c166387b4c8b721ae89db6ec62aaa"
+    },
+    {
+      "clip_id": "Beginner3_Drive_011",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_011.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "88e1deea35705b6f4473f2d5670acdeb575638481cde10c87a7e2df38832914b"
+    },
+    {
+      "clip_id": "Beginner3_Drive_012",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_012.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d8b8daad157c375528c0caf48370b34cf6ebf50409bc52f04388477f449fb5aa"
+    },
+    {
+      "clip_id": "Beginner3_Drive_013",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_013.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899"
+    },
+    {
+      "clip_id": "Beginner3_Drive_014",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_014.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "2dde5408c2456f66a342f1791073be13170fefd66546848ffc4e92cd0597684b"
+    },
+    {
+      "clip_id": "Beginner3_Drive_015",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_015.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f3a98e36b63a8d092216d7c906c647a84f9e88b70b9fcc15447b904e5556b26b"
+    },
+    {
+      "clip_id": "Beginner3_Drive_016",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_016.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "b6b8f019bb1386ba4917f6b94b49145ab9cd18b7ea81e2865144ca9f8ba9652f"
+    },
+    {
+      "clip_id": "Beginner3_Drive_017",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_017.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "c0c5b1a4211623b1b9093a198b30720859d3fa87552a2661555682d10b4899de"
+    },
+    {
+      "clip_id": "Beginner3_Drive_018",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_018.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "9bf12ba7723b0ea2831e2467e953bc18c63b9d9dc18b0c717bbaa89b073406b7"
+    },
+    {
+      "clip_id": "Beginner3_Drive_019",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_019.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "de6442e7139d2ff8a8d744dbe29f975c7c3729b484abf0b5430be5cfbafc3b3a"
+    },
+    {
+      "clip_id": "Beginner3_Drive_020",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_020.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "7077e1b293653aa795cc209cc1c2f5228492dd6756a425d399d78b228d1a43ad"
+    },
+    {
+      "clip_id": "Beginner3_Drive_021",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_021.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "9d195c9062436a17cd46669b028d0eecaa4c3b169142c95ca3a69689fa6851d8"
+    },
+    {
+      "clip_id": "Beginner3_Drive_022",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_022.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "601d1a8a31d8cd69a6ad1e4f0c43f01f70b030a430c01ec6df541f8b9db7a4fe"
+    },
+    {
+      "clip_id": "Beginner3_Drive_023",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_023.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "596c7d8e0373d07cfbe43700022c532c51d4b28684c9243cd48a9470a72e8b8d"
+    },
+    {
+      "clip_id": "Beginner3_Drive_024",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_024.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e0983f010b697f8c97b6f97361034728e5241781a834c16e0ef692f1a2cb2ec6"
+    },
+    {
+      "clip_id": "Beginner3_Drive_025",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_025.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "9a09dfc2f6c1e65542d28f027150c81a434f6ea8c66c9bbf7b1021b0f2dd4092"
+    },
+    {
+      "clip_id": "Beginner3_Drive_026",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_026.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "fc2c5c00c1f681f9ba566fdb51af4db60f294f1898c8ae967a4428a0383695e9"
+    },
+    {
+      "clip_id": "Beginner3_Drive_027",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_027.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "89ccec4c60312e636c262628608659609107d1a254bd1fcc7a57053b9d16ddf0"
+    },
+    {
+      "clip_id": "Beginner3_Drive_028",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_028.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "0a17ce927c7242d32036e19841319baa2daca591add9e85f523ca044439b340b"
+    },
+    {
+      "clip_id": "Beginner3_Drive_029",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_029.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f916ff6e5763d04488522bf7f3a62ad585da999ef03074491edd08be8669ec0c"
+    },
+    {
+      "clip_id": "Beginner3_Drive_030",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_030.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "5fac247fa7bcee10857be936cc8ad296ba84ffac1989418d3c019fd89a83d59e"
+    },
+    {
+      "clip_id": "Beginner3_Drive_031",
+      "video": "data/testing/Beginner3/Drive/Beginner3_Drive_031.mp4",
+      "label": "drive",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "11a23981e6b70d18076a17757c326fdd7eb3e5e027416db333cf5ea9350cddf1"
+    },
+    {
+      "clip_id": "Beginner3_Lob_001",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_001.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "66afab2663005da9e6f8ceb59b1194d72c30d9737da9e5dddbc194d944984866"
+    },
+    {
+      "clip_id": "Beginner3_Lob_002",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_002.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "fe70e9b6892ab71d927afd242abfa317e343f3c36cb46e4f05939765dbecb0c4"
+    },
+    {
+      "clip_id": "Beginner3_Lob_003",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_003.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e950b8685820e62b7c7ac8bd8bb86cae6535ca2cc940e4ac4a94fc38bb1408f0"
+    },
+    {
+      "clip_id": "Beginner3_Lob_004",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_004.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "5e966d663fad024f5e4e7de119a101439cb0ae7100380c4ad015e9a591be2704"
+    },
+    {
+      "clip_id": "Beginner3_Lob_005",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_005.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "cbaa35591020c16116052f1f4463fbef3b88ae2177603399bedac0b94aff15eb"
+    },
+    {
+      "clip_id": "Beginner3_Lob_006",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_006.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "4e1cdd7501eea4f4131b29ffcd1f159dde8aff0b2479736e3b472adcd5008459"
+    },
+    {
+      "clip_id": "Beginner3_Lob_007",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_007.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "3671c31b6cf822ee50522c2f961530f0784723832055ac687c9f4b1cfa3b3f58"
+    },
+    {
+      "clip_id": "Beginner3_Lob_008",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_008.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "59f7a217d88ef6a866c5ff960b25de4d7831fcee2c076bb5d719436c3bfb34f7"
+    },
+    {
+      "clip_id": "Beginner3_Lob_009",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_009.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "5b2174fe5af1f39ca606f394149d1d82df3d8ccea5d131db25c4ae55d200dc3b"
+    },
+    {
+      "clip_id": "Beginner3_Lob_010",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_010.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "ef523965fd0e5ecc2bb7b6f047508e13bc2602cad2875f0da5fb6f9c42983629"
+    },
+    {
+      "clip_id": "Beginner3_Lob_011",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_011.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d5be47c432eb33c7367080e7c0b66cd5c89f8c7b8c50e16944d7938dd8317278"
+    },
+    {
+      "clip_id": "Beginner3_Lob_012",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_012.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f5b579d8442ab2f385a86453be42c29ee5e5c28b15913fe9feb67bb047035311"
+    },
+    {
+      "clip_id": "Beginner3_Lob_013",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_013.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d0381110bfb6d494e74ceb8426feaf9e7b883ea889ed0f9a2e97bf19ff99f234"
+    },
+    {
+      "clip_id": "Beginner3_Lob_014",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_014.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "46c0932aa6011b3f5065fc196a5238179ac527e9ed1b5b848fb22d8f75710f62"
+    },
+    {
+      "clip_id": "Beginner3_Lob_015",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_015.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "b3931bc5a875eaa6864a7646bf33815fdac8e28682aaae8a08167c9d6b5846ed"
+    },
+    {
+      "clip_id": "Beginner3_Lob_016",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_016.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6aec39b70cf1dfdbef68407a61dc97abe363a440d84214293a239a6e0579c718"
+    },
+    {
+      "clip_id": "Beginner3_Lob_017",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_017.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "0db022ab2b72a4254e96fd13b9c2349c2ced5650eb9928c257b1cb28a546f3df"
+    },
+    {
+      "clip_id": "Beginner3_Lob_018",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_018.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "44a3777f9b22c69ebe82d9df1d41d0f24118a185de3b2fe2b953119094c838be"
+    },
+    {
+      "clip_id": "Beginner3_Lob_019",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_019.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "70fe7a2422fc5030289bd322673ed1c1ad1f3941d9c067454e9048f9fb336f8a"
+    },
+    {
+      "clip_id": "Beginner3_Lob_020",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_020.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f38b14e15685faf1bf083a9dce7fedad7eea2977ec84de857e7f7c1dc6194a14"
+    },
+    {
+      "clip_id": "Beginner3_Lob_021",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_021.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "88f3db3428345347d579e204492eaacce30b93d93986fdf80ccadf18fe6afe5d"
+    },
+    {
+      "clip_id": "Beginner3_Lob_022",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_022.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "b092c0885b685662ca3304eaa8164244514f068ecf4f9c84c36b5d5a41fe5050"
+    },
+    {
+      "clip_id": "Beginner3_Lob_023",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_023.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d4522d7f8a22036bb47d94c50bd8bc5aa17e4274c9c575cd00c713331362adb6"
+    },
+    {
+      "clip_id": "Beginner3_Lob_024",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_024.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e4260444444d7fd8d5a603efbcca299b2a573aff2a68d2066f622e7a4442e68e"
+    },
+    {
+      "clip_id": "Beginner3_Lob_025",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_025.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "b3b89bfca73cdba615e8d7411c0da1a38f70462d56b4a6ef99af6a1cd7ef3e32"
+    },
+    {
+      "clip_id": "Beginner3_Lob_026",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_026.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "c3dcad060bac6164237d6116b019a99ef8134ad170a928d8baa0fb28af110119"
+    },
+    {
+      "clip_id": "Beginner3_Lob_027",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_027.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "97b538cf2a47400243f6e745336d55adb13d533b673b87951d11baa599cfecea"
+    },
+    {
+      "clip_id": "Beginner3_Lob_028",
+      "video": "data/testing/Beginner3/Lob/Beginner3_Lob_028.mp4",
+      "label": "lob",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "af4af9f95e4abc141d27ee22c6d768041888afc0ee9e52efe7cfb7bfb93e33a6"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_001",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_001.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "9a71e103131f07364f024df9d6bd77e2f3fa4287359cfb55173e79785ba51cd5"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_002",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_002.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f6537dafe02be414940f32ec7bbd0ba065a57d39c56f118cf45826d2a9e809ed"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_003",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_003.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d92251334f85bfec130d01c0abcc3e206b41a4f722ec20091f7a7d12917751de"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_004",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_004.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "30de1812aa2f8579e596d69a385c9949c9a970f2a5698a8d69553179d285aeda"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_005",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_005.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "46f6d151f609fb0da661009722a2ffeedd063d9a0f9c59e6eb41025e9aa49047"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_006",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_006.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "2a75a319baccc7ea5932ffc1f1550bd6400fcb28dd622aa68c276875a5f80573"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_007",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_007.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6e564a1e46749ad3fddabcfaeda4f725875c9e9b3944e3216ddd3bb4fffcd55d"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_008",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_008.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6e2898120f945e093238135a95dce2279a86c77fb6166c86b4d8b013d4cbb161"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_009",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_009.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "ab2b19d6d661ea608a243956b982169d3ef2ec1e4a5aa5972f8a9dc349b054c7"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_010",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_010.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "87ddcf81d28e3316536e96ab32e1a35714e13090417f80b20f76daeaa9c8b4de"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_011",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_011.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "52150820990ef956431b3ccec3e63f825fd8388369515bb3a99e5db3d24c407c"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_012",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_012.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "16b3bddd57347bf81227cc669b143bc4894a2d40837b5d8219c7fe747efbbf73"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_013",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_013.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "179052f956d3721d8d99a15880b736271631287c34182323bc0fe3290af66d95"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_014",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_014.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "053e5e2a6d8fc047d03aedd27c7c0f73a41768969282b87cfefaaae6fe9b1fb0"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_015",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_015.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "32529fdb26f9fd59a79a979e51181e77153c814dc8af99e813f7241f487bbc30"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_016",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_016.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "a4807cfda0254b6e70c82deec7b03afbb753e8c9e65b2aaea449ec7eaba27493"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_017",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_017.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "a3e7db37d643281226b44da199643a73c29d1b4597afb51e0dd7e59b2b19ba26"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_018",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_018.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "c70be54e1226b5f3c3bfcc099da86afc55895c8d6a1ca4da13a6aac5fe123774"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_019",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_019.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "bd848196120b60d0f02df204d7c2d13705dd511607103251a35ac8906a0dc254"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_020",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_020.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "48527f416f6c8dfc2065c0e6be26ae6a5c0e523d54b8c012b1aa3df2c09a4814"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_021",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_021.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8b28088cc281eaef8e583cc4aeb0f1d8864c97c9ea623c3b37c84f41b86b6492"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_022",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_022.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "b00057af00d88a50034931b6ca61bccdb9d48e23318cf25676147eefc8f2c37e"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_023",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_023.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6a2fc4400f3d8bca54175cc47be9aedcb2aae8952bc66907c4817957ee612436"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_024",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_024.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "186fd11292c46d1204daf726aed9ec276b5b5d04f50ebe6813d0c25c69875621"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_025",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_025.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "60d003a2d2f468568ef5c9ac9be1794e87072cad5da296e9714c4a81623e507f"
+    },
+    {
+      "clip_id": "Beginner3_Topsin_026",
+      "video": "data/testing/Beginner3/Topspin/Beginner3_Topsin_026.mp4",
+      "label": "topspin",
+      "subject": "Beginner3",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "00683abc0e70c08e7a5473f7fd3f5a64579ad9fa9aca34910382fa5fca1eb406"
+    },
+    {
+      "clip_id": "Nested Sequence 341",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 341.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f80616551e8cae308771dd2b702b01c4ac2013774ade1f12ccbdefd43fcd6248"
+    },
+    {
+      "clip_id": "Nested Sequence 342",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 342.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "faee0f52147fc5e2b4c97c9a1abec13a3c113bfc0a0f7798a3238b433379f7c9"
+    },
+    {
+      "clip_id": "Nested Sequence 343",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 343.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6f9fba2763cc9eb09b8a85015eeae55e7a6cc796600e2d0af614cfc78746b741"
+    },
+    {
+      "clip_id": "Nested Sequence 344",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 344.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "adeec1d8a975b9995d7dd0698d51e6e711ce756cc642ea7546082c089b448977"
+    },
+    {
+      "clip_id": "Nested Sequence 345",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 345.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "036217903d1e31bdd1017058d3615c9948c752b4473c6d70777f674d672cca34"
+    },
+    {
+      "clip_id": "Nested Sequence 346",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 346.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "178a6596b0e1dff3d04aee6687a0bca1087d97606e9c1f196116d135eafd9409"
+    },
+    {
+      "clip_id": "Nested Sequence 347",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 347.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "c24c0b363e6d20b29bafd057f08c036e698593a98dc564ea448f9f1dce334818"
+    },
+    {
+      "clip_id": "Nested Sequence 348",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 348.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d2d80120e4cbe3eace3d99503a0ebd198e0c43cb2acadced1b71e7e994261cfa"
+    },
+    {
+      "clip_id": "Nested Sequence 349",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 349.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "78e36dec109b2e5f07962d2a6a725e36dbd1736b52186b25ed360ca18ab7ac01"
+    },
+    {
+      "clip_id": "Nested Sequence 350",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 350.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "3ced8e5440736cb322b7980f6b0200fadbb6ff78c0cd44948ef7d3775bef97c8"
+    },
+    {
+      "clip_id": "Nested Sequence 351",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 351.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "d26f66f5d04d0357422da595eeec84fec919416b53cfb503bcbdee0d2512337c"
+    },
+    {
+      "clip_id": "Nested Sequence 352",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 352.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8ae43a294feb2b75bccc92447c926d15c038596286fc8bd048af1c121b7cc8bd"
+    },
+    {
+      "clip_id": "Nested Sequence 353",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 353.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "1e45b4567d8a4d246432f01ae0c3c8a4c575dca9ce7b53317749775bc163ece7"
+    },
+    {
+      "clip_id": "Nested Sequence 354",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 354.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "488a79955119d3e47ffb1c3c68507f8f502d265ec6f001afbf7499869a8e9b94"
+    },
+    {
+      "clip_id": "Nested Sequence 355",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 355.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "0fac15cf52c3f340c4a0f30cac3cd1452d5c22113e19943abf11e23441e58d61"
+    },
+    {
+      "clip_id": "Nested Sequence 356",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 356.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "7873c6bab3370f23e82b9208196a2ab41e51d81653142d55faa8e99f32b5d0e3"
+    },
+    {
+      "clip_id": "Nested Sequence 357",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 357.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "2967587f1c6b2c648a5706333989dd7e08df3d254c3af63cc2052cb4025254ad"
+    },
+    {
+      "clip_id": "Nested Sequence 358",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 358.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "bf21016fbe7a844a1ac01f90938d1cd1097eb9f31f1b500dd1a96bee7941a627"
+    },
+    {
+      "clip_id": "Nested Sequence 359",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 359.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "466ef651f30d0c826543b587824afc2dfad285e70d1be8013dfc8c58dda47f1f"
+    },
+    {
+      "clip_id": "Nested Sequence 360",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 360.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "079df41c03583736f2b82182c40fb57e82eeeef804803f43bca1f4435e7aad84"
+    },
+    {
+      "clip_id": "Nested Sequence 361",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 361.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "bb34e1fb339c3ab136a8895d7eb25f5cb0a9e684eb8049e4e86d3d2fc81517ef"
+    },
+    {
+      "clip_id": "Nested Sequence 362",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 362.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "2e41512f544430da804c4e27e1dec9ff107eae60ce0faded13854333323fc825"
+    },
+    {
+      "clip_id": "Nested Sequence 363",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 363.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e88da703c1a26c5f57cb73c387082da7f1dd749e1b58a45cda31a309cd3b4b51"
+    },
+    {
+      "clip_id": "Nested Sequence 364",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 364.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "a778e6e1d3bac630042108b2e8dbefda2eb2235ff70ad4894555208ca91e0d79"
+    },
+    {
+      "clip_id": "Nested Sequence 365",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 365.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "9da66f992b7223d2facd32dced781107520aa5dea7da41213c324192f0b30715"
+    },
+    {
+      "clip_id": "Nested Sequence 366",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 366.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6c5ea88d1aecc294b5f2dafb9a7121bb65ab29c55fb027e24aeacbc878fa20a0"
+    },
+    {
+      "clip_id": "Nested Sequence 367",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 367.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "db596d46a910821d9fac765e7e2220bbf1ea2a602977009486d9c72637f06152"
+    },
+    {
+      "clip_id": "Nested Sequence 368",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 368.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "964075f5e0037f250cdb36b96d2f05b4319f03fa8d6e08e922420a871bd0aada"
+    },
+    {
+      "clip_id": "Nested Sequence 369",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 369.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "bec6fbed3fea0bf8c214772a18790bc0a2239fbf7a39d4eaa2656a53d4bfcc62"
+    },
+    {
+      "clip_id": "Nested Sequence 370",
+      "video": "data/testing/Beginner4/Drive/Nested Sequence 370.mp4",
+      "label": "drive",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "953682810f13100c11a6c37b5eb7b4e043d988f79b3470a9b5b81e9447ef3068"
+    },
+    {
+      "clip_id": "Nested Sequence 311",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 311.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "dd7a61bf17b455d2243fe791ddc9881c680c5c3123d528a1a6c8ca68d7174b63"
+    },
+    {
+      "clip_id": "Nested Sequence 312",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 312.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "93dd954ff793832ad0d9c0c8f3a19087ad4dbc7ed59b3ec71c70bc37f31e4dc2"
+    },
+    {
+      "clip_id": "Nested Sequence 313",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 313.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6e8739431a57a6014b33bd025e19237e90c2a891c8fc0f4f438de3bf840681cb"
+    },
+    {
+      "clip_id": "Nested Sequence 314",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 314.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "ea428c9c8ad173f88307287c871d6634787ca62bf17d67db3e81da28cdf21e3c"
+    },
+    {
+      "clip_id": "Nested Sequence 315",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 315.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f44832bb1926de840bfa602e27b78cb3819f1290849e06950a585bded0ba62b4"
+    },
+    {
+      "clip_id": "Nested Sequence 316",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 316.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "3c06f8bd2e63656831e7a86274c286ce1da7b21c8583a167ce52a3b1d13ff0ad"
+    },
+    {
+      "clip_id": "Nested Sequence 317",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 317.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "1016dbab2ffa106237e2e21ffe6dbdc835196e7fcde146a5ce4c3b6e685a7617"
+    },
+    {
+      "clip_id": "Nested Sequence 318",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 318.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "f41209199751ffa205ce624378fec2d5ae054ae8af8425839562f0cc0639335b"
+    },
+    {
+      "clip_id": "Nested Sequence 319",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 319.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "abe8d874b40a2227c7015941359099511cc1dbeead92983752707e9cfe35bee5"
+    },
+    {
+      "clip_id": "Nested Sequence 320",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 320.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "df98afab9c49d1c18011212cf94c0bdc4d3f7ceff00f8819f7b1e9444f22c824"
+    },
+    {
+      "clip_id": "Nested Sequence 321",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 321.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "92c69c8c0bbe03f7c4a4ae1e1e2aafa7b3ffc867b78b791bc6fbd3bdb7d0d87c"
+    },
+    {
+      "clip_id": "Nested Sequence 322",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 322.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "7f07be8f2138370c93fb3c363695a4396dd300c40c7f1dcf6e98f9f831301ca5"
+    },
+    {
+      "clip_id": "Nested Sequence 323",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 323.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "a7e3632d8cf7fc2fe02490bc5d875dff5f7780dad566ef857c8ac8549c2174f6"
+    },
+    {
+      "clip_id": "Nested Sequence 324",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 324.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "090fc3e26dc290cde880ed1fd8612194711c934c7f7ff3b7596c208c8cb1c2be"
+    },
+    {
+      "clip_id": "Nested Sequence 325",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 325.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "44e3145631375c3f02d9119752e616b8a92c2187e32aef43f57d6854097a6bbe"
+    },
+    {
+      "clip_id": "Nested Sequence 326",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 326.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e57ffa55190b2816c7464113aafc5008c9f2a75475dd60ab5e420a44d377783c"
+    },
+    {
+      "clip_id": "Nested Sequence 327",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 327.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "71fd7dffa47c4ea4b2c8305c2dffead7e86375ad710f49d9d9bd8ec87a6e7e51"
+    },
+    {
+      "clip_id": "Nested Sequence 328",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 328.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "92c6892ba13c4c6b3b5702c500b0711415c232243d84d62b6c0005366d1a2418"
+    },
+    {
+      "clip_id": "Nested Sequence 329",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 329.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "563a4411501801f1defa144d18e2e0b4c8e9759fc9702cdd0afe25d67235c6fd"
+    },
+    {
+      "clip_id": "Nested Sequence 330",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 330.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "01881f2fe93150fdf44388965b1db9985d6fb86280e7ed5fde77379e73445c4b"
+    },
+    {
+      "clip_id": "Nested Sequence 331",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 331.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "fc99d83b5147fd37b34af7ab93eb3e486990d05fdbaa5c2024a9d31198711b4f"
+    },
+    {
+      "clip_id": "Nested Sequence 332",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 332.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "07a66801f8236879e498d2bb66e52564f86c1571754dc7783d1b6f751cb39e21"
+    },
+    {
+      "clip_id": "Nested Sequence 333",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 333.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "2fbd9c55ed23397934cc1685a4a4d3170910467d51efc0a89ba0f3d85e74ec93"
+    },
+    {
+      "clip_id": "Nested Sequence 334",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 334.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "5bdaa3ee32be4a41a4e4def74c4b5b739dad6f9a4b586de42478a69a97903048"
+    },
+    {
+      "clip_id": "Nested Sequence 335",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 335.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "336e0c27bfd46b84d66d020844f5bab4ab494fccb551a7507607344c8384d735"
+    },
+    {
+      "clip_id": "Nested Sequence 336",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 336.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "62105bbc54ebf498de2d039a175fe4ee2c95ffaf05e969fda31622d7af7d9383"
+    },
+    {
+      "clip_id": "Nested Sequence 337",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 337.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "5291e5c596803cf69bebc2312d8e59bdc93684f082e3e957df6e284d3e71dc49"
+    },
+    {
+      "clip_id": "Nested Sequence 338",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 338.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "247042970039a788d2dc6e50c4dd6a238b77da175084b1ce6d3e87d617d15245"
+    },
+    {
+      "clip_id": "Nested Sequence 339",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 339.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e78de2dd38b18749dca773ad9daa7e3332d1a88cabd19479dac010677ec54ca0"
+    },
+    {
+      "clip_id": "Nested Sequence 340",
+      "video": "data/testing/Beginner4/Lob/Nested Sequence 340.mp4",
+      "label": "lob",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "a5d753d622cf92af260d7368846c5fb38ad18f083ec2dd651f32b36e379cc8a0"
+    },
+    {
+      "clip_id": "Nested Sequence 371",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 371.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e2638143ad969c45184cb00d035584a9b74b42b09d0b69338d2b4b553294b22a"
+    },
+    {
+      "clip_id": "Nested Sequence 372",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 372.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "5aeb06a9b0c63a9bb3b7ef556a37b2019b6f8236b2027e59b298c6e1c16c1649"
+    },
+    {
+      "clip_id": "Nested Sequence 373",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 373.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "684fb0b6ac3bdede8603564838b6f96a808544b36e37bf0385175f14f37d0cec"
+    },
+    {
+      "clip_id": "Nested Sequence 374",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 374.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "ae35ff3da85d15fd2ec44bc4ce5af29b8afc9aebc79d40434423ed9e2f9dae96"
+    },
+    {
+      "clip_id": "Nested Sequence 375",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 375.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8d11a4990fb4a48e9f18ca402f66e7a1704a27fb1d235f4c46b4505e21503453"
+    },
+    {
+      "clip_id": "Nested Sequence 376",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 376.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "10b8d30cea7c621899ba6b6c64946669fe9285dcad7fb22f84a8c7ac61bee073"
+    },
+    {
+      "clip_id": "Nested Sequence 377",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 377.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "683cdd6f69f7796758c8659602963282fcaeef61fbef87f557bcb0cad5c61c77"
+    },
+    {
+      "clip_id": "Nested Sequence 378",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 378.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "61593b732ada0bcfdd8cb87f48f2b8f1255aac5bd9b29b11d4075abbb06af46a"
+    },
+    {
+      "clip_id": "Nested Sequence 379",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 379.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "b6ed158428e1d5fb4c1143561cfe02bbd25e4d89df2d1aca29d6f2b6cbf3ff78"
+    },
+    {
+      "clip_id": "Nested Sequence 380",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 380.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "2c5a4a2f2f9e663ebb67c4a1ea2e6d5d2ca55a98735fd32b99eeb440732a2740"
+    },
+    {
+      "clip_id": "Nested Sequence 381",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 381.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "94687ff53dbee0dbe348c98dbe8d528ac2d90452de34577a28dc37e4daf623e4"
+    },
+    {
+      "clip_id": "Nested Sequence 382",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 382.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "80bee1e4260743eb3e832e3cc1bf54bf1a76a1f835cc8a826b3fd85075c6b112"
+    },
+    {
+      "clip_id": "Nested Sequence 383",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 383.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "43954b1cd178879a8b13d4b37bd25047a389e6b00d98dcbbccc51e11951b860e"
+    },
+    {
+      "clip_id": "Nested Sequence 384",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 384.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8c41ac3d6f61357978cdd9301a8a15b45d173ea91538b258e49f5160f871d451"
+    },
+    {
+      "clip_id": "Nested Sequence 385",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 385.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "e264c0cd31eb57ef9874c89e55ba7a8b0f09090222c7168b634b378bd849a9ae"
+    },
+    {
+      "clip_id": "Nested Sequence 386",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 386.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61"
+    },
+    {
+      "clip_id": "Nested Sequence 387",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 387.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "bf6163d25feb6efb143e2f306e84069905bf30b646e58a703cc8c6d8ff192e27"
+    },
+    {
+      "clip_id": "Nested Sequence 388",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 388.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "0866431fc2f28c0ae8606da3615ef754e26e8367d6fbf6e4234ff88ac4144dda"
+    },
+    {
+      "clip_id": "Nested Sequence 389",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 389.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "16dbba4fb4596415ce885b3b58cf0db09562bb02a07805214477c65d658d7941"
+    },
+    {
+      "clip_id": "Nested Sequence 390",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 390.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "6b4f7dff8b1794d0d6afcb3a194b49bc0c819b63a23e048fc15c767469278712"
+    },
+    {
+      "clip_id": "Nested Sequence 391",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 391.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "dc4bc5dd3b7c2b258883681f67a3fe7ec0bfe9dd42c0a08126a215ed16bd5e83"
+    },
+    {
+      "clip_id": "Nested Sequence 392",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 392.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8e2cbec0bcb85161571fe1e751bf1f32e418e4662cfd931271e4b9172e510fc3"
+    },
+    {
+      "clip_id": "Nested Sequence 393",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 393.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "51e5bd4e3b316a623c6e9cd8a505cb11380024d45a8f2f1f52b48f49cfac71f0"
+    },
+    {
+      "clip_id": "Nested Sequence 394",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 394.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "7a86caa1b1113662f550a94cf643938e6267ff6dab22e9f0378778eaf4e811fd"
+    },
+    {
+      "clip_id": "Nested Sequence 395",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 395.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "1ab31e0e3d6294435d8715d71450998d15749e401c126f27ce5960a433c95e52"
+    },
+    {
+      "clip_id": "Nested Sequence 396",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 396.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "1e5027e5475dff6ddb4d3766e20109aca912946287d017824b716a99dc7e0505"
+    },
+    {
+      "clip_id": "Nested Sequence 397",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 397.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "a66b5ebd7c11c9b6b8d92a1e0777c8b24f2e6565e3eb22401d38845c7b472ab5"
+    },
+    {
+      "clip_id": "Nested Sequence 398",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 398.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "8cbc3c3957cef4500b589d1b798cf2629845e9d12374feea5c28d003c3d21098"
+    },
+    {
+      "clip_id": "Nested Sequence 399",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 399.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "189c97cfd420b3a0c87e130d4f16f67d34aedac0afc8cf8b61856f32c53f2e17"
+    },
+    {
+      "clip_id": "Nested Sequence 400",
+      "video": "data/testing/Beginner4/Topspin/Nested Sequence 400.mp4",
+      "label": "topspin",
+      "subject": "Beginner4",
+      "split": "diagnostic_test",
+      "label_source": "existing manifest, not Coach C",
+      "form": null,
+      "video_sha256": "690ae0726e3b4d4ef61972cc25818921f82b7f03e3523ad81d184c315749f2cb"
+    }
+  ]
+}

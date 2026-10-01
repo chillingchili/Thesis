@@ -1,0 +1,68 @@
+{
+  "version": "serve_study_v3",
+  "seed": 20261002,
+  "training_partition": "209 quality-eligible Coach B clips from three players",
+  "primary_protocol": "leave_one_training_player_out",
+  "secondary_protocol": "stratified_five_fold_development_CV",
+  "conditions": [
+    "angles_control",
+    "angles_thesis_aug",
+    "skeleton",
+    "skeleton_motion"
+  ],
+  "epochs": 100,
+  "batch_size": 16,
+  "gru_units": 32,
+  "dropout": 0.15,
+  "l2": 0.0001,
+  "optimizer": "Adam learning_rate=0.001",
+  "early_stopping": false,
+  "training_budget": "one example per original training clip per epoch in every condition",
+  "augmentation_sampling": "uniform original or either of two frozen composite variants; rejected variants fall back to original",
+  "augmentation": {
+    "variants_per_clip": 2,
+    "contrast_range": [
+      0.9,
+      1.1
+    ],
+    "brightness_fraction_range": [
+      -0.08,
+      0.08
+    ],
+    "gaussian_sigma_fraction_range": [
+      0.03,
+      0.05
+    ],
+    "crop_scale_range": [
+      0.94,
+      0.99
+    ],
+    "crop_translation": "uniform within the cropped margin",
+    "aspect_ratio": "preserved with isotropic affine transform",
+    "temporal_sample_spacing_range": [
+      1.02,
+      1.1
+    ],
+    "temporal": "nearest decoded source frames, unique indices, retain endpoints, uniform output playback timestamps",
+    "parameters_constant_per_clip": true,
+    "noise_independent_per_frame": true,
+    "flip": false,
+    "shear": false,
+    "pose": "fresh Lite VIDEO tracker per variant after all pixel transformations",
+    "note": "raw videos are untouched; cached derived landmarks only; no feature-noise augmentation"
+  },
+  "features": {
+    "angles": "existing full-serve 128 x 10 sin/cos representation",
+    "skeleton": "33 aspect-corrected xy joints, centered at hips, median visible torso scale; 33 visibility masks (99 channels)",
+    "skeleton_motion": "skeleton plus 66 adjacent-step displacements; invalid endpoints masked (165 channels)",
+    "interpolation": "128 full-timeline samples; per-joint adjacent-valid interpolation only",
+    "note": "richer inputs also increase GRU parameter count; this is an input-system comparison, not capacity-matched attribution"
+  },
+  "hybrid": "fixed 0.5 GRU + 0.5 raw Euclidean distance-weighted kNN5; fit kNN only on each training fold",
+  "selection": "highest participant-CV mean subject accuracy among four conditions; ties follow condition order",
+  "test_policy": "only after all candidates and selection are frozen; existing 175 clips are diagnostic, not an untouched final test",
+  "coach_audit": "training clips only; blinded subtype review followed by skeleton-quality review; no automatic relabeling",
+  "dataset_sha256": "8fc09994dad54bff1fd1201e53b1b93dfce4bf666fb2f0eb6d70d67730fe4806",
+  "train_npz_sha256": "a23d647c4babfbda0f6341e29984af38a89cae4118c93acf893ca2a9a4c00e13",
+  "pose_contract_fingerprint": "c111f7b8af1eb1f6b41c70520a70cd36530950df47674def066cb26b5d45cd22"
+}

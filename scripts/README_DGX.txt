@@ -1,10 +1,11 @@
-DGX SPARK TRAINING KIT - YOLOv26s (ball + court)
-=================================================
+YOLOv26s (ball + court + paddle)
+================================
 
 WHAT THIS IS
 ------------
 datasets/ball/   11,120 images  ball detection  (YOLO detect labels)
 datasets/court/  3,615 images   court keypoints (YOLO pose labels, 14 kpts)
+datasets/paddle/ ~6,000 images  paddle detection (YOLO detect labels, 1 class)
 yolo26s.pt       pretrained weights (from repo root)
 scripts/train_yolo_dgx.py   training entry point
 
@@ -32,19 +33,22 @@ WORKFLOW
 
 3) Train:
 
-     python train_yolo_dgx.py ball      # ball detector
-     python train_yolo_dgx.py court     # court keypoint model
+   python train_yolo_dgx.py ball      # ball detector
+   python train_yolo_dgx.py court     # court keypoint model
+   python train_yolo_dgx.py paddle    # paddle detector
 
    Progress lives in:
      runs/detect/ball_yolo26s/results.csv
      runs/pose/court_yolo26s/results.csv
-   Watch:  tail -f runs/detect/ball_yolo26s/results.csv
+     runs/detect/paddle_yolo26s/results.csv
+   Watch:  tail -f runs/detect/paddle_yolo26s/results.csv
 
    Rough time on DGX Spark: ball ~30-60 min, court ~20-40 min (100 epochs, 640px, batch 32).
 
 4) When done, WinSCP back:
      runs/detect/ball_yolo26s/weights/best.pt
      runs/pose/court_yolo26s/weights/best.pt
+     runs/detect/paddle_yolo26s/weights/best.pt
    Bring them home -> they get exported to TFLite on your PC for the app.
 
 TROUBLESHOOTING

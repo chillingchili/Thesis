@@ -28,7 +28,7 @@ class ShiftDetector private constructor(private val threshold: Float) {
     }
 
     fun add(hipCenterX: Float, bodyHeight: Float) {
-        if (bodyHeight < 1e-6f) return
+        if (!hipCenterX.isFinite() || !bodyHeight.isFinite() || bodyHeight < 1e-6f) return
         hipX.add(hipCenterX)
         bodyH.add(bodyHeight)
     }
@@ -72,6 +72,7 @@ class ShiftDetector private constructor(private val threshold: Float) {
                 .bufferedReader().use { it.readText() }
             val cfg = JSONObject(json)
             val thr = cfg.getDouble("threshold").toFloat()
+            require(thr.isFinite() && thr > 0f) { "Invalid shift threshold" }
             Log.i(TAG, "loaded threshold=$thr rule=${cfg.getString("threshold_rule")}")
             ShiftDetector(thr)
         } catch (e: Throwable) {

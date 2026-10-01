@@ -1,0 +1,35 @@
+{
+  "version": "coach-b-v1",
+  "validation_status": "pending_coach_c",
+  "source": "rule-based/Deviation_Category_Mapping.xlsx",
+  "rules": [
+    {
+      "id": "C4_WEIGHT_TRANSFER",
+      "condition": "shift_insufficient",
+      "serve_types": ["drive", "lob", "topspin"],
+      "text": "Transfer your weight forward through the serve instead of relying only on your arm.",
+      "source_clips": ["Beginner1_Lob_016.mp4", "Beginner2_Drive_019.mp4", "Beginner2_Topspin_022.mp4"]
+    },
+    {
+      "id": "C6_PADDLE_REVIEW",
+      "condition": "paddle_outside_baseline",
+      "serve_types": ["drive", "lob", "topspin"],
+      "text": "Your measured paddle angle is outside the reference range. Review your paddle orientation at contact.",
+      "source_clips": ["Beginner2_Drive_010.mp4", "Beginner2_Topspin_002.mp4", "Beginner1_Lob_019.mp4"]
+    },
+    {
+      "id": "C6_TOO_OPEN",
+      "condition": "paddle_too_open",
+      "serve_types": ["drive", "lob"],
+      "text": "Reduce the upward-facing paddle angle at contact and carry the swing forward.",
+      "source_clips": ["Beginner2_Drive_010.mp4", "Beginner1_Lob_019.mp4"]
+    },
+    {
+      "id": "C6_TOO_CLOSED",
+      "condition": "paddle_too_closed",
+      "serve_types": ["topspin"],
+      "text": "Keep the paddle face from closing too much at contact.",
+      "source_clips": ["Beginner2_Topspin_002.mp4", "Beginner2_Topspin_004.mp4"]
+    }
+  ]
+}

@@ -163,6 +163,9 @@ class SequenceAugment(tf.keras.layers.Layer):
             drop = tf.random.uniform((B, T)) < self.frame_drop
             x = x * tf.cast(~(drop & is_valid), tf.float32)[..., None]
 
+        # Keep padding and dropped frames masked through angle encoding/noise.
+        # atan2(0, 0) -> 0 -> cos(0) = 1 would otherwise invent valid poses.
+        frame_valid = tf.reduce_any(tf.not_equal(x, 0.0), axis=-1, keepdims=True)
         # --- angle noise (stay on unit circle) + feature noise ---
         shape = tf.shape(x)
         n_ang = shape[2] // 2
@@ -182,7 +185,7 @@ class SequenceAugment(tf.keras.layers.Layer):
         x = tf.stack([tf.sin(ang), tf.cos(ang)], axis=-1)
         x = tf.reshape(x, shape)
         x = x + tf.random.normal(tf.shape(x), stddev=self.feature_noise)
-        return x
+        return tf.where(frame_valid, x, tf.zeros_like(x))
 
     def get_config(self):
         cfg = super().get_config()

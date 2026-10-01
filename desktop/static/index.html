@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Serve Lab — Video analysis</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><a class="brand" href="/" aria-label="Serve Lab home"><span class="brand-mark">↗</span> SERVE<span class="brand-light">LAB</span></a><div class="header-right"><span id="health" class="pill">Checking models…</span><span class="edition">THESIS RESEARCH / DESKTOP</span></div></header>
+<main>
+  <section class="intro"><div><p class="eyebrow">PICKLEBALL SERVE ANALYSIS</p><h1>Every serve tells a story.</h1><p class="lead">Drop a clip. Inspect the mechanics. Find your next adjustment.</p></div><div class="local-note"><span class="status-dot"></span> Runs on your computer<br><small>No uploads to the cloud</small></div></section>
+  <div class="workspace">
+    <section class="video-workspace" aria-label="Video workspace">
+      <div class="section-heading"><h2><span class="step">01</span> Your serve</h2><button id="replace" class="text-button" hidden>Replace video ↗</button></div>
+      <input id="video-input" type="file" accept=".mp4,.mov,.avi,.mkv,.webm,.m4v" hidden>
+      <button id="dropzone" class="dropzone" aria-label="Choose or drop a serve video">
+        <svg class="court" viewBox="0 0 300 190" aria-hidden="true"><rect x="30" y="20" width="240" height="150" rx="2"/><path d="M150 20v150M30 65h240M30 125h240M30 95h240"/><path class="trajectory" d="M74 151Q84 4 227 56"/><circle class="ball" cx="227" cy="56" r="7"/></svg>
+        <strong>Drop your serve video here</strong><span>or click to browse your files</span><small>MP4, MOV, AVI, MKV, WebM · Up to 250 MB</small>
+      </button>
+      <div id="player-wrap" hidden><video id="player" controls playsinline preload="metadata"></video><div class="file-meta"><span id="filename"></span><span id="fileduration"></span></div><p id="playback-warning" class="hint" hidden>This format cannot play in your browser yet. Analysis will create a compatible MP4 preview.</p></div>
+      <div class="clip-controls"><div><label for="start">Clip start <span>seconds</span></label><input id="start" type="number" min="0" step="0.1" value="0"></div><div><label for="end">Clip end <span>seconds</span></label><input id="end" type="number" min="0" step="0.1" placeholder="End of video"></div><p>Use one complete serve, from setup to follow-through. Right-handed player, side view.</p></div>
+      <details class="settings"><summary>Analysis settings <span>Model &amp; ball landing</span></summary><div class="settings-body"><label for="model">Serve classifier</label><select id="model"><option value="hybrid">GRU + kNN5 hybrid · Android model</option><option value="ensemble">GRU ensemble · 5 folds</option><option value="single">Single GRU · faster</option><option value="v2_ensemble" disabled>Retrained GRU · research candidate</option><option value="v2_single" disabled>Retrained single GRU · research candidate</option></select><label class="check"><input id="moment" type="checkbox" checked> Match pose features to training statistics</label><label for="landing-mode">Ball landing</label><select id="landing-mode"><option value="off">Off · core outputs only</option><option value="secondary">Use a second-camera clip</option><option value="primary">Try this clip · experimental same-view analysis</option></select><p class="hint">Landing needs visible court lines and the first bounce. A second camera follows the thesis setup.</p><div id="secondary-wrap" hidden><label id="secondary-drop" class="secondary-drop" for="secondary-input">Drop or choose the same serve’s second-camera clip</label><input id="secondary-input" type="file" accept=".mp4,.mov,.avi,.mkv,.webm,.m4v"><p class="hint">Trim this clip to the same serve before uploading. It is analyzed in full.</p></div></div></details>
+      <div class="actions"><button id="analyze" class="primary" disabled>Analyze serve <span>↗</span></button><button id="cancel" class="secondary" hidden>Cancel</button></div>
+      <div id="progress-wrap" hidden aria-live="polite"><div class="progress-heading"><span id="progress-text">Preparing analysis</span><span id="progress-percent">0%</span></div><progress id="progress" max="1" value="0"></progress></div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <div id="inspection" hidden><div class="section-heading"><h2>Contact inspection</h2><span id="contact-time" class="muted"></span></div><img id="contact-image" alt="Estimated contact frame with body landmarks and paddle outline"><p class="hint">Contact is estimated from wrist speed. Check this frame before interpreting the paddle result.</p></div>
+      <div id="landing-playback" hidden><div class="section-heading"><h2>Ball &amp; court tracking</h2></div><video id="landing-player" controls playsinline></video></div>
+    </section>
+    <aside class="results" aria-label="Analysis results">
+      <div class="section-heading"><h2><span class="step">02</span> The breakdown</h2><span id="result-state" class="pill">Awaiting clip</span></div>
+      <div class="metrics">
+        <article class="metric serve"><p class="eyebrow">SERVE TYPE</p><div class="value-line"><h3 id="serve-value">—</h3><span id="serve-confidence" class="confidence"></span></div><p id="serve-detail" class="metric-detail">Drive, lob or topspin</p><div id="probabilities" class="probabilities" hidden></div></article>
+        <article class="metric"><div class="metric-top"><p class="eyebrow">WEIGHT SHIFT</p><span class="metric-index">01 / BODY</span></div><h3 id="shift-value">—</h3><p id="shift-detail" class="metric-detail">Forward transfer through the serve</p><div id="shift-meter" class="meter" hidden><span></span></div></article>
+        <article class="metric"><div class="metric-top"><p class="eyebrow">PADDLE ORIENTATION</p><span class="metric-index">02 / EQUIPMENT</span></div><div class="value-line"><h3 id="paddle-value">—</h3><span id="paddle-angle" class="confidence"></span></div><p id="paddle-detail" class="metric-detail">Measured around estimated contact</p></article>
+        <article class="metric"><div class="metric-top"><p class="eyebrow">BALL LANDING</p><span class="metric-index">03 / COURT</span></div><h3 id="landing-value">Not enabled</h3><p id="landing-detail" class="metric-detail">Add a court-view clip in analysis settings</p></article>
+      </div>
+      <section class="coaching" aria-label="Coaching feedback"><div class="coaching-heading"><p class="eyebrow">YOUR NEXT ADJUSTMENT</p><span>↗</span></div><h3 id="feedback-title">A clearer picture of your serve.</h3><div id="feedback-content"><p>Your coaching cues will appear here once the clip has been analyzed.</p></div><p class="research-note">Research preview · Coach C validation pending</p></section>
+      <div id="warnings" class="warnings" hidden></div>
+      <div id="report-actions" class="report-actions" hidden><a id="download" class="text-button" download="report.json">Download analysis JSON ↓</a><span id="runtime" class="muted"></span></div>
+      <details id="technical" class="technical" hidden><summary>Measurement details &amp; rule evidence</summary><pre id="technical-json"></pre></details>
+    </aside>
+  </div>
+  <footer><span>PASCUA–LEONES / PICKLEBALL SERVE FRAMEWORK</span><span>Measured signals. Expert-grounded feedback.</span></footer>
+</main>
+</body></html>

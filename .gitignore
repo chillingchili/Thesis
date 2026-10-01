@@ -7,6 +7,9 @@ venv/
 
 # Agent / tooling (not thesis content)
 .kilo/
+.gradio/
+.playwright-mcp/
+output/
 
 # Android build outputs
 android/.gradle/
@@ -16,6 +19,7 @@ android/local.properties
 android/.idea/
 android/captures/
 *.apk
+/android/logcat.txt
 
 # Derived experiment outputs
 another try/**/video_outputs/
@@ -30,4 +34,7 @@ Thumbs.db
 # Local experiment noise
 *.log
 *.err
+~$*.docx
 .ipynb_checkpoints/
+
+/datasets/
