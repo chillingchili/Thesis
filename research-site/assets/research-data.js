@@ -1,5 +1,5 @@
 window.RESEARCH_DATA = {
-  "snapshot": "2026-10-01",
+  "snapshot": "2026-10-10",
   "rows": [
     {
       "id": "legacy_gru",
@@ -47,7 +47,7 @@ window.RESEARCH_DATA = {
     {
       "id": "legacy_knn",
       "group": "mobile",
-      "name": "kNN5 \u00b7 timing features",
+      "name": "kNN5 · timing features",
       "mode": "all",
       "detail": "Bundled Android assets. First 128 valid frames, fresh Lite poses. Recorded-window evaluation; no physical phone test.",
       "diagnostic": {
@@ -133,7 +133,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v2_ensemble",
       "group": "v2",
-      "name": "Retrained GRU \u00b7 five-fold ensemble",
+      "name": "Retrained GRU · five-fold ensemble",
       "mode": "gru",
       "diagnostic": {
         "accuracy": 0.4685714285714286,
@@ -157,7 +157,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v2_single",
       "group": "v2",
-      "name": "Retrained GRU \u00b7 single fit",
+      "name": "Retrained GRU · single fit",
       "mode": "gru",
       "diagnostic": {
         "accuracy": 0.33714285714285713,
@@ -169,7 +169,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v2_pilot",
       "group": "v2",
-      "name": "Retraining pilot \u00b7 inner early stopping",
+      "name": "Retraining pilot · inner early stopping",
       "mode": "gru",
       "stratified": {
         "accuracy": 0.7368421052631579,
@@ -188,7 +188,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v3_angles_control_gru",
       "group": "v3",
-      "name": "Five angles \u00b7 control",
+      "name": "Five angles · control",
       "mode": "gru",
       "stratified": {
         "accuracy": 0.8755980861244019,
@@ -303,7 +303,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v3_angles_control_hybrid",
       "group": "v3",
-      "name": "Five angles \u00b7 control",
+      "name": "Five angles · control",
       "mode": "hybrid",
       "stratified": {
         "accuracy": 0.8755980861244019,
@@ -1390,7 +1390,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v4_lean_control_gru",
       "group": "v4",
-      "name": "Lean arm / torso \u00b7 control",
+      "name": "Lean arm / torso · control",
       "mode": "gru",
       "player": {
         "accuracy": 0.3588516746411483,
@@ -1484,7 +1484,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v4_lean_control_hybrid",
       "group": "v4",
-      "name": "Lean arm / torso \u00b7 control",
+      "name": "Lean arm / torso · control",
       "mode": "hybrid",
       "player": {
         "accuracy": 0.5358851674641149,
@@ -1578,7 +1578,7 @@ window.RESEARCH_DATA = {
     {
       "id": "v4_lean_control_tuned",
       "group": "v4",
-      "name": "Lean arm / torso \u00b7 control",
+      "name": "Lean arm / torso · control",
       "mode": "tuned",
       "player": {
         "accuracy": 0.569377990430622,
@@ -2550,7 +2550,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_2",
       "group": "archive",
-      "name": "SVM \u00b7 RBF, scaled",
+      "name": "SVM · RBF, scaled",
       "mode": "all",
       "stratified": {
         "accuracy": 0.899
@@ -2566,7 +2566,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_3",
       "group": "archive",
-      "name": "kNN7 \u00b7 scaled, Manhattan",
+      "name": "kNN7 · scaled, Manhattan",
       "mode": "all",
       "stratified": {
         "accuracy": 0.879
@@ -2579,7 +2579,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_4",
       "group": "archive",
-      "name": "Original GRU \u00b7 cached Heavy",
+      "name": "Original GRU · cached Heavy",
       "mode": "all",
       "stratified": {
         "accuracy": 0.867
@@ -2595,7 +2595,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_5",
       "group": "archive",
-      "name": "kNN7 \u00b7 scaled, Euclidean",
+      "name": "kNN7 · scaled, Euclidean",
       "mode": "all",
       "stratified": {
         "accuracy": 0.8540000000000001
@@ -2605,7 +2605,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_6",
       "group": "archive",
-      "name": "kNN5 \u00b7 scaled",
+      "name": "kNN5 · scaled",
       "mode": "all",
       "stratified": {
         "accuracy": 0.84
@@ -2631,7 +2631,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_8",
       "group": "archive",
-      "name": "kNN5 family \u00b7 raw timing features",
+      "name": "kNN5 family · raw timing features",
       "mode": "all",
       "stratified": {
         "accuracy": 0.7829999999999999
@@ -2644,7 +2644,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_9",
       "group": "archive",
-      "name": "GRU \u00b7 strong style augmentation",
+      "name": "GRU · strong style augmentation",
       "mode": "all",
       "player": {
         "accuracy": 0.5529999999999999
@@ -2657,7 +2657,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_10",
       "group": "archive",
-      "name": "GRU \u00b7 metric / center loss",
+      "name": "GRU · metric / center loss",
       "mode": "all",
       "diagnostic": {
         "accuracy": 0.52
@@ -2697,7 +2697,7 @@ window.RESEARCH_DATA = {
     {
       "id": "archive_14",
       "group": "archive",
-      "name": "CORAL \u00b7 kNN5 / SVM / RF",
+      "name": "CORAL · kNN5 / SVM / RF",
       "mode": "all",
       "diagnostic": {
         "accuracy": 0.557
@@ -2727,7 +2727,7 @@ window.RESEARCH_DATA = {
       "source": "assets/sources/ball-detector.csv"
     },
     {
-      "name": "Paddle detector \u00b7 base",
+      "name": "Paddle detector · base",
       "task": "Box detection",
       "epochs": 100,
       "precision": 0.85256,
@@ -2737,7 +2737,7 @@ window.RESEARCH_DATA = {
       "source": "assets/sources/paddle-detector-base.csv"
     },
     {
-      "name": "Paddle detector \u00b7 fine-tuned",
+      "name": "Paddle detector · fine-tuned",
       "task": "Box detection",
       "epochs": 60,
       "precision": 0.98509,
@@ -2747,7 +2747,7 @@ window.RESEARCH_DATA = {
       "source": "assets/sources/paddle-detector-fine-tuned.csv"
     },
     {
-      "name": "Court landmarks \u00b7 base",
+      "name": "Court landmarks · base",
       "task": "Court keypoints",
       "epochs": 100,
       "precision": 0.99936,
@@ -2757,7 +2757,7 @@ window.RESEARCH_DATA = {
       "source": "assets/sources/court-landmarks-base.csv"
     },
     {
-      "name": "Court landmarks \u00b7 fine-tuned",
+      "name": "Court landmarks · fine-tuned",
       "task": "Court keypoints",
       "epochs": 60,
       "precision": 0.99922,
@@ -2770,16 +2770,16 @@ window.RESEARCH_DATA = {
   "samples": [
     {
       "id": "drive-01",
-      "name": "Beginner 2 \u00b7 Drive 01",
+      "name": "Beginner 2 · Drive 01",
       "truth": "Drive",
-      "label_source": "Coach B annotation \u00b7 training clip",
-      "tab_label": "Drive \u00b7 correct",
+      "label_source": "Coach B annotation · training clip",
+      "tab_label": "Drive · correct",
       "role": "correct",
       "video": "assets/samples/drive-01.mp4",
       "poster": "assets/samples/drive-01.webp",
       "outputs": [
         {
-          "name": "Retrained v2 GRU \u00b7 ensemble",
+          "name": "Retrained v2 GRU · ensemble",
           "report": {
             "video": {
               "fps": 59.94005994005994,
@@ -2887,16 +2887,16 @@ window.RESEARCH_DATA = {
     },
     {
       "id": "lob-23",
-      "name": "Beginner 1 \u00b7 Lob 23",
+      "name": "Beginner 1 · Lob 23",
       "truth": "Lob",
-      "label_source": "Coach B annotation \u00b7 training clip",
-      "tab_label": "Lob \u00b7 correct",
+      "label_source": "Coach B annotation · training clip",
+      "tab_label": "Lob · correct",
       "role": "correct",
       "video": "assets/samples/lob-23.mp4",
       "poster": "assets/samples/lob-23.webp",
       "outputs": [
         {
-          "name": "Original GRU \u00b7 ensemble",
+          "name": "Original GRU · ensemble",
           "report": {
             "video": {
               "fps": 59.94005994005994,
@@ -2993,16 +2993,16 @@ window.RESEARCH_DATA = {
     },
     {
       "id": "topspin-22",
-      "name": "Beginner 1 \u00b7 Topspin 22",
+      "name": "Beginner 1 · Topspin 22",
       "truth": "Topspin",
-      "label_source": "Coach B annotation \u00b7 training clip",
-      "tab_label": "Topspin \u00b7 correct",
+      "label_source": "Coach B annotation · training clip",
+      "tab_label": "Topspin · correct",
       "role": "correct",
       "video": "assets/samples/topspin-22.mp4",
       "poster": "assets/samples/topspin-22.webp",
       "outputs": [
         {
-          "name": "Original GRU \u00b7 ensemble",
+          "name": "Original GRU · ensemble",
           "report": {
             "video": {
               "fps": 59.94005994005994,
@@ -3098,16 +3098,16 @@ window.RESEARCH_DATA = {
     },
     {
       "id": "drive-07",
-      "name": "Beginner 2 \u00b7 Drive 07",
+      "name": "Beginner 2 · Drive 07",
       "truth": "Drive",
-      "label_source": "Coach B annotation \u00b7 training clip",
+      "label_source": "Coach B annotation · training clip",
       "tab_label": "Error example",
       "role": "limitation",
       "video": "assets/samples/drive-07.mp4",
       "poster": "assets/samples/drive-07.webp",
       "outputs": [
         {
-          "name": "Original GRU \u00b7 ensemble",
+          "name": "Original GRU · ensemble",
           "report": {
             "video": {
               "fps": 59.94005994005994,
@@ -3212,7 +3212,7 @@ window.RESEARCH_DATA = {
       "accepted_accuracy": 0.35
     },
     {
-      "name": "Lean arm / torso \u00b7 control",
+      "name": "Lean arm / torso · control",
       "before": 2.2331479795723808,
       "after": 1.1001866230984563,
       "ece_before": 0.33337193210508687,
@@ -4297,9 +4297,20 @@ window.RESEARCH_DATA = {
   },
   "coach_status": {
     "selected_beginner_clips": 24,
-    "pending_coach_clips": 6,
+    "pending_coach_clips": 0,
     "prior_diagnostic_overlap": 24,
-    "coach_c_annotations_pending": true
+    "coach_c_annotations_pending": false,
+    "session1_form_complete": true,
+    "session1_good_form": 3,
+    "session1_bad_form": 27,
+    "independent_serve_labels_collected": false,
+    "session2_ratings_pending": true,
+    "feedback_status_counts": {
+      "CORRECTIVE": 16,
+      "POSITIVE": 1,
+      "LOW_CONFIDENCE": 12,
+      "PARTIAL": 1
+    }
   },
   "sources": {
     "models/serve_v2_fixed/cv_results.json": {
@@ -4386,7 +4397,7 @@ window.RESEARCH_DATA = {
       "download": "assets/sources/drive-07-saved-report.json"
     },
     "analysis/THESIS_CHAPTERS_5_6_DRAFT.md": {
-      "sha256": "66f6e0d74883bd472c61c5eac1b4475fcfe6e42886400119902b06d8f9b57fca",
+      "sha256": "e0e79e6bac242ea699a26b9a6ccdb5e1594076d32213e5c93dd3bcf987f74cd3",
       "download": "assets/sources/chapters-5-6-draft.md"
     },
     "analysis/THESIS_CHAPTERS_5_6_DRAFT.docx": {
@@ -4394,11 +4405,11 @@ window.RESEARCH_DATA = {
       "download": "assets/sources/chapters-5-6-draft.docx"
     },
     "docs/RESULTS_SUMMARY.md": {
-      "sha256": "f12e772dfe2cc68b5c8604047b3b0555825c5f43b311ca11b133271616cce77e",
+      "sha256": "be4c0648d713e68c390c8ccfe0777cd202b581e459e0ae67ebf0b591a1f6a359",
       "download": "assets/sources/original-experiments.md"
     },
     "analysis/POSE_CLASSIFIER_AUDIT.md": {
-      "sha256": "a53b173168faf0c0e0326563bc0c633fd5db605f44ba3d5358ac24e9286c76c1",
+      "sha256": "62613b8d63996ab4316b7940f72cb038cc7f8f1323b156cc7850ddd1248509d5",
       "download": "assets/sources/pose-audit.md"
     },
     "analysis/HYBRID_CLASSIFIER_AUDIT.md": {
@@ -4430,7 +4441,7 @@ window.RESEARCH_DATA = {
       "download": "assets/sources/thesis.md"
     },
     "outputs/coach_c_evaluation_v2/status.json": {
-      "sha256": "e4d62af67f1323a1ad472f64d7a417913dca1fb5f4cc93f6009b768545d9ce31"
+      "sha256": "fea28ab4a5a96c5fd66c16ecbb04a992f40bc0610d234d4aaf42ba8b63d284cf"
     }
   }
 };

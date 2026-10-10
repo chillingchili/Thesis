@@ -1,0 +1,108 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 148,
+    "duration": 2.469133333333333,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0,
+    "end": 2.469133333333333
+  },
+  "options": {
+    "start": 0,
+    "end": null,
+    "model": "hybrid",
+    "landing": "off",
+    "moment_matching": true
+  },
+  "warnings": [
+    "The legacy GRU uses only the first 128 frames. Its window differs from the retrained complete-serve model."
+  ],
+  "serve": {
+    "status": "ok",
+    "label": "topspin",
+    "confidence": 0.5290306806564331,
+    "probabilities": {
+      "drive": 0.44723525643348694,
+      "lob": 0.023734040558338165,
+      "topspin": 0.5290306806564331
+    },
+    "model": "hybrid",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 128,
+    "window_frames": 128,
+    "truncated_frames": 20,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {
+      "gru_probabilities": {
+        "drive": 0.09020255506038666,
+        "lob": 0.04746808111667633,
+        "topspin": 0.862329363822937
+      },
+      "knn_probabilities": {
+        "drive": 0.804267942905426,
+        "lob": 0.0,
+        "topspin": 0.19573205709457397
+      },
+      "gru_weight": 0.5,
+      "knn_weight": 0.5,
+      "knn_bank_sha256": "d36f397acc205608d96f0568a015a681f5580514b6d2d219c8154b1cb4d9d413",
+      "knn_training_samples": 438,
+      "timing_features_version": "first_velocity_zero"
+    }
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.04375039368758987,
+    "threshold": 0.1542655138505721,
+    "sufficient": false
+  },
+  "paddle": {
+    "status": "ok",
+    "angle": 60.57949733734131,
+    "low": 13.410494542121889,
+    "high": 165.73870525360107,
+    "state": "OPTIMAL",
+    "measurements": 8,
+    "direction_validated": false
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 84,
+    "seconds": 1.4014,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "LOW_CONFIDENCE",
+    "messages": [
+      "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    ],
+    "notifications": [],
+    "rule_ids": [],
+    "version": "coach-c-actionable-wording-v2",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": 9.61,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "0c2c562f06344bbe133d9c33f606640139f594e5d1d9b5654eb30b46c37c5fb8",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [
+    "contact.jpg",
+    "keypoints.npy",
+    "preview.mp4"
+  ],
+  "review_id": "C012",
+  "input_sha256": "684fb0b6ac3bdede8603564838b6f96a808544b36e37bf0385175f14f37d0cec",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3"
+}

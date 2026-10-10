@@ -1,0 +1,16 @@
+{
+  "version": "coach-c-actionable-wording-v2",
+  "rules": {
+    "C4_WEIGHT_TRANSFER": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+    "C6_PADDLE_REVIEW": "Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact."
+  },
+  "statuses": {
+    "POSITIVE": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.",
+    "LOW_CONFIDENCE": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+    "PARTIAL": "No supported corrective cue for the available measurements. Overall serve form has not been assessed.",
+    "INSUFFICIENT_DATA": "Serve classification unavailable. Record another serve for coaching feedback."
+  },
+  "notifications": {
+    "Paddle orientation unavailable.": "Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing."
+  }
+}

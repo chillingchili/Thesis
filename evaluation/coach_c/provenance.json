@@ -1,0 +1,648 @@
+{
+  "exported_utc": "2026-10-10T12:45:27.521009+00:00",
+  "files": [
+    {
+      "path": "source/status.json",
+      "source": "outputs/coach_c_evaluation_v2/status.json",
+      "sha256": "fea28ab4a5a96c5fd66c16ecbb04a992f40bc0610d234d4aaf42ba8b63d284cf",
+      "bytes": 2809
+    },
+    {
+      "path": "source/selection.json",
+      "source": "outputs/coach_c_evaluation_v2/selection.json",
+      "sha256": "f5f07f9d93ccdc12b40ca81b4566e5b7f4b2ef520307f23f1b6b03e24cc2e438",
+      "bytes": 19689
+    },
+    {
+      "path": "source/researcher_key.csv",
+      "source": "outputs/coach_c_evaluation_v2/researcher_key.csv",
+      "sha256": "a6aa21db2dd060ad6e5e17b190dad087ed5e5c2083edd58ead9ff00aa3df4dd1",
+      "bytes": 5812
+    },
+    {
+      "path": "source/technical_checks.csv",
+      "source": "outputs/coach_c_evaluation_v2/technical_checks.csv",
+      "sha256": "bc9df5f4de576a311503d96dc672409b5e41f1ebf4f8cdffbb73158b54bfa8f4",
+      "bytes": 2438
+    },
+    {
+      "path": "session1/coach_c_responses.xlsx",
+      "source": "outputs/coach_c_evaluation_v2/Pickleball Annotation - Coach C - Session 1 (30 Clips) (Responses).xlsx",
+      "sha256": "59234ac47515b529c9a89cb9251d5e500f36b32f2bd72d7c9c5c303f817197cd",
+      "bytes": 11370
+    },
+    {
+      "path": "session1/annotations.json",
+      "source": "outputs/coach_c_evaluation_v2/session1_received_20261010T105403Z/annotations.json",
+      "sha256": "0983ab22aefc93008114bc0462d40bad4fec16d04b9180108806ca29b9d2d9dd",
+      "bytes": 11153
+    },
+    {
+      "path": "session1/summary.json",
+      "source": "outputs/coach_c_evaluation_v2/session1_received_20261010T105403Z/summary.json",
+      "sha256": "b9bcaf0bd75a1f574a3e0d594cbb70b3886043e28e26f297ea11704948f9b7a3",
+      "bytes": 15013
+    },
+    {
+      "path": "session1/REPORT.md",
+      "source": "outputs/coach_c_evaluation_v2/session1_received_20261010T105403Z/REPORT.md",
+      "sha256": "0aa6e33052ea5fe86bd3a587572bed7feafcea019bf236ecfe580568c849ea08",
+      "bytes": 2048
+    },
+    {
+      "path": "baseline/freeze.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/freeze.json",
+      "sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3",
+      "bytes": 16339
+    },
+    {
+      "path": "baseline/summary.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/summary.json",
+      "sha256": "fc467ff136b939450c179d7e7770dce17d13178a6561b96d1a3a9c91672f6807",
+      "bytes": 686
+    },
+    {
+      "path": "baseline/researcher_outputs.csv",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/researcher_outputs.csv",
+      "sha256": "a904e55b444f5b6e1298221777d89d5a9f4bdd2562a72085ae5b8a1197ba9259",
+      "bytes": 4875
+    },
+    {
+      "path": "session2/freeze.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/freeze.json",
+      "sha256": "8fb95daf42b4962fe8cb884e0dda6ed6580aa10f36fb6c4db008d5b04742dc2d",
+      "bytes": 43641
+    },
+    {
+      "path": "session2/wording.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/wording.json",
+      "sha256": "b98f068a45156c6e9fce710e07abcc1916b4081343b5d3867942e0df4ceb9454",
+      "bytes": 1207
+    },
+    {
+      "path": "session2/wording_comparison.csv",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/wording_comparison.csv",
+      "sha256": "93c0ff8db1c8bde0a88f7acd101ffbdb4b365371be4232c71862135485b98601",
+      "bytes": 9023
+    },
+    {
+      "path": "session2/RESEARCHER_README.md",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/RESEARCHER_README.md",
+      "sha256": "7fbfa54e6eb2a5b48761aeab0c4bc1617b9a0cd7f8e385303cff970fe9d10e41",
+      "bytes": 1058
+    },
+    {
+      "path": "session2/feedback_strings.csv",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/session2_packet_HOLD/feedback_strings.csv",
+      "sha256": "5a3cbc82482eee1876a1f50c76451f4886b27d372f512126e3e2b8937ffb5d4f",
+      "bytes": 5649
+    },
+    {
+      "path": "session2/EVALUATION_SCOPE_AMENDMENT.md",
+      "source": "outputs/coach_c_evaluation_v2/session2_release_20261010T105830Z/EVALUATION_SCOPE_AMENDMENT.md",
+      "sha256": "7ed9e4c876e9ff6157a1965a86c04081b3a005e971ef5931b29d90c46d85375c",
+      "bytes": 2576
+    },
+    {
+      "path": "videos/C001.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C001.mp4",
+      "sha256": "be54cb6af30831ed82d9a2cff2d64a55ecdf94f6e69d78da2eb0e5852fa268bb",
+      "bytes": 2024109
+    },
+    {
+      "path": "baseline/reports/C001.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C001/report.json",
+      "sha256": "d3ef09a39fc2e7a5d6b86a4ffe2a52a2506f45943aafa906419b889bab34e8ce",
+      "bytes": 3215
+    },
+    {
+      "path": "session2/reports/C001.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C001.json",
+      "sha256": "8db44c7b72ae22d7576c83acf0bf349d821f1fc52a4a7f3afcb1cb54cfaec5e4",
+      "bytes": 3256
+    },
+    {
+      "path": "videos/C002.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C002.mp4",
+      "sha256": "114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61",
+      "bytes": 5197427
+    },
+    {
+      "path": "baseline/reports/C002.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C002/report.json",
+      "sha256": "55d85a630170d9e13b68770d9733095638a0920f9f2f472f39bdbcc88c6f0f9b",
+      "bytes": 3155
+    },
+    {
+      "path": "session2/reports/C002.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C002.json",
+      "sha256": "eab1f8c9559c820238e2ab6bdf962c573ca673656d1f50e55cfeb0325bf12fbe",
+      "bytes": 3271
+    },
+    {
+      "path": "videos/C003.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C003.mp4",
+      "sha256": "d5be47c432eb33c7367080e7c0b66cd5c89f8c7b8c50e16944d7938dd8317278",
+      "bytes": 6141781
+    },
+    {
+      "path": "baseline/reports/C003.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C003/report.json",
+      "sha256": "761c7afd185bed156c2564dbc706caa4ef22ddd0002c5e193f33578d275f9dc4",
+      "bytes": 3139
+    },
+    {
+      "path": "session2/reports/C003.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C003.json",
+      "sha256": "d250fce6f037a668db6bb517d269bec1a20de09efeaf8ba57fdb5e69526aa6e4",
+      "bytes": 3190
+    },
+    {
+      "path": "videos/C004.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C004.mp4",
+      "sha256": "186fd11292c46d1204daf726aed9ec276b5b5d04f50ebe6813d0c25c69875621",
+      "bytes": 3932151
+    },
+    {
+      "path": "baseline/reports/C004.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C004/report.json",
+      "sha256": "2f9229de9006687dcf95eadc51d59c4d90b6e9078786b5058a92a160a386f173",
+      "bytes": 3045
+    },
+    {
+      "path": "session2/reports/C004.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C004.json",
+      "sha256": "886718d2b0cb4a991092247dbfc76b33fb5c4eb39357e1faa56a37552a8dfa9c",
+      "bytes": 3161
+    },
+    {
+      "path": "videos/C005.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C005.mp4",
+      "sha256": "f13d012bced3480f34c7fa3a2f22830b02ea3f5580e842db68701049c9aa5f5a",
+      "bytes": 1897891
+    },
+    {
+      "path": "baseline/reports/C005.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C005/report.json",
+      "sha256": "7be890880a1abcc2010cc2fd1fd66a0306af21e132cc93f85dc2f3bbdd907ce6",
+      "bytes": 3136
+    },
+    {
+      "path": "session2/reports/C005.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C005.json",
+      "sha256": "298141cc11d05cbd001a93111328b2cedf91c1f1c0382de7d22c7f2d37ddb804",
+      "bytes": 3235
+    },
+    {
+      "path": "videos/C006.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C006.mp4",
+      "sha256": "d4522d7f8a22036bb47d94c50bd8bc5aa17e4274c9c575cd00c713331362adb6",
+      "bytes": 4451348
+    },
+    {
+      "path": "baseline/reports/C006.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C006/report.json",
+      "sha256": "4d08c3ce6c712b3f63a45d876eb77eda65c285c281fd94d6988cf8411e711858",
+      "bytes": 3071
+    },
+    {
+      "path": "session2/reports/C006.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C006.json",
+      "sha256": "e043266ada1e3058c9f2b24a1953f9d9168c544f25abf608761ca19ee6c58a51",
+      "bytes": 3187
+    },
+    {
+      "path": "videos/C007.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C007.mp4",
+      "sha256": "6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899",
+      "bytes": 5251960
+    },
+    {
+      "path": "baseline/reports/C007.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C007/report.json",
+      "sha256": "035fa33a13432a6fe4cb8fbb6ea0c9199b670191eba438192399fc6fdb281131",
+      "bytes": 3151
+    },
+    {
+      "path": "session2/reports/C007.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C007.json",
+      "sha256": "be320be5e6303794ce8469618edd48d8c82531e87090602d5d894d3ffca7c73e",
+      "bytes": 3202
+    },
+    {
+      "path": "videos/C008.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C008.mp4",
+      "sha256": "deb86b29ba1dd2bc378cfbd06a7c6883ee44d742bd0ec1fd303a9fb6d7af8a7f",
+      "bytes": 7680197
+    },
+    {
+      "path": "baseline/reports/C008.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C008/report.json",
+      "sha256": "b895f44789e94b060e10ce9b0935a08d623f52da62ca3cb6eddcae770ab272b4",
+      "bytes": 3193
+    },
+    {
+      "path": "session2/reports/C008.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C008.json",
+      "sha256": "3f4ad68af9ce53eb9d9500126d3543905c771f7bf47d9fe3e3060a2135f6d2ad",
+      "bytes": 3244
+    },
+    {
+      "path": "videos/C009.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C009.mp4",
+      "sha256": "1e5027e5475dff6ddb4d3766e20109aca912946287d017824b716a99dc7e0505",
+      "bytes": 5400628
+    },
+    {
+      "path": "baseline/reports/C009.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C009/report.json",
+      "sha256": "363a2f32f2e36d3f1f844ff1c88ec1a0ea23b140170a508cce6cf43deed7df0a",
+      "bytes": 3201
+    },
+    {
+      "path": "session2/reports/C009.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C009.json",
+      "sha256": "00e81ff2863a2bc7eb4306cf7cfb16a8dd9d4acdb252011c574aba9cd2280916",
+      "bytes": 3317
+    },
+    {
+      "path": "videos/C010.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C010.mp4",
+      "sha256": "036217903d1e31bdd1017058d3615c9948c752b4473c6d70777f674d672cca34",
+      "bytes": 5158358
+    },
+    {
+      "path": "baseline/reports/C010.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C010/report.json",
+      "sha256": "bf66be43c792920847e77e1aff8274ff9f330d4679501f91a6ecc91f05abdfa1",
+      "bytes": 3174
+    },
+    {
+      "path": "session2/reports/C010.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C010.json",
+      "sha256": "7ef495504599a6c469b258b337bb27b410908b58481ae5c3ed5547a4e257e67a",
+      "bytes": 3225
+    },
+    {
+      "path": "videos/C011.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C011.mp4",
+      "sha256": "78e36dec109b2e5f07962d2a6a725e36dbd1736b52186b25ed360ca18ab7ac01",
+      "bytes": 5149668
+    },
+    {
+      "path": "baseline/reports/C011.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C011/report.json",
+      "sha256": "1f85386e9701d844791ee9f2a61bcbd622e1668c75ee1353c4f266e2fd5dfa3a",
+      "bytes": 3177
+    },
+    {
+      "path": "session2/reports/C011.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C011.json",
+      "sha256": "876ef8ff9bc9b014a0d13c2c682d57e3e926011a86496ceca0206b7351bb3be4",
+      "bytes": 3228
+    },
+    {
+      "path": "videos/C012.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C012.mp4",
+      "sha256": "684fb0b6ac3bdede8603564838b6f96a808544b36e37bf0385175f14f37d0cec",
+      "bytes": 5175733
+    },
+    {
+      "path": "baseline/reports/C012.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C012/report.json",
+      "sha256": "e765f5c74777cc92ced7e2b6929093ce576288426876b7ef03bbbe69987ad597",
+      "bytes": 3159
+    },
+    {
+      "path": "session2/reports/C012.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C012.json",
+      "sha256": "b6b3d50544c92b05e3bf476fdb08b53fc6810fad79162a005251114342a2b2c8",
+      "bytes": 3210
+    },
+    {
+      "path": "videos/C013.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C013.mp4",
+      "sha256": "053e5e2a6d8fc047d03aedd27c7c0f73a41768969282b87cfefaaae6fe9b1fb0",
+      "bytes": 7452660
+    },
+    {
+      "path": "baseline/reports/C013.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C013/report.json",
+      "sha256": "c669644e2d4b2e19af167d5e8c5b2b02e87e2a96735c6795f39bda67c3609a1d",
+      "bytes": 3172
+    },
+    {
+      "path": "session2/reports/C013.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C013.json",
+      "sha256": "fa4321118098b3242b8a7490250a789196f8e3c37e5a0adc21b6234dda225beb",
+      "bytes": 3288
+    },
+    {
+      "path": "videos/C014.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C014.mp4",
+      "sha256": "557c6a857514d1c4050dbb8802fba0401ef1484b335e290e3d3bfac1fbd0e4a1",
+      "bytes": 3352490
+    },
+    {
+      "path": "baseline/reports/C014.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C014/report.json",
+      "sha256": "ea123ed01cf2dc4ebeab7726891a3853b831c864b9bf611d21495c70059c5c70",
+      "bytes": 3020
+    },
+    {
+      "path": "session2/reports/C014.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C014.json",
+      "sha256": "225a23473a6ad77f74f075a02fd2fc5ebbfd25fd95cc78904b76068069290522",
+      "bytes": 3071
+    },
+    {
+      "path": "videos/C015.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C015.mp4",
+      "sha256": "596c7d8e0373d07cfbe43700022c532c51d4b28684c9243cd48a9470a72e8b8d",
+      "bytes": 5382852
+    },
+    {
+      "path": "baseline/reports/C015.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C015/report.json",
+      "sha256": "a0b97283670049580dc4257782c1feee69debeb45ca414d2a6e32a1a9db80773",
+      "bytes": 3197
+    },
+    {
+      "path": "session2/reports/C015.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C015.json",
+      "sha256": "9143faa6004933ea0dc94470aa6dc906b26a2e37a77152ae464046c981fe19ce",
+      "bytes": 3313
+    },
+    {
+      "path": "videos/C016.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C016.mp4",
+      "sha256": "090fc3e26dc290cde880ed1fd8612194711c934c7f7ff3b7596c208c8cb1c2be",
+      "bytes": 5008751
+    },
+    {
+      "path": "baseline/reports/C016.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C016/report.json",
+      "sha256": "21c352be01816b21cbd4652f2f62d39cb9876114f5a036c402177f99ac8a7d98",
+      "bytes": 3342
+    },
+    {
+      "path": "session2/reports/C016.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C016.json",
+      "sha256": "8beba649158896582249f36867ca5c042493d7fca85acea3c3f2ac6a69c85d9e",
+      "bytes": 3528
+    },
+    {
+      "path": "videos/C017.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C017.mp4",
+      "sha256": "0866431fc2f28c0ae8606da3615ef754e26e8367d6fbf6e4234ff88ac4144dda",
+      "bytes": 5236452
+    },
+    {
+      "path": "baseline/reports/C017.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C017/report.json",
+      "sha256": "7110b73890e4a0b0e33c300f2bf589d22df475e5d0fcef71f8f20dc1f40d8f17",
+      "bytes": 3164
+    },
+    {
+      "path": "session2/reports/C017.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C017.json",
+      "sha256": "be6782ad52603b2e711c8a44b76aa744df9005a4dc9f7b6f46680bf5c3844009",
+      "bytes": 3280
+    },
+    {
+      "path": "videos/C018.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C018.mp4",
+      "sha256": "44e3145631375c3f02d9119752e616b8a92c2187e32aef43f57d6854097a6bbe",
+      "bytes": 5241975
+    },
+    {
+      "path": "baseline/reports/C018.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C018/report.json",
+      "sha256": "5315988e78fa8336cd2a836db52fa9e9815a6992b32015a6bcf579048832be9d",
+      "bytes": 3358
+    },
+    {
+      "path": "session2/reports/C018.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C018.json",
+      "sha256": "465bf4e22005ff3405766632b42b60f2d4f85a02ec308e06ae69f32bad4e8690",
+      "bytes": 3544
+    },
+    {
+      "path": "videos/C019.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C019.mp4",
+      "sha256": "a63199451acc08fd13ef370385129da6cee8c3479ede61204b12173d0ff564f2",
+      "bytes": 7614238
+    },
+    {
+      "path": "baseline/reports/C019.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C019/report.json",
+      "sha256": "20303f1a2419afb74e2f0058e388e2ca09d97c9a774a52bdb227dfd736cbcb58",
+      "bytes": 3158
+    },
+    {
+      "path": "session2/reports/C019.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C019.json",
+      "sha256": "9472434b4b69a5dc685d704dc000b4926190034c55bef3faab3e6d309667a145",
+      "bytes": 3209
+    },
+    {
+      "path": "videos/C020.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C020.mp4",
+      "sha256": "a3e7db37d643281226b44da199643a73c29d1b4597afb51e0dd7e59b2b19ba26",
+      "bytes": 6341003
+    },
+    {
+      "path": "baseline/reports/C020.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C020/report.json",
+      "sha256": "4f2acce5462ed4cec75f26015e580378d2ce224b66801b745ebd15dd6e11943e",
+      "bytes": 3132
+    },
+    {
+      "path": "session2/reports/C020.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C020.json",
+      "sha256": "bd1e0b1b97a9059f16978d4a3badb72f3e2c1fb1afe5beb68f973e442ab2ac9f",
+      "bytes": 3328
+    },
+    {
+      "path": "videos/C021.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C021.mp4",
+      "sha256": "dd7a61bf17b455d2243fe791ddc9881c680c5c3123d528a1a6c8ca68d7174b63",
+      "bytes": 5064623
+    },
+    {
+      "path": "baseline/reports/C021.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C021/report.json",
+      "sha256": "fb4986e840131de0ce66ba7e3254a7d8cf703f733fa5efc7fc0585461e9c9933",
+      "bytes": 3194
+    },
+    {
+      "path": "session2/reports/C021.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C021.json",
+      "sha256": "a4310b8c82252e6ff3326ef4cf48a36d9f3ab56b1dabada86677892fc22cc49a",
+      "bytes": 3310
+    },
+    {
+      "path": "videos/C022.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C022.mp4",
+      "sha256": "daf5e09d6bdef8441252ec246f6d60d5ea70a61ae2958b5836d128491991e0e8",
+      "bytes": 6747058
+    },
+    {
+      "path": "baseline/reports/C022.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C022/report.json",
+      "sha256": "6746e2b909401d91726ff94cfdd7a65b93050b9299d5f2a2b12a483a7736adc4",
+      "bytes": 3137
+    },
+    {
+      "path": "session2/reports/C022.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C022.json",
+      "sha256": "6a1d595524c8bdbbde791905888247e4a2ceeeef0f3e6c3a7f23249bd815719b",
+      "bytes": 3188
+    },
+    {
+      "path": "videos/C023.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C023.mp4",
+      "sha256": "7873c6bab3370f23e82b9208196a2ab41e51d81653142d55faa8e99f32b5d0e3",
+      "bytes": 5148836
+    },
+    {
+      "path": "baseline/reports/C023.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C023/report.json",
+      "sha256": "bd271df52bd974ed64ddd00dbcaf21a08ae5a09d3cf1040e3db9e2924f7700bb",
+      "bytes": 3188
+    },
+    {
+      "path": "session2/reports/C023.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C023.json",
+      "sha256": "09ce15c205afd6bd2fcf7b76343a44d0b0fc2a9c9458a7cc322576b95db5ce42",
+      "bytes": 3239
+    },
+    {
+      "path": "videos/C024.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C024.mp4",
+      "sha256": "f44832bb1926de840bfa602e27b78cb3819f1290849e06950a585bded0ba62b4",
+      "bytes": 5174704
+    },
+    {
+      "path": "baseline/reports/C024.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C024/report.json",
+      "sha256": "11114f36fa89a5723621f6b257bdc5188558cdc1c380b24369696ee28aa013f7",
+      "bytes": 3163
+    },
+    {
+      "path": "session2/reports/C024.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C024.json",
+      "sha256": "186ebf2ee8f8398ad9757320bc767f571ff7e6d0c5eef3fb469754a03a7d90df",
+      "bytes": 3214
+    },
+    {
+      "path": "videos/C025.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C025.mp4",
+      "sha256": "d0381110bfb6d494e74ceb8426feaf9e7b883ea889ed0f9a2e97bf19ff99f234",
+      "bytes": 4534710
+    },
+    {
+      "path": "baseline/reports/C025.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C025/report.json",
+      "sha256": "fd235023d2ae1db92151cfb733ba8a2ea471eb526b38d1a11d431a71c68012fc",
+      "bytes": 3052
+    },
+    {
+      "path": "session2/reports/C025.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C025.json",
+      "sha256": "3dbfc9278fda544f681fa7bd9d5304714391e8b094a0a697d124f03a0b36a8cb",
+      "bytes": 3168
+    },
+    {
+      "path": "videos/C026.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C026.mp4",
+      "sha256": "9d2612072752f52793dfec5be75335fe5984fc2a8d9ca89b5c6739944ddc47f7",
+      "bytes": 6924548
+    },
+    {
+      "path": "baseline/reports/C026.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C026/report.json",
+      "sha256": "194225449d4adcce0173ae677e036029f83d5e2b83af0eea1db24b2b4d786ecf",
+      "bytes": 3151
+    },
+    {
+      "path": "session2/reports/C026.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C026.json",
+      "sha256": "9599ec6f4375b287dbe4028942c5add2944d898c352c7ddae2b4fba557bbfcea",
+      "bytes": 3282
+    },
+    {
+      "path": "videos/C027.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C027.mp4",
+      "sha256": "a4807cfda0254b6e70c82deec7b03afbb753e8c9e65b2aaea449ec7eaba27493",
+      "bytes": 6279793
+    },
+    {
+      "path": "baseline/reports/C027.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C027/report.json",
+      "sha256": "915e775e155137fb321115195b2d9553a2f026dd92885ca920707d92116b0ac2",
+      "bytes": 3109
+    },
+    {
+      "path": "session2/reports/C027.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C027.json",
+      "sha256": "f8d37f1866b623e613dd95fdc747f2943df35c81b74b647f0b6f2138c45d5571",
+      "bytes": 3305
+    },
+    {
+      "path": "videos/C028.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C028.mp4",
+      "sha256": "e950b8685820e62b7c7ac8bd8bb86cae6535ca2cc940e4ac4a94fc38bb1408f0",
+      "bytes": 4136331
+    },
+    {
+      "path": "baseline/reports/C028.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C028/report.json",
+      "sha256": "0458177931ff286ae0fcfeae5e69cf06dd7e1fbc24b571af532b24653a841108",
+      "bytes": 3044
+    },
+    {
+      "path": "session2/reports/C028.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C028.json",
+      "sha256": "16b11ac773ab6215b9467a8c7fa3ca2baa28405161f77a9d0522779d49266066",
+      "bytes": 3160
+    },
+    {
+      "path": "videos/C029.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C029.mp4",
+      "sha256": "c8a4576a1b9d51647bd4e36e338b82d837ccf8440d056f6885ad4795cb457f7e",
+      "bytes": 4424451
+    },
+    {
+      "path": "baseline/reports/C029.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C029/report.json",
+      "sha256": "da00c09fc9ad87987871aa2f5f34e23f4e3a92b80802caa3a980c680a6fa0a31",
+      "bytes": 3067
+    },
+    {
+      "path": "session2/reports/C029.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C029.json",
+      "sha256": "431dfacf849f56e7c1bba68c09cc7c185f9339edff05e7d0a7af2db279a992a6",
+      "bytes": 3183
+    },
+    {
+      "path": "videos/C030.mp4",
+      "source": "outputs/coach_c_evaluation_v2/session1_staging/videos/C030.mp4",
+      "sha256": "8ae43a294feb2b75bccc92447c926d15c038596286fc8bd048af1c121b7cc8bd",
+      "bytes": 5186380
+    },
+    {
+      "path": "baseline/reports/C030.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_hybrid_20261010T045855Z/model_outputs/C030/report.json",
+      "sha256": "87304fd8cf609d5be3d98976ecf1d79e35c693080a4af9a4e6fc90548a546581",
+      "bytes": 3165
+    },
+    {
+      "path": "session2/reports/C030.json",
+      "source": "outputs/coach_c_evaluation_v2/private_session2_wording_v2_20261010T080226Z/revised_reports/C030.json",
+      "sha256": "2aca66f9e6383aa5db5ffa959ce4fff9443e7af53528bf64fa071ad8fc8062c1",
+      "bytes": 3281
+    }
+  ],
+  "note": "Copies only; historical status in frozen artifacts is superseded by README and scope amendment."
+}

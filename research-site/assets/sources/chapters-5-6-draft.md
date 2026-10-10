@@ -1,6 +1,11 @@
 # CHAPTER 5
 # RESULTS AND DISCUSSION
 
+> Historical working draft. The pending-status passages below predate receipt of
+> Session 1 and the clarified coach instrument. See [current handoff](../docs/PARTNER_HANDOFF.md)
+> and [Coach C evidence](../evaluation/coach_c/README.md) before revising or submitting.
+> The companion Word file is also a historical draft.
+
 **Working draft — evidence available on 1 October 2026.** Chapter 5 is drafted as Results and Discussion, and Chapter 6 as Summary, Conclusions, and Recommendations. These titles should be aligned with the department's final format. Independent Coach C judgments and physical-device measurements have not yet been collected; passages describing those evaluations remain explicitly pending. This draft does not replace the existing Chapters 1–4.
 
 ## 5.1 Overview of the Evaluation
@@ -290,7 +295,7 @@ Project results are drawn from the following saved artifacts. These are primary 
 
 | Draft content | Study record |
 |---|---|
-| Original model families and exploratory adaptations | [September results summary](../../../docs/RESULTS_SUMMARY.md) |
+| Original model families and exploratory adaptations | [September results summary](../docs/RESULTS_SUMMARY.md) |
 | Original GRU score reconstruction and Heavy/Lite qualifications | [Pose/classifier audit](POSE_CLASSIFIER_AUDIT.md) |
 | Retraining counts, CV, diagnostic results and limitations | [Retraining report](GRU_RETRAINING_V2.md), [CV metrics](../models/serve_v2_fixed/cv_results.json) |
 | Original hybrid and confidence coverage | [Hybrid audit](HYBRID_CLASSIFIER_AUDIT.md) |

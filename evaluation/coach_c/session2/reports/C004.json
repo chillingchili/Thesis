@@ -1,0 +1,108 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 116,
+    "duration": 1.9352666666666667,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0,
+    "end": 1.9352666666666667
+  },
+  "options": {
+    "start": 0,
+    "end": null,
+    "model": "hybrid",
+    "landing": "off",
+    "moment_matching": true
+  },
+  "warnings": [],
+  "serve": {
+    "status": "ok",
+    "label": "topspin",
+    "confidence": 0.6976685523986816,
+    "probabilities": {
+      "drive": 0.24826757609844208,
+      "lob": 0.054063864052295685,
+      "topspin": 0.6976685523986816
+    },
+    "model": "hybrid",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 116,
+    "window_frames": 116,
+    "truncated_frames": 0,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {
+      "gru_probabilities": {
+        "drive": 0.49653515219688416,
+        "lob": 0.10812772810459137,
+        "topspin": 0.39533716440200806
+      },
+      "knn_probabilities": {
+        "drive": 0.0,
+        "lob": 0.0,
+        "topspin": 1.0
+      },
+      "gru_weight": 0.5,
+      "knn_weight": 0.5,
+      "knn_bank_sha256": "d36f397acc205608d96f0568a015a681f5580514b6d2d219c8154b1cb4d9d413",
+      "knn_training_samples": 438,
+      "timing_features_version": "first_velocity_zero"
+    }
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.121077992010838,
+    "threshold": 0.1542655138505721,
+    "sufficient": false
+  },
+  "paddle": {
+    "status": "ok",
+    "angle": 94.60009765625,
+    "low": 13.410494542121889,
+    "high": 165.73870525360107,
+    "state": "OPTIMAL",
+    "measurements": 3,
+    "direction_validated": false
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 59,
+    "seconds": 0.9843166666666667,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "CORRECTIVE",
+    "messages": [
+      "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    ],
+    "notifications": [],
+    "rule_ids": [
+      "C4_WEIGHT_TRANSFER"
+    ],
+    "version": "coach-c-actionable-wording-v2",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": 7.42,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "0c2c562f06344bbe133d9c33f606640139f594e5d1d9b5654eb30b46c37c5fb8",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [
+    "contact.jpg",
+    "keypoints.npy",
+    "preview.mp4"
+  ],
+  "review_id": "C004",
+  "input_sha256": "186fd11292c46d1204daf726aed9ec276b5b5d04f50ebe6813d0c25c69875621",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3"
+}

@@ -1,0 +1,37 @@
+﻿review_id,serve_status,predicted_serve,confidence,shift_status,paddle_status,feedback_status,feedback_string,seconds
+C001,ok,lob,0.6605533361434937,ok,ok,POSITIVE,Good work: your measured weight shift and paddle angle are within the reference ranges. Keep practicing.,41.8
+C002,ok,drive,0.6553633809089661,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,9.72
+C003,ok,drive,0.5773255228996277,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,8.0
+C004,ok,topspin,0.6976685523986816,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,7.42
+C005,ok,lob,0.8348933458328247,ok,unavailable,PARTIAL,"No supported corrective cue for the available measurements. Overall serve form has not been assessed.
+Paddle orientation unavailable.",11.83
+C006,ok,drive,0.728227972984314,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,8.16
+C007,ok,drive,0.5863680839538574,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,9.38
+C008,ok,lob,0.5518292188644409,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,12.3
+C009,ok,topspin,0.6731868982315063,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,9.97
+C010,ok,topspin,0.5383731126785278,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,9.48
+C011,ok,topspin,0.5619920492172241,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,9.72
+C012,ok,topspin,0.5290306806564331,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,9.61
+C013,ok,topspin,0.7655068039894104,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,10.05
+C014,ok,drive,0.5970267057418823,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,6.23
+C015,ok,topspin,0.6140820384025574,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,9.84
+C016,ok,lob,0.6051704287528992,ok,ok,CORRECTIVE,"Transfer your weight forward through the serve instead of relying only on your arm.
+Your measured paddle angle is outside the reference range. Review your paddle orientation at contact.",9.69
+C017,ok,topspin,0.843774139881134,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,9.64
+C018,ok,topspin,0.645413875579834,ok,ok,CORRECTIVE,"Transfer your weight forward through the serve instead of relying only on your arm.
+Your measured paddle angle is outside the reference range. Review your paddle orientation at contact.",9.22
+C019,ok,topspin,0.49551016092300415,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,12.86
+C020,ok,topspin,0.9828373193740845,ok,unavailable,CORRECTIVE,"Transfer your weight forward through the serve instead of relying only on your arm.
+Paddle orientation unavailable.",10.06
+C021,ok,lob,0.6708790063858032,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,8.92
+C022,ok,lob,0.5779687762260437,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,11.7
+C023,ok,topspin,0.5192285776138306,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,9.19
+C024,ok,topspin,0.5015529990196228,ok,ok,LOW_CONFIDENCE,Serve classification confidence is below 60%. Record another serve for coaching feedback.,9.52
+C025,ok,drive,0.6417713165283203,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,4.95
+C026,ok,topspin,0.3634487986564636,ok,unavailable,LOW_CONFIDENCE,"Serve classification confidence is below 60%. Record another serve for coaching feedback.
+Paddle orientation unavailable.",7.44
+C027,ok,topspin,0.9631518125534058,ok,unavailable,CORRECTIVE,"Transfer your weight forward through the serve instead of relying only on your arm.
+Paddle orientation unavailable.",6.36
+C028,ok,drive,0.8232145309448242,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,7.23
+C029,ok,topspin,0.6995024681091309,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,7.27
+C030,ok,drive,0.682948648929596,ok,ok,CORRECTIVE,Transfer your weight forward through the serve instead of relying only on your arm.,8.45

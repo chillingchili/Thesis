@@ -1,5 +1,10 @@
 # Thesis Results Summary — Pickleball Serve Subtype Classification
 
+> Historical September report. Later audits qualify the "sealed" holdout and
+> "no document amendment required" statements below. Read the
+> [current handoff](PARTNER_HANDOFF.md) and [alignment notes](THESIS_EVALUATION_ALIGNMENT.md)
+> before using these figures or protocol descriptions in the final thesis.
+
 Date: 2026-09-24  
 Dataset: 438 train clips (Beginner1, Beginner2, CoachA) | 32 timing features  
 Holdouts: Beginner3 (85), Beginner4 (90) — sealed, never trained on
@@ -159,5 +164,5 @@ server transfers body weight laterally, derived **only from CoachA's good-form c
 
 **Docs**
 
-- `docs/RESULTS_SUMMARY.md` — this file
+- `RESULTS_SUMMARY.md` — this file
 - `README.md` — repository guide and directory map

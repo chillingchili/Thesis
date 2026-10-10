@@ -1,0 +1,31 @@
+﻿review_id,clip_id,participant,recording_category,source_video,source_sha256,new_gru_training_overlap,legacy_gru_training_overlap,legacy_knn_training_overlap,prior_diagnostic_overlap,prior_model_prediction_exists
+C001,C001,CoachA,lob,outputs/coach_c_evaluation_v2/session1_staging/videos/C001.mp4,be54cb6af30831ed82d9a2cff2d64a55ecdf94f6e69d78da2eb0e5852fa268bb,False,False,False,False,False
+C002,Nested Sequence 386,Beginner4,topspin,data/testing/Beginner4/Topspin/Nested Sequence 386.mp4,114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61,False,False,False,True,True
+C003,Beginner3_Lob_011,Beginner3,lob,data/testing/Beginner3/Lob/Beginner3_Lob_011.mp4,d5be47c432eb33c7367080e7c0b66cd5c89f8c7b8c50e16944d7938dd8317278,False,False,False,True,True
+C004,Beginner3_Topsin_024,Beginner3,topspin,data/testing/Beginner3/Topspin/Beginner3_Topsin_024.mp4,186fd11292c46d1204daf726aed9ec276b5b5d04f50ebe6813d0c25c69875621,False,False,False,True,True
+C005,C005,CoachA,lob,outputs/coach_c_evaluation_v2/session1_staging/videos/C005.mp4,f13d012bced3480f34c7fa3a2f22830b02ea3f5580e842db68701049c9aa5f5a,False,False,False,False,False
+C006,Beginner3_Lob_023,Beginner3,lob,data/testing/Beginner3/Lob/Beginner3_Lob_023.mp4,d4522d7f8a22036bb47d94c50bd8bc5aa17e4274c9c575cd00c713331362adb6,False,False,False,True,True
+C007,Beginner3_Drive_013,Beginner3,drive,data/testing/Beginner3/Drive/Beginner3_Drive_013.mp4,6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899,False,False,False,True,True
+C008,C008,CoachA,drive,outputs/coach_c_evaluation_v2/session1_staging/videos/C008.mp4,deb86b29ba1dd2bc378cfbd06a7c6883ee44d742bd0ec1fd303a9fb6d7af8a7f,False,False,False,False,False
+C009,Nested Sequence 396,Beginner4,topspin,data/testing/Beginner4/Topspin/Nested Sequence 396.mp4,1e5027e5475dff6ddb4d3766e20109aca912946287d017824b716a99dc7e0505,False,False,False,True,True
+C010,Nested Sequence 345,Beginner4,drive,data/testing/Beginner4/Drive/Nested Sequence 345.mp4,036217903d1e31bdd1017058d3615c9948c752b4473c6d70777f674d672cca34,False,False,False,True,True
+C011,Nested Sequence 349,Beginner4,drive,data/testing/Beginner4/Drive/Nested Sequence 349.mp4,78e36dec109b2e5f07962d2a6a725e36dbd1736b52186b25ed360ca18ab7ac01,False,False,False,True,True
+C012,Nested Sequence 373,Beginner4,topspin,data/testing/Beginner4/Topspin/Nested Sequence 373.mp4,684fb0b6ac3bdede8603564838b6f96a808544b36e37bf0385175f14f37d0cec,False,False,False,True,True
+C013,Beginner3_Topsin_014,Beginner3,topspin,data/testing/Beginner3/Topspin/Beginner3_Topsin_014.mp4,053e5e2a6d8fc047d03aedd27c7c0f73a41768969282b87cfefaaae6fe9b1fb0,False,False,False,True,True
+C014,Beginner3_Drive_007,Beginner3,drive,data/testing/Beginner3/Drive/Beginner3_Drive_007.mp4,557c6a857514d1c4050dbb8802fba0401ef1484b335e290e3d3bfac1fbd0e4a1,False,False,False,True,True
+C015,Beginner3_Drive_023,Beginner3,drive,data/testing/Beginner3/Drive/Beginner3_Drive_023.mp4,596c7d8e0373d07cfbe43700022c532c51d4b28684c9243cd48a9470a72e8b8d,False,False,False,True,True
+C016,Nested Sequence 324,Beginner4,lob,data/testing/Beginner4/Lob/Nested Sequence 324.mp4,090fc3e26dc290cde880ed1fd8612194711c934c7f7ff3b7596c208c8cb1c2be,False,False,False,True,True
+C017,Nested Sequence 388,Beginner4,topspin,data/testing/Beginner4/Topspin/Nested Sequence 388.mp4,0866431fc2f28c0ae8606da3615ef754e26e8367d6fbf6e4234ff88ac4144dda,False,False,False,True,True
+C018,Nested Sequence 325,Beginner4,lob,data/testing/Beginner4/Lob/Nested Sequence 325.mp4,44e3145631375c3f02d9119752e616b8a92c2187e32aef43f57d6854097a6bbe,False,False,False,True,True
+C019,C019,CoachA,topspin,outputs/coach_c_evaluation_v2/session1_staging/videos/C019.mp4,a63199451acc08fd13ef370385129da6cee8c3479ede61204b12173d0ff564f2,False,False,False,False,False
+C020,Beginner3_Topsin_017,Beginner3,topspin,data/testing/Beginner3/Topspin/Beginner3_Topsin_017.mp4,a3e7db37d643281226b44da199643a73c29d1b4597afb51e0dd7e59b2b19ba26,False,False,False,True,True
+C021,Nested Sequence 311,Beginner4,lob,data/testing/Beginner4/Lob/Nested Sequence 311.mp4,dd7a61bf17b455d2243fe791ddc9881c680c5c3123d528a1a6c8ca68d7174b63,False,False,False,True,True
+C022,C022,CoachA,topspin,outputs/coach_c_evaluation_v2/session1_staging/videos/C022.mp4,daf5e09d6bdef8441252ec246f6d60d5ea70a61ae2958b5836d128491991e0e8,False,False,False,False,False
+C023,Nested Sequence 356,Beginner4,drive,data/testing/Beginner4/Drive/Nested Sequence 356.mp4,7873c6bab3370f23e82b9208196a2ab41e51d81653142d55faa8e99f32b5d0e3,False,False,False,True,True
+C024,Nested Sequence 315,Beginner4,lob,data/testing/Beginner4/Lob/Nested Sequence 315.mp4,f44832bb1926de840bfa602e27b78cb3819f1290849e06950a585bded0ba62b4,False,False,False,True,True
+C025,Beginner3_Lob_013,Beginner3,lob,data/testing/Beginner3/Lob/Beginner3_Lob_013.mp4,d0381110bfb6d494e74ceb8426feaf9e7b883ea889ed0f9a2e97bf19ff99f234,False,False,False,True,True
+C026,C026,CoachA,drive,outputs/coach_c_evaluation_v2/session1_staging/videos/C026.mp4,9d2612072752f52793dfec5be75335fe5984fc2a8d9ca89b5c6739944ddc47f7,False,False,False,False,False
+C027,Beginner3_Topsin_016,Beginner3,topspin,data/testing/Beginner3/Topspin/Beginner3_Topsin_016.mp4,a4807cfda0254b6e70c82deec7b03afbb753e8c9e65b2aaea449ec7eaba27493,False,False,False,True,True
+C028,Beginner3_Lob_003,Beginner3,lob,data/testing/Beginner3/Lob/Beginner3_Lob_003.mp4,e950b8685820e62b7c7ac8bd8bb86cae6535ca2cc940e4ac4a94fc38bb1408f0,False,False,False,True,True
+C029,Beginner3_Drive_002,Beginner3,drive,data/testing/Beginner3/Drive/Beginner3_Drive_002.mp4,c8a4576a1b9d51647bd4e36e338b82d837ccf8440d056f6885ad4795cb457f7e,False,False,False,True,True
+C030,Nested Sequence 352,Beginner4,drive,data/testing/Beginner4/Drive/Nested Sequence 352.mp4,8ae43a294feb2b75bccc92447c926d15c038596286fc8bd048af1c121b7cc8bd,False,False,False,True,True

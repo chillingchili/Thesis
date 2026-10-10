@@ -1,0 +1,26 @@
+{
+  "completed_utc": "2026-10-10T05:09:08.490638+00:00",
+  "clips": 30,
+  "release_status": "HOLD_UNTIL_SESSION1_SUBMITTED",
+  "serve_status_counts": {
+    "ok": 30
+  },
+  "shift_status_counts": {
+    "ok": 30
+  },
+  "paddle_status_counts": {
+    "ok": 26,
+    "unavailable": 4
+  },
+  "feedback_status_counts": {
+    "POSITIVE": 1,
+    "CORRECTIVE": 16,
+    "LOW_CONFIDENCE": 12,
+    "PARTIAL": 1
+  },
+  "accuracy": null,
+  "coach_c_appropriateness": null,
+  "session1_preserved": true,
+  "packet_sha256": "789273b9dfdaac33e8453c85dcb5a11255278a71ceaee73f229916d17bd626f6",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3"
+}

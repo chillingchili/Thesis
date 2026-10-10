@@ -1,0 +1,105 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 196,
+    "duration": 3.2699333333333334,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0,
+    "end": 3.2699333333333334
+  },
+  "options": {
+    "start": 0,
+    "end": null,
+    "model": "hybrid",
+    "landing": "off",
+    "moment_matching": true
+  },
+  "warnings": [
+    "The legacy GRU uses only the first 128 frames. Its window differs from the retrained complete-serve model."
+  ],
+  "serve": {
+    "status": "ok",
+    "label": "topspin",
+    "confidence": 0.3634487986564636,
+    "probabilities": {
+      "drive": 0.31326597929000854,
+      "lob": 0.32328522205352783,
+      "topspin": 0.3634487986564636
+    },
+    "model": "hybrid",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 128,
+    "window_frames": 128,
+    "truncated_frames": 68,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {
+      "gru_probabilities": {
+        "drive": 0.24671094119548798,
+        "lob": 0.21856102347373962,
+        "topspin": 0.5347279906272888
+      },
+      "knn_probabilities": {
+        "drive": 0.3798210322856903,
+        "lob": 0.42800942063331604,
+        "topspin": 0.19216960668563843
+      },
+      "gru_weight": 0.5,
+      "knn_weight": 0.5,
+      "knn_bank_sha256": "d36f397acc205608d96f0568a015a681f5580514b6d2d219c8154b1cb4d9d413",
+      "knn_training_samples": 438,
+      "timing_features_version": "first_velocity_zero"
+    }
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.19642095198768347,
+    "threshold": 0.1542655138505721,
+    "sufficient": true
+  },
+  "paddle": {
+    "status": "unavailable",
+    "reason": "No usable paddle orientation within five frames of estimated contact."
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 95,
+    "seconds": 1.5849166666666668,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "LOW_CONFIDENCE",
+    "messages": [
+      "Serve classification confidence is below 60%. Record another serve for coaching feedback."
+    ],
+    "notifications": [
+      "Paddle orientation unavailable."
+    ],
+    "rule_ids": [],
+    "version": "coach-b-v1",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": 7.44,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "0c2c562f06344bbe133d9c33f606640139f594e5d1d9b5654eb30b46c37c5fb8",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [
+    "contact.jpg",
+    "keypoints.npy",
+    "preview.mp4"
+  ],
+  "review_id": "C026",
+  "input_sha256": "9d2612072752f52793dfec5be75335fe5984fc2a8d9ca89b5c6739944ddc47f7",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3"
+}
