@@ -1,0 +1,97 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 152,
+    "duration": 2.5358666666666667,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0,
+    "end": 2.5358666666666667
+  },
+  "options": {
+    "start": 0,
+    "end": null,
+    "model": "ensemble",
+    "landing": "off",
+    "moment_matching": true
+  },
+  "warnings": [
+    "The legacy GRU uses only the first 128 frames. Its window differs from the retrained complete-serve model."
+  ],
+  "serve": {
+    "status": "ok",
+    "label": "topspin",
+    "confidence": 0.9656257629394531,
+    "probabilities": {
+      "drive": 0.013781907968223095,
+      "lob": 0.020592348650097847,
+      "topspin": 0.9656257629394531
+    },
+    "model": "ensemble",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 128,
+    "window_frames": 128,
+    "truncated_frames": 24,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {}
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.09733455607797993,
+    "threshold": 0.1542655138505721,
+    "sufficient": false
+  },
+  "paddle": {
+    "status": "ok",
+    "angle": 91.54815673828125,
+    "low": 13.410494542121889,
+    "high": 165.73870525360107,
+    "state": "OPTIMAL",
+    "measurements": 11,
+    "direction_validated": false
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 97,
+    "seconds": 1.6182833333333333,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "CORRECTIVE",
+    "messages": [
+      "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    ],
+    "notifications": [],
+    "rule_ids": [
+      "C4_WEIGHT_TRANSFER"
+    ],
+    "version": "coach-c-actionable-wording-v2",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": null,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [],
+  "review_id": "C009",
+  "input_sha256": "1e5027e5475dff6ddb4d3766e20109aca912946287d017824b716a99dc7e0505",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3",
+  "recomputation": {
+    "method": "Original GRU inference on preserved pose cache; hip/paddle/contact reused",
+    "keypoints_sha256": "322f90d1579a73de975fc97a3c0e69f7b793e6da79bbfe8ef42bb0989ad8b3dd",
+    "source_report_sha256": "363a2f32f2e36d3f1f844ff1c88ec1a0ea23b140170a508cce6cf43deed7df0a",
+    "original_hybrid_seconds": 9.97,
+    "end_to_end_latency_measured": false
+  }
+}

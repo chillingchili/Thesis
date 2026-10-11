@@ -1,0 +1,8 @@
+{
+  "model": "original_gru_ensemble",
+  "reports": "evaluation/coach_c/session2_gru/reports",
+  "summary": "evaluation/coach_c/session2_gru/summary.json",
+  "form_key": "COACH_C_SESSION2_ORIGINAL_GRU_V1",
+  "supersedes": "evaluation/coach_c/session2",
+  "sent": false
+}

@@ -62,10 +62,7 @@ for(let i=0;i<30;i++) {
   assert.equal(state.forms[0].items[i*4+3].required,true);
 }
 const root=path.resolve(__dirname,'../..');
-const localStatus=path.join(root,'outputs/coach_c_evaluation_v2/status.json');
-const reportFolder=fs.existsSync(localStatus)
-  ? path.join(root,JSON.parse(fs.readFileSync(localStatus)).active_session2_run,'revised_reports')
-  : path.join(root,'evaluation/coach_c/session2/reports');
+const reportFolder=path.join(root,'evaluation/coach_c/session2_gru/reports');
 for(const row of ctx.C2_FEEDBACK) {
   const report=JSON.parse(fs.readFileSync(path.join(reportFolder,row.id+'.json')));
   assert.equal(row.feedback,[...report.feedback.messages,...report.feedback.notifications].join('\n'));
@@ -129,6 +126,6 @@ for(let i=0;i<30;i++) {
   assert.ok(state.forms[0].items[i*4+2].help.endsWith(' | Feedback: '+row.feedback));
   assert.equal(state.forms[0].items[i*4+3].title,row.id+' - Feedback validity');
 }
-assert.equal(ctx.C2_FEEDBACK.filter(r=>ctx.c2OutputText_(r).includes('(low confidence)')).length,12);
+assert.equal(ctx.C2_FEEDBACK.filter(r=>ctx.c2OutputText_(r).includes('(low confidence)')).length,8);
 assert.ok(ctx.C2_FEEDBACK.some(r=>ctx.C2_CLASSIFICATIONS[r.id].label!==ctx.C2_SERVE_TYPES[r.id]));
-console.log('PASS: old-form migration, clip-only titles, actual predictions, 12 uncertainty labels, later batches, recovery, unchanged feedback/questions');
+console.log('PASS: old-form migration, clip-only titles, actual predictions, 8 uncertainty labels, later batches, recovery, unchanged feedback/questions');

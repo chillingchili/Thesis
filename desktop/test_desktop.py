@@ -23,7 +23,7 @@ class FeedbackTest(unittest.TestCase):
             self.assertFalse(r["rule_ids"])
         r = evaluate(self.rules, "drive", .6, False, None)
         self.assertEqual(["C4_WEIGHT_TRANSFER"], r["rule_ids"])
-        self.assertIn("Paddle orientation unavailable.", r["notifications"])
+        self.assertIn("Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing.", r["notifications"])
 
     def test_two_cues_and_optional_landing(self):
         for subtype in ["drive", "lob", "topspin"]:

@@ -1,0 +1,16 @@
+{
+  "files": {
+    "android/app/build/outputs/apk/debug/app-debug.apk": "2a7e351ed568cbedafcd6caa22a4b88c6838eb06236a40227be189e50c8913b7",
+    "android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk": "fec198e3044308178926cb2002b1c6b7bd499832c642ef17cc179786fdcbaedf",
+    "android/app/src/main/java/com/thesis/pickleballserve/PaddleDetector.kt": "ada9f0fdd54b87f8a836bdf816e170995c644ee4316c975367eaeebce5cb6dbc",
+    "android/app/src/main/java/com/thesis/pickleballserve/PaddleStream.kt": "a46eccd481f8a08bc50aaf30dc20eba3ad73402a6bc157e8f8702bb28903bd6f",
+    "android/app/src/androidTest/java/com/thesis/pickleballserve/PaddleCropTest.kt": "eab63116d19ee833fe1bc30fe8095c3803baa025194ebb0bbe9ee72a97ef7000",
+    "android/app/src/androidTest/java/com/thesis/pickleballserve/PaddleThreadsTest.kt": "936431744b07f76b44e7c3aafe9eeb01867d01715c0802cdb0abcab2dedad6d8"
+  },
+  "evidence": {
+    "crop_comparison.json": "c6bf6465e5d65079dc65b8255f2f117b6a34c91a96917e11984909f103837c37",
+    "threads_1_2_4.json": "6d5b0932ed687d4bfd83dba4ec6cf76ac845afc19f388f8b98c28f3743b3dc47",
+    "threads_4_6_8.json": "508d90bc62b5868d491c3971ddca0e288be57a0ec5bfe53c7b79e76329f8a281"
+  },
+  "baseline_model_assets_unchanged": true
+}

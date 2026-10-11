@@ -1,0 +1,27 @@
+--------- beginning of main
+10-11 02:38:11.353 I/ServeClipReplay(28129): Decoded clip=C007.mp4 frames=80/160 in 33743ms (421ms/frame) size=640x360
+10-11 02:38:13.060 W/LiveLatency(28129): paddle did not quiesce within 250ms
+10-11 02:38:13.061 I/LiveLatency(28129): serve_ended start=1674483 peak=1675031 end=1675676 frames=19 start_to_peak=548ms peak_to_end=645ms paddle_drain=252ms paddle_dropped=5 final_infer=0ms pred=null conf=null
+10-11 02:38:13.064 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:38:13.082 I/LiveLatency(28129): feedback_shown shown=1675949 end_to_shown=273ms peak_to_shown=918ms serve_total=1466ms
+10-11 02:38:23.827 I/LiveLatency(28129): serve_ended start=1685958 peak=1685958 end=1686694 frames=12 start_to_peak=0ms peak_to_end=736ms paddle_drain=0ms paddle_dropped=0 final_infer=0ms pred=null conf=null
+10-11 02:38:23.828 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:38:23.837 I/LiveLatency(28129): feedback_shown shown=1686704 end_to_shown=10ms peak_to_shown=746ms serve_total=746ms
+10-11 02:38:40.930 I/LiveLatency(28129): serve_ended start=1703073 peak=1703073 end=1703797 frames=12 start_to_peak=0ms peak_to_end=724ms paddle_drain=0ms paddle_dropped=0 final_infer=0ms pred=null conf=null
+10-11 02:38:40.930 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:38:40.938 I/LiveLatency(28129): feedback_shown shown=1703805 end_to_shown=8ms peak_to_shown=732ms serve_total=732ms
+10-11 02:39:27.099 W/LiveLatency(28129): paddle did not quiesce within 250ms
+10-11 02:39:27.100 I/LiveLatency(28129): serve_ended start=1749083 peak=1749229 end=1749716 frames=10 start_to_peak=146ms peak_to_end=487ms paddle_drain=251ms paddle_dropped=0 final_infer=0ms pred=null conf=null
+10-11 02:39:27.101 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:39:27.106 I/LiveLatency(28129): feedback_shown shown=1749973 end_to_shown=257ms peak_to_shown=744ms serve_total=890ms
+10-11 02:40:18.446 W/LiveLatency(28129): paddle did not quiesce within 250ms
+10-11 02:40:18.447 I/LiveLatency(28129): serve_ended start=1800528 peak=1800528 end=1801063 frames=7 start_to_peak=0ms peak_to_end=535ms paddle_drain=251ms paddle_dropped=0 final_infer=0ms pred=null conf=null
+10-11 02:40:18.449 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:40:18.464 I/LiveLatency(28129): feedback_shown shown=1801331 end_to_shown=268ms peak_to_shown=803ms serve_total=803ms
+10-11 02:41:32.580 I/LiveLatency(28129): serve_ended start=1874703 peak=1874703 end=1875247 frames=9 start_to_peak=0ms peak_to_end=544ms paddle_drain=200ms paddle_dropped=0 final_infer=0ms pred=null conf=null
+10-11 02:41:32.582 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:41:32.593 I/LiveLatency(28129): feedback_shown shown=1875460 end_to_shown=213ms peak_to_shown=757ms serve_total=757ms
+10-11 02:42:12.726 W/LiveLatency(28129): paddle did not quiesce within 250ms
+10-11 02:42:12.726 I/LiveLatency(28129): serve_ended start=1914255 peak=1914749 end=1915342 frames=17 start_to_peak=494ms peak_to_end=593ms paddle_drain=251ms paddle_dropped=0 final_infer=0ms pred=null conf=null
+10-11 02:42:12.728 I/Feedback(28129): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:42:12.744 I/LiveLatency(28129): feedback_shown shown=1915611 end_to_shown=269ms peak_to_shown=862ms serve_total=1356ms

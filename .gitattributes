@@ -1,2 +1,4 @@
 # Preserve byte-identical evaluation evidence and its SHA-256 manifest on Windows.
 evaluation/coach_c/** -text whitespace=cr-at-eol
+docs/thesis/source/** -text whitespace=cr-at-eol
+evaluation/phone_latency/** -text whitespace=cr-at-eol

@@ -2,6 +2,8 @@
 
 For the current workflow, read [the partner handoff](../docs/PARTNER_HANDOFF.md)
 and [Coach C evidence](../evaluation/coach_c/README.md) first.
+The [current thesis revision](../docs/thesis/README.md) supersedes the historical
+chapter draft listed below.
 
 | Report | What it establishes |
 |---|---|

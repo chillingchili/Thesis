@@ -3,8 +3,8 @@
 // Exact approved wording-v2 feedback is embedded below. No local file access needed.
 var C2_PLAYLIST_ID = 'PLdBi5bcaLX50'; // Replace if this is not the full playlist ID.
 var C2_BATCH_SIZE = 10;
-var C2_KEY = 'COACH_C_SESSION2_ACTIONABLE_V2';
-var C2_TITLE = 'Pickleball Feedback Validation - Coach C - Session 2 (30 Clips)';
+var C2_KEY = 'COACH_C_SESSION2_ORIGINAL_GRU_V1';
+var C2_TITLE = 'Pickleball Feedback Validation - Coach C - Session 2 - Original GRU (30 Clips)';
 var C2_CHOICES = ['Valid', 'Not valid', 'No coaching feedback to assess'];
 // Legacy recorded categories retained only to recognize and remove old titles.
 var C2_SERVE_TYPES = {
@@ -15,23 +15,23 @@ var C2_SERVE_TYPES = {
   C021: 'Lob', C022: 'Topspin', C023: 'Drive', C024: 'Lob', C025: 'Lob',
   C026: 'Drive', C027: 'Topspin', C028: 'Lob', C029: 'Drive', C030: 'Drive'
 };
-// Actual frozen hybrid predictions, separate from legacy title labels.
+// Actual frozen original-GRU predictions, separate from legacy title labels.
 var C2_CLASSIFICATIONS = {
   "C001": {
-    "label": "Lob",
-    "lowConfidence": false
+    "label": "Topspin",
+    "lowConfidence": true
   },
   "C002": {
-    "label": "Drive",
+    "label": "Topspin",
     "lowConfidence": false
   },
   "C003": {
-    "label": "Drive",
+    "label": "Topspin",
     "lowConfidence": true
   },
   "C004": {
-    "label": "Topspin",
-    "lowConfidence": false
+    "label": "Drive",
+    "lowConfidence": true
   },
   "C005": {
     "label": "Lob",
@@ -42,12 +42,12 @@ var C2_CLASSIFICATIONS = {
     "lowConfidence": false
   },
   "C007": {
-    "label": "Drive",
-    "lowConfidence": true
+    "label": "Topspin",
+    "lowConfidence": false
   },
   "C008": {
     "label": "Lob",
-    "lowConfidence": true
+    "lowConfidence": false
   },
   "C009": {
     "label": "Topspin",
@@ -55,22 +55,22 @@ var C2_CLASSIFICATIONS = {
   },
   "C010": {
     "label": "Topspin",
-    "lowConfidence": true
+    "lowConfidence": false
   },
   "C011": {
     "label": "Topspin",
-    "lowConfidence": true
+    "lowConfidence": false
   },
   "C012": {
     "label": "Topspin",
-    "lowConfidence": true
+    "lowConfidence": false
   },
   "C013": {
     "label": "Topspin",
-    "lowConfidence": false
+    "lowConfidence": true
   },
   "C014": {
-    "label": "Drive",
+    "label": "Topspin",
     "lowConfidence": true
   },
   "C015": {
@@ -91,7 +91,7 @@ var C2_CLASSIFICATIONS = {
   },
   "C019": {
     "label": "Topspin",
-    "lowConfidence": true
+    "lowConfidence": false
   },
   "C020": {
     "label": "Topspin",
@@ -102,20 +102,20 @@ var C2_CLASSIFICATIONS = {
     "lowConfidence": false
   },
   "C022": {
-    "label": "Lob",
-    "lowConfidence": true
+    "label": "Drive",
+    "lowConfidence": false
   },
   "C023": {
     "label": "Topspin",
-    "lowConfidence": true
+    "lowConfidence": false
   },
   "C024": {
-    "label": "Topspin",
-    "lowConfidence": true
+    "label": "Lob",
+    "lowConfidence": false
   },
   "C025": {
     "label": "Drive",
-    "lowConfidence": false
+    "lowConfidence": true
   },
   "C026": {
     "label": "Topspin",
@@ -131,17 +131,17 @@ var C2_CLASSIFICATIONS = {
   },
   "C029": {
     "label": "Topspin",
-    "lowConfidence": false
+    "lowConfidence": true
   },
   "C030": {
-    "label": "Drive",
+    "label": "Topspin",
     "lowConfidence": false
   }
 };
 var C2_FEEDBACK = [
   {
     "id": "C001",
-    "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency."
+    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
   },
   {
     "id": "C002",
@@ -153,7 +153,7 @@ var C2_FEEDBACK = [
   },
   {
     "id": "C004",
-    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
   },
   {
     "id": "C005",
@@ -165,11 +165,11 @@ var C2_FEEDBACK = [
   },
   {
     "id": "C007",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.\nYour paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact."
   },
   {
     "id": "C008",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact."
   },
   {
     "id": "C009",
@@ -177,19 +177,19 @@ var C2_FEEDBACK = [
   },
   {
     "id": "C010",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
   },
   {
     "id": "C011",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
   },
   {
     "id": "C012",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
   },
   {
     "id": "C013",
-    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
   },
   {
     "id": "C014",
@@ -213,7 +213,7 @@ var C2_FEEDBACK = [
   },
   {
     "id": "C019",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency."
   },
   {
     "id": "C020",
@@ -225,19 +225,19 @@ var C2_FEEDBACK = [
   },
   {
     "id": "C022",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency."
   },
   {
     "id": "C023",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
   },
   {
     "id": "C024",
-    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
   },
   {
     "id": "C025",
-    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
   },
   {
     "id": "C026",
@@ -253,7 +253,7 @@ var C2_FEEDBACK = [
   },
   {
     "id": "C029",
-    "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
   },
   {
     "id": "C030",

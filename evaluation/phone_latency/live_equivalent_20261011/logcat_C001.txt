@@ -1,0 +1,4 @@
+--------- beginning of main
+10-11 02:02:41.298 I/ServeClipReplay(31930): Decoded clip=C001.mp4 frames=110/219 in 117157ms (1065ms/frame) size=640x360
+10-11 02:02:44.996 I/ServeClipReplay(31930): Replay finished clip=C001.mp4 frames_sent=110
+10-11 02:02:45.061 I/LiveLatency(31930): replay_done clip=C001.mp4 frames_sent=110

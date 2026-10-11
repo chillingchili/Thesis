@@ -110,7 +110,7 @@ def health():
 
 @app.post("/api/jobs", status_code=202)
 def create_job(video: UploadFile = File(...), secondary: UploadFile | None = File(None),
-               start: float = Form(0), end: str = Form(""), model: str = Form("hybrid"),
+               start: float = Form(0), end: str = Form(""), model: str = Form("ensemble"),
                landing: str = Form("off"), moment_matching: bool = Form(True)):
     try:
         finish = float(end) if end.strip() else None

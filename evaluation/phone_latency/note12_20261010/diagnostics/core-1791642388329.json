@@ -1,0 +1,251 @@
+{
+  "benchmark_version": "core-recorded-v1",
+  "metric": "Recorded file open to computed coaching result; no camera or display timing",
+  "live_two_second_target_verified": false,
+  "debuggable": true,
+  "manufacturer": "Xiaomi",
+  "model": "original GRU five-fold ensemble; no kNN",
+  "soc": "SM6225",
+  "android": "14",
+  "ram_bytes": 5913796608,
+  "start_environment": {
+    "battery_percent": 95,
+    "battery_temperature_c": 31,
+    "plugged": 1,
+    "power_save": false,
+    "thermal_status": 0
+  },
+  "window": "Android last 128 usable frames; full clip for hip\/paddle; no motion gate",
+  "pose_mode": "Lite VIDEO; one pose; CPU default; 0.5 tracking\/detection\/presence",
+  "pose_timestamps": "Uniform frame-index timestamps derived from clip duration; not live camera timestamps",
+  "landing_enabled": false,
+  "protocol": "One complete C001 warm-up excluded; three rounds of C001,C002,C007, no dropped frames or response filtering",
+  "clips": [
+    {
+      "name": "C001.mp4",
+      "sha256": "be54cb6af30831ed82d9a2cff2d64a55ecdf94f6e69d78da2eb0e5852fa268bb"
+    },
+    {
+      "name": "C002.mp4",
+      "sha256": "114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61"
+    },
+    {
+      "name": "C007.mp4",
+      "sha256": "6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899"
+    }
+  ],
+  "asset_sha256": {
+    "pose_landmarker_lite.task": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7",
+    "paddle_w8a32.tflite": "d084b65ee67ce58985be5fe1ebe70a7907a5e3704d4117e0474686aca53bacef",
+    "gru_fold1.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "gru_fold2.tflite": "9f7a5cefe571ce1d81d099fcc4d2165821159b8c0c4cb6c694510792210f20be",
+    "gru_fold3.tflite": "70555916b6dfeeef2389c3f3604879e8e1182c151e335c7940003de5d63a216a",
+    "gru_fold4.tflite": "f1d83af6a5dd167f77f63b8ff87b85424955098b9299419faa2fa51c7ba867b5",
+    "gru_fold5.tflite": "9b511816d9899b4f7000b524d12afcdc7c15385f9b5083472434c9b81f9d0c96"
+  },
+  "runs": [
+    {
+      "clip": "C001.mp4",
+      "round": 0,
+      "warmup": true,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 602.907708,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "cv::Exception: OpenCV(4.10.0) \/home\/ci\/opencv\/modules\/imgproc\/src\/convhull.cpp:143: error: (-215:Assertion failed) total >= 0 && (depth == CV_32F || depth == CV_32S) in function 'convexHull'\n",
+      "total_processing_ms": 15654.298692,
+      "decoded_frames": 35,
+      "usable_frames": 35,
+      "decode_ms": 1583.8778079999997,
+      "pose_ms": 2604.229268,
+      "hip_accumulation_ms": 0.3648469999999999,
+      "paddle_ms": 10749.542338999998,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 1,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 247.721093,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "cv::Exception: OpenCV(4.10.0) \/home\/ci\/opencv\/modules\/imgproc\/src\/convhull.cpp:143: error: (-215:Assertion failed) total >= 0 && (depth == CV_32F || depth == CV_32S) in function 'convexHull'\n",
+      "total_processing_ms": 14310.603276,
+      "decoded_frames": 35,
+      "usable_frames": 35,
+      "decode_ms": 1556.4420299999997,
+      "pose_ms": 2491.7180200000003,
+      "hip_accumulation_ms": 0.3319239999999999,
+      "paddle_ms": 9579.929787999998,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 1,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 245.85401,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "cv::Exception: OpenCV(4.10.0) \/home\/ci\/opencv\/modules\/imgproc\/src\/convhull.cpp:143: error: (-215:Assertion failed) total >= 0 && (depth == CV_32F || depth == CV_32S) in function 'convexHull'\n",
+      "total_processing_ms": 886.728802,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 159.856198,
+      "pose_ms": 137.784948,
+      "hip_accumulation_ms": 0.009375,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 1,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 242.895938,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "cv::Exception: OpenCV(4.10.0) \/home\/ci\/opencv\/modules\/imgproc\/src\/convhull.cpp:143: error: (-215:Assertion failed) total >= 0 && (depth == CV_32F || depth == CV_32S) in function 'convexHull'\n",
+      "total_processing_ms": 5072.558592,
+      "decoded_frames": 11,
+      "usable_frames": 11,
+      "decode_ms": 603.12073,
+      "pose_ms": 820.1328639999999,
+      "hip_accumulation_ms": 0.10609399999999998,
+      "paddle_ms": 3014.3704679999996,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 2,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 254.192604,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "cv::Exception: OpenCV(4.10.0) \/home\/ci\/opencv\/modules\/imgproc\/src\/convhull.cpp:143: error: (-215:Assertion failed) total >= 0 && (depth == CV_32F || depth == CV_32S) in function 'convexHull'\n",
+      "total_processing_ms": 15180.651922,
+      "decoded_frames": 35,
+      "usable_frames": 35,
+      "decode_ms": 1502.6891159999993,
+      "pose_ms": 2498.279633,
+      "hip_accumulation_ms": 0.35630399999999995,
+      "paddle_ms": 10342.748017000002,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 2,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 267.064583,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "cv::Exception: OpenCV(4.10.0) \/home\/ci\/opencv\/modules\/imgproc\/src\/convhull.cpp:143: error: (-215:Assertion failed) total >= 0 && (depth == CV_32F || depth == CV_32S) in function 'convexHull'\n",
+      "total_processing_ms": 943.921875,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 161.509843,
+      "pose_ms": 154.346979,
+      "hip_accumulation_ms": 0.009532,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 31,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    }
+  ],
+  "model_load_ms": 306.058281
+}

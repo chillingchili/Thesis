@@ -1,0 +1,95 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 121,
+    "duration": 2.018683333333333,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0,
+    "end": 2.018683333333333
+  },
+  "options": {
+    "start": 0,
+    "end": null,
+    "model": "ensemble",
+    "landing": "off",
+    "moment_matching": true
+  },
+  "warnings": [],
+  "serve": {
+    "status": "ok",
+    "label": "drive",
+    "confidence": 0.6700502634048462,
+    "probabilities": {
+      "drive": 0.6700502634048462,
+      "lob": 0.05126321315765381,
+      "topspin": 0.2786864936351776
+    },
+    "model": "ensemble",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 121,
+    "window_frames": 121,
+    "truncated_frames": 0,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {}
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.10574743682592015,
+    "threshold": 0.1542655138505721,
+    "sufficient": false
+  },
+  "paddle": {
+    "status": "ok",
+    "angle": 109.50003433227539,
+    "low": 13.410494542121889,
+    "high": 165.73870525360107,
+    "state": "OPTIMAL",
+    "measurements": 6,
+    "direction_validated": false
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 60,
+    "seconds": 1.0010000000000001,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "CORRECTIVE",
+    "messages": [
+      "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+    ],
+    "notifications": [],
+    "rule_ids": [
+      "C4_WEIGHT_TRANSFER"
+    ],
+    "version": "coach-c-actionable-wording-v2",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": null,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [],
+  "review_id": "C006",
+  "input_sha256": "d4522d7f8a22036bb47d94c50bd8bc5aa17e4274c9c575cd00c713331362adb6",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3",
+  "recomputation": {
+    "method": "Original GRU inference on preserved pose cache; hip/paddle/contact reused",
+    "keypoints_sha256": "cf1713b073524340d61bb173e70311e43d1ea0665042025b2b84d2de539d278d",
+    "source_report_sha256": "4d08c3ce6c712b3f63a45d876eb77eda65c285c281fd94d6988cf8411e711858",
+    "original_hybrid_seconds": 8.16,
+    "end_to_end_latency_measured": false
+  }
+}

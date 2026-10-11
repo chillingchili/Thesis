@@ -34,7 +34,7 @@ class FeedbackEngineTest {
     @Test fun missingPaddlePreservesWeightCueAndNamesMissingSignal() {
         val result = engine.evaluate(good.copy(shiftSufficient = false, paddle = null))
         assertEquals(listOf("C4_WEIGHT_TRANSFER"), result.ruleIds)
-        assertEquals(listOf("Paddle orientation unavailable."), result.notifications)
+        assertEquals(listOf("Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing."), result.notifications)
     }
 
     @Test fun missingWeightPreservesPaddleCueWithoutPositiveConfirmation() {
@@ -57,7 +57,7 @@ class FeedbackEngineTest {
     @Test fun encouragementIsLimitedToAssessedMechanicsAndRequiresBothCoreSignals() {
         val result = engine.evaluate(good)
         assertEquals(FeedbackEngine.Status.POSITIVE, result.status)
-        assertTrue(result.text.contains("measured weight shift and paddle angle"))
+        assertTrue(result.text.contains("measured hip movement and paddle orientation"))
         assertFalse(result.text.contains("good form", ignoreCase = true))
         assertEquals(FeedbackEngine.Status.PARTIAL, engine.evaluate(good.copy(paddle = null)).status)
     }

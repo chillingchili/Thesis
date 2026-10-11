@@ -148,13 +148,17 @@ object PaddleGeometry {
         val edges = Mat()
         Imgproc.Canny(blur, edges, 50.0, 150.0)
         blur.release()
-        val pts = MatOfPoint2f()
-        Core.findNonZero(edges, pts)
+        val pixelIndices = Mat()
+        Core.findNonZero(edges, pixelIndices)
         edges.release()
-        if (pts.rows() < EDGE_MIN_PTS) {
-            pts.release()
+        if (pixelIndices.rows() < EDGE_MIN_PTS) {
+            pixelIndices.release()
             return null
         }
+        // findNonZero outputs CV_32SC2; the Java MatOfPoint2f wrapper needs floats.
+        val pts = MatOfPoint2f()
+        pixelIndices.convertTo(pts, CvType.CV_32F)
+        pixelIndices.release()
         val rect = Imgproc.minAreaRect(pts)
         pts.release()
         val rectArea = rect.size.width.toDouble() * rect.size.height.toDouble()
@@ -165,7 +169,7 @@ object PaddleGeometry {
 
     fun grayFromRgba(rgba: Mat): Mat {
         val gray = Mat()
-        Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_BGRA2GRAY)
+        Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_RGBA2GRAY)
         return gray
     }
 }

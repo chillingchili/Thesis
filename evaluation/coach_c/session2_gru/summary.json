@@ -1,0 +1,19 @@
+{
+  "model": "original GRU five-fold ensemble",
+  "confidence_threshold": 0.6,
+  "clips": 30,
+  "feedback_status_counts": {
+    "LOW_CONFIDENCE": 8,
+    "CORRECTIVE": 19,
+    "PARTIAL": 1,
+    "POSITIVE": 2
+  },
+  "substantive_coaching_count": 21,
+  "substantive_coaching_coverage_pct": 70.0,
+  "session2_sent": false,
+  "session2_ratings_received": false,
+  "rationale": "User-selected before Session 2 release based on prior matched diagnostic comparison: original GRU 51.4%, hybrid 49.7%. No claim of statistically established superiority.",
+  "timing": "Switch made after Session 1 receipt; earlier judgments already known to researchers. This generator does not read or fit to them.",
+  "measurement_reuse": "Same frozen hip/paddle/contact values; same cues and 0.60 threshold; classifier changed only.",
+  "independent_classification_accuracy": null
+}

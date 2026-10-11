@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import org.json.JSONObject
 import org.opencv.android.OpenCVLoader
-import org.opencv.core.CvType
+import org.opencv.android.Utils
 import org.opencv.core.Mat
 
 /**
@@ -31,7 +31,16 @@ class PaddleStream private constructor(
         private const val DETECT_STRIDE = 2
         private const val MIN_CROP = 8
 
-        fun load(context: Context): PaddleStream? = try {
+        /**
+         * useGpu: enable the paddle GPU delegate when supported; see PaddleDetector.open.
+         *
+         * Defaults off. Measured on the Xiaomi 23021RAAEG (see PaddleBackendTest) the
+         * GPU ran 562ms -> 466ms per inference, only ~17% faster, while its FP16
+         * dequantization of the int8 weights changed the detection count on frames
+         * with borderline confidences. That is a coaching-correctness risk for a gain
+         * too small to matter. Keep this flag so a re-exported model can re-test it.
+         */
+        fun load(context: Context, useGpu: Boolean = false): PaddleStream? = try {
             if (!OpenCVLoader.initLocal()) {
                 Log.e(TAG, "OpenCV failed to load — paddle stream disabled")
                 null
@@ -42,13 +51,34 @@ class PaddleStream private constructor(
                 val low = cfg.getDouble("band_low")
                 val high = cfg.getDouble("band_high")
                 require(low.isFinite() && high.isFinite() && low >= 0 && high < 180 && low <= high)
-                val det = PaddleDetector.open(context)
-                Log.i(TAG, "loaded band=[$low, $high] rule=${cfg.getString("threshold_rule")}")
+                val det = PaddleDetector.open(context, useGpu = useGpu)
+                Log.i(TAG, "loaded band=[$low, $high] backend=${det.backend} rule=${cfg.getString("threshold_rule")}")
                 PaddleStream(det, low, high, cfg.optBoolean("direction_validated", false))
             }
         } catch (e: Throwable) {
             Log.e(TAG, "paddle stream disabled", e)
             null
+        }
+
+        internal fun bitmapGray(bitmap: Bitmap): Mat {
+            val rgba = Mat()
+            return try {
+                Utils.bitmapToMat(bitmap, rgba)
+                PaddleGeometry.grayFromRgba(rgba)
+            } finally { rgba.release() }
+        }
+
+        internal fun cropGray(bitmap: Bitmap, rect: org.opencv.core.Rect): Mat {
+            // GaussianBlur(3x3) reads one pixel outside an OpenCV ROI. Preserve that halo.
+            val left = (rect.x - 1).coerceAtLeast(0)
+            val top = (rect.y - 1).coerceAtLeast(0)
+            val right = (rect.x + rect.width + 1).coerceAtMost(bitmap.width)
+            val bottom = (rect.y + rect.height + 1).coerceAtMost(bitmap.height)
+            val crop = Bitmap.createBitmap(bitmap, left, top, right-left, bottom-top)
+            val gray = try { bitmapGray(crop) }
+                finally { if (crop !== bitmap) crop.recycle() }
+            return try { Mat(gray, org.opencv.core.Rect(rect.x-left,rect.y-top,rect.width,rect.height)) }
+                finally { gray.release() } // Returned ROI retains the backing allocation.
         }
 
         fun median(values: List<Double>): Double? {
@@ -99,78 +129,95 @@ class PaddleStream private constructor(
         }
     }
 
+    private val lock = Any()
     private val angles = ArrayList<Pair<Int, Double>>()
     private val speeds = ArrayList<Float>()
     private var lastWristX = Float.NaN
     private var lastWristY = Float.NaN
     private var frameIdx = 0
     private var strideCount = 0
-    private var pxBuffer = IntArray(0)
+    // Bumped by clear(); an in-flight detection that started before a reset
+    // discards its result instead of contaminating the next serve.
+    private var generation = 0L
 
     fun clear() {
-        angles.clear()
-        speeds.clear()
-        lastWristX = Float.NaN
-        lastWristY = Float.NaN
-        frameIdx = 0
-        strideCount = 0
+        synchronized(lock) {
+            generation++
+            angles.clear()
+            speeds.clear()
+            lastWristX = Float.NaN
+            lastWristY = Float.NaN
+            frameIdx = 0
+            strideCount = 0
+        }
     }
 
     /**
      * wristX/wristY: normalized right-wrist coords (NaN if pose unknown);
      * bitmap: frame for detection (null = speed bookkeeping only).
+     *
+     * Detection is the expensive step (~600ms on this phone) and runs outside
+     * the lock so clear() from another thread can never block on it.
      */
     fun add(wristX: Float, wristY: Float, bitmap: Bitmap?) {
-        val idx = frameIdx++
-        if (idx > 0) {
-            val speed = if (wristX.isNaN() || wristY.isNaN() ||
-                lastWristX.isNaN() || lastWristY.isNaN()
-            ) 0f else {
-                val dx = wristX - lastWristX
-                val dy = wristY - lastWristY
-                kotlin.math.sqrt(dx * dx + dy * dy)
+        var idx = 0
+        var gen = 0L
+        var detect = false
+        synchronized(lock) {
+            gen = generation
+            idx = frameIdx++
+            if (idx > 0) {
+                val speed = if (wristX.isNaN() || wristY.isNaN() ||
+                    lastWristX.isNaN() || lastWristY.isNaN()
+                ) 0f else {
+                    val dx = wristX - lastWristX
+                    val dy = wristY - lastWristY
+                    kotlin.math.sqrt(dx * dx + dy * dy)
+                }
+                speeds.add(speed)
             }
-            speeds.add(speed)
-        }
-        lastWristX = wristX
-        lastWristY = wristY
+            lastWristX = wristX
+            lastWristY = wristY
 
-        if (bitmap == null || strideCount++ % DETECT_STRIDE != 0) return
-        val dets = detector.detectAll(bitmap)
-        val maxPx = PaddleDetector.WRIST_MAX_PX * bitmap.width / PaddleDetector.REF_WIDTH_PX
-        val det = PaddleDetector.pick(dets, wristX * bitmap.width, wristY * bitmap.height, maxPx)
+            detect = bitmap != null && strideCount++ % DETECT_STRIDE == 0
+        }
+        val frame = bitmap ?: return
+        if (!detect) return
+        val dets = detector.detectAll(frame)
+        val maxPx = PaddleDetector.WRIST_MAX_PX * frame.width / PaddleDetector.REF_WIDTH_PX
+        val det = PaddleDetector.pick(dets, wristX * frame.width, wristY * frame.height, maxPx)
             ?: return
-        val rect = PaddleGeometry.expandBox(det.box, bitmap.width, bitmap.height)
+        val rect = PaddleGeometry.expandBox(det.box, frame.width, frame.height)
         if (rect.width < MIN_CROP || rect.height < MIN_CROP) return
-        val n = bitmap.width * bitmap.height
-        if (pxBuffer.size != n) pxBuffer = IntArray(n)
-        bitmap.getPixels(pxBuffer, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-        val rgba = Mat(bitmap.height, bitmap.width, CvType.CV_8UC4)
-        rgba.put(0, 0, pxBuffer)
-        val gray = PaddleGeometry.grayFromRgba(rgba)
-        rgba.release()
-        val crop = Mat(gray, rect)
-        val res = PaddleGeometry.cropAngle(crop)
-        crop.release()
-        gray.release()
+        // Preserve source pixels; avoid converting an entire camera frame for one small crop.
+        val gray = cropGray(frame, rect)
+        val res = try { PaddleGeometry.cropAngle(gray) } finally { gray.release() }
         if (res.status == "ok" && res.angle != null) {
-            angles.add(idx to res.angle)
+            synchronized(lock) {
+                if (gen == generation) angles.add(idx to res.angle)
+            }
         }
     }
 
+
     /** Python estimate_contact_frame() on the collected wrist speeds. */
-    fun contactFrame(): Int = contactFrame(speeds.map { it.toDouble() }, frameIdx)
+    fun contactFrame(): Int = synchronized(lock) {
+        contactFrame(speeds.map { it.toDouble() }, frameIdx)
+    }
 
     /** Window median scalar (full-series fallback), or null when no angle. */
-    fun compute(): Double? = scalarFor(angles, contactFrame())
+    fun compute(): Double? = synchronized(lock) { scalarFor(angles, contactFrame()) }
 
     /** Coaching must use contact-window evidence; never the full-series fallback. */
-    fun computeForFeedback(): Double? = contactScalarFor(angles, contactFrame())
+    fun computeForFeedback(): Double? = synchronized(lock) {
+        contactScalarFor(angles, contactFrame())
+    }
 
     fun verdict(scalar: Double?): String = verdictFor(scalar, bandLow, bandHigh)
 
     val low: Double get() = bandLow
     val high: Double get() = bandHigh
+    val backend: String get() = detector.backend
 
     override fun close() {
         detector.close()

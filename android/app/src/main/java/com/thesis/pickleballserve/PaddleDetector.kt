@@ -6,11 +6,15 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.util.Log
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.gpu.CompatibilityList
+import org.tensorflow.lite.gpu.GpuDelegate
+import org.tensorflow.lite.gpu.GpuDelegateFactory
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import java.security.MessageDigest
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -20,10 +24,18 @@ import kotlin.math.roundToInt
  * scripts/extract_paddle_angles.py (nearest box center to the right wrist
  * within 300px scaled by frame width over the 1920px reference, highest
  * conf when the wrist is unknown, none when nothing qualifies).
+ *
+ * Optional GPU delegate: create this object and call detectAll() from a
+ * single thread, because a GpuDelegate must be built and invoked on the same
+ * thread. Initialization and per-inference failures both fall back to CPU,
+ * so enabling the GPU can never leave the detector unusable.
  */
 class PaddleDetector private constructor(
-    private val tflite: Interpreter,
+    private var tflite: Interpreter,
     private val confThr: Float,
+    private val bytes: MappedByteBuffer,
+    private val cacheDirectory: String,
+    private val cpuThreads: Int,
 ) : AutoCloseable {
 
     data class Det(val box: FloatArray, val conf: Float) {
@@ -42,6 +54,8 @@ class PaddleDetector private constructor(
     private val out = arrayOf(Array(5) { FloatArray(8400) })
     private var lastBitmap: Bitmap? = null
     private var lastLayout: Layout? = null
+    private var delegate: GpuDelegate? = null
+    val backend: String get() = if (delegate != null) "GPU" else "CPU/XNNPACK"
 
     private fun letterbox(bmp: Bitmap): Layout {
         if (bmp === lastBitmap && lastLayout != null) return lastLayout!!
@@ -96,7 +110,7 @@ class PaddleDetector private constructor(
 
     fun detectAll(bmp: Bitmap): List<Det> {
         val l = letterbox(bmp)
-        tflite.run(input, out)
+        runInference()
         val rows = out[0]
         val dets = ArrayList<Det>()
         for (k in 0 until 8400) {
@@ -113,8 +127,79 @@ class PaddleDetector private constructor(
         return dets
     }
 
+    /** Runs on GPU when enabled; an inference-time GPU failure demotes to CPU for good. */
+    private fun runInference() {
+        input.rewind()
+        try {
+            tflite.run(input, out)
+        } catch (e: RuntimeException) {
+            if (delegate == null) throw e
+            Log.w(TAG, "paddle GPU inference failed; falling back to CPU", e)
+            val g = delegate
+            delegate = null
+            try { tflite.close() } catch (_: Throwable) {}
+            try { g?.close() } catch (_: Throwable) {}
+            tflite = cpuInterpreter(bytes, cpuThreads)
+            input.rewind()
+            tflite.run(input, out)
+        }
+    }
+
+    /** Logs the live interpreter's shapes; must read tflite, which enableGpu() may have swapped. */
+    private fun logLoaded() {
+        Log.i(TAG, "loaded paddle backend=$backend in=" +
+                tflite.getInputTensor(0).shape().joinToString() +
+                " out=" + tflite.getOutputTensor(0).shape().joinToString())
+    }
+
+    /** Best-effort GPU enable. Any failure leaves the detector on CPU. */
+    private fun enableGpu() {
+        val supported = try {
+            CompatibilityList().use { it.isDelegateSupportedOnThisDevice }
+        } catch (e: RuntimeException) {
+            Log.w(TAG, "paddle GPU compatibility check failed; using CPU", e); false
+        } catch (e: LinkageError) {
+            Log.w(TAG, "paddle GPU library unavailable; using CPU", e); false
+        }
+        if (!supported) return
+
+        var g: GpuDelegate? = null
+        try {
+            // Cache the compiled program so the multi-minute first-run compilation
+            // happens once per install instead of once per launch (see landing.YoloRunner).
+            val digest = MessageDigest.getInstance("SHA-256")
+                .apply { update(bytes.duplicate().apply { rewind() }) }
+            val token = "paddle-" + digest.digest().joinToString("") { "%02x".format(it) }
+            g = GpuDelegate(GpuDelegateFactory.Options()
+                .setInferencePreference(GpuDelegateFactory.Options.INFERENCE_PREFERENCE_SUSTAINED_SPEED)
+                .setSerializationParams(cacheDirectory, token))
+            val interp = Interpreter(bytes, Interpreter.Options().apply {
+                setNumThreads(cpuThreads)
+                setUseXNNPACK(true)
+                addDelegate(g)
+            })
+            val cpu = tflite
+            delegate = g
+            tflite = interp
+            cpu.close()
+        } catch (e: RuntimeException) {
+            Log.w(TAG, "paddle GPU initialization failed; using CPU", e)
+            try { g?.close() } catch (_: Throwable) {}
+            delegate = null
+        } catch (e: LinkageError) {
+            Log.w(TAG, "paddle GPU library unavailable; using CPU", e)
+            try { g?.close() } catch (_: Throwable) {}
+            delegate = null
+        }
+    }
+
     override fun close() {
-        tflite.close()
+        try { tflite.close() } finally { closeGpu() }
+    }
+
+    private fun closeGpu() {
+        try { delegate?.close() } catch (_: Throwable) {}
+        delegate = null
     }
 
     companion object {
@@ -144,17 +229,27 @@ class PaddleDetector private constructor(
             return dets.maxByOrNull { it.conf }
         }
 
-        fun open(context: Context): PaddleDetector {
-            val model = load(context, "paddle_w8a32.tflite")
-            val opts = Interpreter.Options().apply {
-                setNumThreads(4)
-                setUseXNNPACK(true)
-            }
-            val interp = Interpreter(model, opts)
-            Log.i(TAG, "loaded paddle in=" + interp.getInputTensor(0).shape().joinToString() +
-                    " out=" + interp.getOutputTensor(0).shape().joinToString())
-            return PaddleDetector(interp, CONF_THR)
+        /**
+         * useGpu: enable the GPU delegate when the device supports it. Creation and
+         * every detectAll() call must then happen on the same thread. Failures at
+         * either stage fall back to CPU/XNNPACK.
+         */
+        fun open(context: Context, numThreads: Int = 4, useGpu: Boolean = false): PaddleDetector {
+            val bytes = load(context, "paddle_w8a32.tflite")
+            val interp = cpuInterpreter(bytes, numThreads)
+            val det = PaddleDetector(
+                interp, CONF_THR, bytes, context.codeCacheDir.absolutePath, numThreads,
+            )
+            if (useGpu) det.enableGpu()
+            det.logLoaded()
+            return det
         }
+
+        private fun cpuInterpreter(bytes: MappedByteBuffer, numThreads: Int) =
+            Interpreter(bytes, Interpreter.Options().apply {
+                setNumThreads(numThreads)
+                setUseXNNPACK(true)
+            })
 
         private fun load(context: Context, assetName: String): MappedByteBuffer {
             context.assets.openFd(assetName).use { fd ->

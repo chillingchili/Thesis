@@ -9,7 +9,7 @@ def evaluate(rules, serve_type, confidence, shift, paddle, placement_active=Fals
     if shift is None:
         notes.append("Weight shift unavailable.")
     if paddle is None:
-        notes.append("Paddle orientation unavailable.")
+        notes.append("Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing.")
     if placement_active:
         notes.append(f"Ball landing: {zone}." if zone in ZONES else "Ball landing unavailable.")
 
@@ -21,7 +21,7 @@ def evaluate(rules, serve_type, confidence, shift, paddle, placement_active=Fals
     if subtype not in {"drive", "lob", "topspin"} or confidence is None or not math.isfinite(confidence) or not 0 <= confidence <= 1:
         return result("INSUFFICIENT_DATA", ["Serve classification unavailable. Record another serve for coaching feedback."])
     if confidence < 0.60:
-        return result("LOW_CONFIDENCE", ["Serve classification confidence is below 60%. Record another serve for coaching feedback."])
+        return result("LOW_CONFIDENCE", ["The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."])
     conditions = set()
     if shift is False:
         conditions.add("shift_insufficient")
@@ -33,5 +33,5 @@ def evaluate(rules, serve_type, confidence, shift, paddle, placement_active=Fals
     if matches:
         return result("CORRECTIVE", [r["text"] for r in matches], [r["id"] for r in matches])
     if shift is True and paddle == "OPTIMAL" and (not placement_active or zone in ZONES and not zone.startswith("Fault-")):
-        return result("POSITIVE", ["Good work: your measured weight shift and paddle angle are within the reference ranges. Keep practicing."], ["ASSESSED_MECHANICS_OK"])
+        return result("POSITIVE", ["Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency."], ["ASSESSED_MECHANICS_OK"])
     return result("PARTIAL", ["No supported corrective cue for the available measurements. Overall serve form has not been assessed."])

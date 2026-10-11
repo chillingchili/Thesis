@@ -1,0 +1,102 @@
+--------- beginning of main
+10-11 02:29:38.744 I/ServeClipReplay(25292): Decoded clip=C001.mp4 frames=110/219 in 116106ms (1055ms/frame) size=640x360
+10-11 02:29:45.897 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:29:46.003 I/LiveLatency(25292): serve_ended start=1163183 peak=1168440 end=1168512 frames=37 start_to_peak=5257ms peak_to_end=72ms paddle_drain=251ms paddle_dropped=23 final_infer=106ms pred=topspin conf=0.49704108
+10-11 02:29:46.009 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:29:46.029 I/LiveLatency(25292): feedback_shown shown=1168897 end_to_shown=385ms peak_to_shown=457ms serve_total=5714ms
+10-11 02:29:52.676 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:29:52.790 I/LiveLatency(25292): serve_ended start=1169936 peak=1172098 end=1175292 frames=37 start_to_peak=2162ms peak_to_end=3194ms paddle_drain=251ms paddle_dropped=18 final_infer=114ms pred=topspin conf=0.46624517
+10-11 02:29:52.791 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:29:52.814 I/LiveLatency(25292): feedback_shown shown=1175681 end_to_shown=389ms peak_to_shown=3583ms serve_total=5745ms
+10-11 02:29:59.290 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:29:59.398 I/LiveLatency(25292): serve_ended start=1176574 peak=1178799 end=1181907 frames=37 start_to_peak=2225ms peak_to_end=3108ms paddle_drain=250ms paddle_dropped=24 final_infer=108ms pred=drive conf=0.4573533
+10-11 02:29:59.399 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:29:59.426 I/LiveLatency(25292): feedback_shown shown=1182293 end_to_shown=386ms peak_to_shown=3494ms serve_total=5719ms
+10-11 02:30:06.062 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:06.164 I/LiveLatency(25292): serve_ended start=1183346 peak=1185434 end=1188679 frames=37 start_to_peak=2088ms peak_to_end=3245ms paddle_drain=250ms paddle_dropped=18 final_infer=102ms pred=topspin conf=0.45072144
+10-11 02:30:06.165 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:06.199 I/LiveLatency(25292): feedback_shown shown=1189066 end_to_shown=387ms peak_to_shown=3632ms serve_total=5720ms
+10-11 02:30:12.738 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:12.840 I/LiveLatency(25292): serve_ended start=1190019 peak=1192197 end=1195355 frames=37 start_to_peak=2178ms peak_to_end=3158ms paddle_drain=251ms paddle_dropped=23 final_infer=101ms pred=drive conf=0.4268691
+10-11 02:30:12.842 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:12.860 I/LiveLatency(25292): feedback_shown shown=1195727 end_to_shown=372ms peak_to_shown=3530ms serve_total=5708ms
+10-11 02:30:19.387 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:19.492 I/LiveLatency(25292): serve_ended start=1196703 peak=1198886 end=1202003 frames=36 start_to_peak=2183ms peak_to_end=3117ms paddle_drain=251ms paddle_dropped=21 final_infer=105ms pred=topspin conf=0.505114
+10-11 02:30:19.493 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:19.517 I/LiveLatency(25292): feedback_shown shown=1202384 end_to_shown=381ms peak_to_shown=3498ms serve_total=5681ms
+10-11 02:30:26.162 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:26.268 I/LiveLatency(25292): serve_ended start=1203428 peak=1204785 end=1208778 frames=36 start_to_peak=1357ms peak_to_end=3993ms paddle_drain=250ms paddle_dropped=15 final_infer=106ms pred=topspin conf=0.50182617
+10-11 02:30:26.269 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:26.286 I/LiveLatency(25292): feedback_shown shown=1209153 end_to_shown=375ms peak_to_shown=4368ms serve_total=5725ms
+10-11 02:30:32.778 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:32.896 I/LiveLatency(25292): serve_ended start=1210084 peak=1211526 end=1215395 frames=36 start_to_peak=1442ms peak_to_end=3869ms paddle_drain=251ms paddle_dropped=23 final_infer=117ms pred=topspin conf=0.5461348
+10-11 02:30:32.897 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:32.923 I/LiveLatency(25292): feedback_shown shown=1215790 end_to_shown=395ms peak_to_shown=4264ms serve_total=5706ms
+10-11 02:30:39.560 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:39.676 I/LiveLatency(25292): serve_ended start=1216834 peak=1222032 end=1222177 frames=35 start_to_peak=5198ms peak_to_end=145ms paddle_drain=250ms paddle_dropped=19 final_infer=116ms pred=topspin conf=0.4784976
+10-11 02:30:39.678 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:39.694 I/LiveLatency(25292): feedback_shown shown=1222561 end_to_shown=384ms peak_to_shown=529ms serve_total=5727ms
+10-11 02:30:46.244 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:46.354 I/LiveLatency(25292): serve_ended start=1223501 peak=1225014 end=1228860 frames=35 start_to_peak=1513ms peak_to_end=3846ms paddle_drain=250ms paddle_dropped=19 final_infer=110ms pred=topspin conf=0.48085612
+10-11 02:30:46.356 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:46.378 I/LiveLatency(25292): feedback_shown shown=1229245 end_to_shown=385ms peak_to_shown=4231ms serve_total=5744ms
+10-11 02:30:52.957 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:53.072 I/LiveLatency(25292): serve_ended start=1230233 peak=1231650 end=1235574 frames=35 start_to_peak=1417ms peak_to_end=3924ms paddle_drain=250ms paddle_dropped=18 final_infer=115ms pred=topspin conf=0.46682674
+10-11 02:30:53.074 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:53.090 I/LiveLatency(25292): feedback_shown shown=1235957 end_to_shown=383ms peak_to_shown=4307ms serve_total=5724ms
+10-11 02:30:59.655 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:30:59.783 I/LiveLatency(25292): serve_ended start=1236920 peak=1242052 end=1242271 frames=35 start_to_peak=5132ms peak_to_end=219ms paddle_drain=251ms paddle_dropped=20 final_infer=128ms pred=topspin conf=0.4278946
+10-11 02:30:59.785 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:30:59.803 I/LiveLatency(25292): feedback_shown shown=1242670 end_to_shown=399ms peak_to_shown=618ms serve_total=5750ms
+10-11 02:31:06.276 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:06.397 I/LiveLatency(25292): serve_ended start=1243557 peak=1245049 end=1248892 frames=35 start_to_peak=1492ms peak_to_end=3843ms paddle_drain=252ms paddle_dropped=23 final_infer=120ms pred=topspin conf=0.5010043
+10-11 02:31:06.398 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:06.426 I/LiveLatency(25292): feedback_shown shown=1249293 end_to_shown=401ms peak_to_shown=4244ms serve_total=5736ms
+10-11 02:31:13.036 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:13.150 I/LiveLatency(25292): serve_ended start=1250324 peak=1255449 end=1255652 frames=35 start_to_peak=5125ms peak_to_end=203ms paddle_drain=250ms paddle_dropped=18 final_infer=114ms pred=topspin conf=0.44877473
+10-11 02:31:13.152 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:13.169 I/LiveLatency(25292): feedback_shown shown=1256036 end_to_shown=384ms peak_to_shown=587ms serve_total=5712ms
+10-11 02:31:19.664 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:19.775 I/LiveLatency(25292): serve_ended start=1256947 peak=1258529 end=1262281 frames=34 start_to_peak=1582ms peak_to_end=3752ms paddle_drain=250ms paddle_dropped=21 final_infer=111ms pred=topspin conf=0.48581615
+10-11 02:31:19.777 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:19.790 I/LiveLatency(25292): feedback_shown shown=1262657 end_to_shown=376ms peak_to_shown=4128ms serve_total=5710ms
+10-11 02:31:26.429 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:26.542 I/LiveLatency(25292): serve_ended start=1263705 peak=1265022 end=1269046 frames=36 start_to_peak=1317ms peak_to_end=4024ms paddle_drain=250ms paddle_dropped=20 final_infer=113ms pred=topspin conf=0.47201762
+10-11 02:31:26.543 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:26.558 I/LiveLatency(25292): feedback_shown shown=1269425 end_to_shown=379ms peak_to_shown=4403ms serve_total=5720ms
+10-11 02:31:33.121 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:33.235 I/LiveLatency(25292): serve_ended start=1270385 peak=1271731 end=1275737 frames=34 start_to_peak=1346ms peak_to_end=4006ms paddle_drain=251ms paddle_dropped=19 final_infer=114ms pred=topspin conf=0.43192548
+10-11 02:31:33.236 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:33.258 I/LiveLatency(25292): feedback_shown shown=1276125 end_to_shown=388ms peak_to_shown=4394ms serve_total=5740ms
+10-11 02:31:39.779 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:39.892 I/LiveLatency(25292): serve_ended start=1277080 peak=1278448 end=1282395 frames=35 start_to_peak=1368ms peak_to_end=3947ms paddle_drain=250ms paddle_dropped=20 final_infer=113ms pred=topspin conf=0.44567284
+10-11 02:31:39.894 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:39.917 I/LiveLatency(25292): feedback_shown shown=1282784 end_to_shown=389ms peak_to_shown=4336ms serve_total=5704ms
+10-11 02:31:46.539 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:46.655 I/LiveLatency(25292): serve_ended start=1283800 peak=1289013 end=1289155 frames=35 start_to_peak=5213ms peak_to_end=142ms paddle_drain=251ms paddle_dropped=17 final_infer=116ms pred=topspin conf=0.40204722
+10-11 02:31:46.656 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:46.676 I/LiveLatency(25292): feedback_shown shown=1289543 end_to_shown=388ms peak_to_shown=530ms serve_total=5743ms
+10-11 02:31:53.180 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:31:53.289 I/LiveLatency(25292): serve_ended start=1290449 peak=1292656 end=1295797 frames=35 start_to_peak=2207ms peak_to_end=3141ms paddle_drain=250ms paddle_dropped=23 final_infer=110ms pred=topspin conf=0.47694153
+10-11 02:31:53.291 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:31:53.310 I/LiveLatency(25292): feedback_shown shown=1296177 end_to_shown=380ms peak_to_shown=3521ms serve_total=5728ms
+10-11 02:31:59.929 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:32:00.045 I/LiveLatency(25292): serve_ended start=1297195 peak=1299321 end=1302546 frames=35 start_to_peak=2126ms peak_to_end=3225ms paddle_drain=251ms paddle_dropped=17 final_infer=115ms pred=topspin conf=0.45211154
+10-11 02:32:00.046 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:32:00.063 I/LiveLatency(25292): feedback_shown shown=1302930 end_to_shown=384ms peak_to_shown=3609ms serve_total=5735ms
+10-11 02:32:06.556 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:32:06.683 I/LiveLatency(25292): serve_ended start=1303844 peak=1305239 end=1309173 frames=33 start_to_peak=1395ms peak_to_end=3934ms paddle_drain=251ms paddle_dropped=21 final_infer=126ms pred=topspin conf=0.45375308
+10-11 02:32:06.685 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:32:06.706 I/LiveLatency(25292): feedback_shown shown=1309574 end_to_shown=401ms peak_to_shown=4335ms serve_total=5730ms
+10-11 02:32:13.314 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:32:13.433 I/LiveLatency(25292): serve_ended start=1310568 peak=1315724 end=1315931 frames=35 start_to_peak=5156ms peak_to_end=207ms paddle_drain=250ms paddle_dropped=19 final_infer=119ms pred=drive conf=0.41455427
+10-11 02:32:13.434 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:32:13.449 I/LiveLatency(25292): feedback_shown shown=1316316 end_to_shown=385ms peak_to_shown=592ms serve_total=5748ms
+10-11 02:32:19.971 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:32:20.095 I/LiveLatency(25292): serve_ended start=1317234 peak=1322435 end=1322588 frames=35 start_to_peak=5201ms peak_to_end=153ms paddle_drain=251ms paddle_dropped=23 final_infer=123ms pred=topspin conf=0.43480954
+10-11 02:32:20.096 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:32:20.103 I/LiveLatency(25292): feedback_shown shown=1322970 end_to_shown=382ms peak_to_shown=535ms serve_total=5736ms
+10-11 02:32:26.707 W/LiveLatency(25292): paddle did not quiesce within 250ms
+10-11 02:32:26.823 I/LiveLatency(25292): serve_ended start=1323997 peak=1325418 end=1329323 frames=35 start_to_peak=1421ms peak_to_end=3905ms paddle_drain=251ms paddle_dropped=18 final_infer=116ms pred=topspin conf=0.46567273
+10-11 02:32:26.824 I/Feedback(25292): version=coach-c-actionable-wording-v2 status=LOW_CONFIDENCE rules=[]
+10-11 02:32:26.840 I/LiveLatency(25292): feedback_shown shown=1329707 end_to_shown=384ms peak_to_shown=4289ms serve_total=5710ms

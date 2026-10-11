@@ -1,0 +1,12 @@
+{
+  "baseline": "../note12_20261010",
+  "baseline_median_ms": 68618.921485,
+  "optimized_median_ms": 68576.096224,
+  "median_reduction_percent": 0.062410279953706294,
+  "baseline_max_ms": 104650.11022,
+  "optimized_max_ms": 94284.463402,
+  "model_assets_and_clips_identical": true,
+  "output_differences": [],
+  "max_confidence_delta": 0.0,
+  "interpretation": "No meaningful overall speedup demonstrated. Separate sequential runs do not isolate thermal/scheduling variation."
+}

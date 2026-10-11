@@ -1,0 +1,38 @@
+﻿review_id,predicted_serve,confidence,feedback_status,feedback_string,hybrid_status,hybrid_prediction
+C001,Topspin,0.5151654481887817,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",POSITIVE,lob
+C002,Topspin,0.6638410687446594,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,drive
+C003,Topspin,0.5555330514907837,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",LOW_CONFIDENCE,drive
+C004,Drive,0.49653515219688416,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",CORRECTIVE,topspin
+C005,Lob,0.8155041933059692,PARTIAL,"No supported corrective cue for the available measurements. Overall serve form has not been assessed.
+Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing.",PARTIAL,lob
+C006,Drive,0.6700502634048462,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,drive
+C007,Topspin,0.6163994669914246,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.
+Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact.",LOW_CONFIDENCE,drive
+C008,Lob,0.9094487428665161,CORRECTIVE,"Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact.",LOW_CONFIDENCE,lob
+C009,Topspin,0.9656257629394531,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,topspin
+C010,Topspin,0.6666902303695679,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",LOW_CONFIDENCE,topspin
+C011,Topspin,0.9133790135383606,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",LOW_CONFIDENCE,topspin
+C012,Topspin,0.862329363822937,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",LOW_CONFIDENCE,topspin
+C013,Topspin,0.5310136079788208,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",CORRECTIVE,topspin
+C014,Topspin,0.5015859603881836,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",LOW_CONFIDENCE,drive
+C015,Topspin,0.8439264297485352,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,topspin
+C016,Lob,0.8094736933708191,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.
+Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact.",CORRECTIVE,lob
+C017,Topspin,0.6875482797622681,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,topspin
+C018,Topspin,0.6546750664710999,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.
+Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact.",CORRECTIVE,topspin
+C019,Topspin,0.7888695001602173,POSITIVE,Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.,LOW_CONFIDENCE,topspin
+C020,Topspin,0.9656745791435242,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.
+Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing.",CORRECTIVE,topspin
+C021,Lob,0.7440119385719299,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,lob
+C022,Drive,0.6585417985916138,POSITIVE,Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.,LOW_CONFIDENCE,lob
+C023,Topspin,0.839713454246521,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",LOW_CONFIDENCE,topspin
+C024,Lob,0.7946425676345825,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",LOW_CONFIDENCE,topspin
+C025,Drive,0.4788625240325928,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",CORRECTIVE,drive
+C026,Topspin,0.5347279906272888,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.
+Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing.",LOW_CONFIDENCE,topspin
+C027,Topspin,0.9263036847114563,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.
+Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing.",CORRECTIVE,topspin
+C028,Drive,0.6464290618896484,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,drive
+C029,Topspin,0.590408980846405,LOW_CONFIDENCE,"The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",CORRECTIVE,topspin
+C030,Topspin,0.6044740080833435,CORRECTIVE,"Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",CORRECTIVE,drive

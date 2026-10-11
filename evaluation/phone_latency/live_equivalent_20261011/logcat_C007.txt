@@ -1,0 +1,8 @@
+--------- beginning of main
+10-11 02:05:46.002 I/ServeClipReplay( 2242): Decoded clip=C007.mp4 frames=80/160 in 34393ms (429ms/frame) size=640x360
+10-11 02:05:47.716 W/LiveLatency( 2242): paddle did not quiesce within 250ms
+10-11 02:05:47.716 I/LiveLatency( 2242): serve_ended start=15534961 peak=15535413 end=15536153 frames=19 start_to_peak=452ms peak_to_end=740ms paddle_drain=252ms paddle_dropped=5 final_infer=0ms
+10-11 02:05:47.719 I/Feedback( 2242): version=coach-c-actionable-wording-v2 status=INSUFFICIENT_DATA rules=[]
+10-11 02:05:47.753 I/LiveLatency( 2242): feedback_shown shown=15536441 end_to_shown=288ms peak_to_shown=1028ms serve_total=1480ms
+10-11 02:05:48.708 I/ServeClipReplay( 2242): Replay finished clip=C007.mp4 frames_sent=80
+10-11 02:05:48.770 I/LiveLatency( 2242): replay_done clip=C007.mp4 frames_sent=80

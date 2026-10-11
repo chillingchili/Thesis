@@ -32,7 +32,7 @@ class FeedbackEngine private constructor(
     fun evaluate(input: Input): Result {
         val notes = mutableListOf<String>()
         if (input.shiftSufficient == null) notes += "Weight shift unavailable."
-        if (input.paddle == null) notes += "Paddle orientation unavailable."
+        if (input.paddle == null) notes += "Paddle orientation could not be measured. For the next recording, keep the paddle visible throughout the swing."
         val zone = input.placementZone?.takeIf { it in ZONES }
         if (input.placementActive) {
             notes += if (zone == null) "Ball landing unavailable." else "Ball landing: $zone."
@@ -49,7 +49,7 @@ class FeedbackEngine private constructor(
         }
         if (confidence < MIN_CONFIDENCE) {
             return result(Status.LOW_CONFIDENCE,
-                listOf("Serve classification confidence is below 60%. Record another serve for coaching feedback."))
+                listOf("The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."))
         }
         val conditions = buildSet {
             if (input.shiftSufficient == false) add("shift_insufficient")
@@ -67,7 +67,7 @@ class FeedbackEngine private constructor(
         if (input.shiftSufficient == true && input.paddle == PaddleState.OPTIMAL &&
             (!input.placementActive || (zone != null && !zone.startsWith("Fault-")))) {
             return result(Status.POSITIVE,
-                listOf("Good work: your measured weight shift and paddle angle are within the reference ranges. Keep practicing."),
+                listOf("Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency."),
                 listOf("ASSESSED_MECHANICS_OK"))
         }
         return result(Status.PARTIAL,

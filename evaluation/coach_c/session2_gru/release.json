@@ -1,0 +1,7 @@
+{
+  "packet": "outputs\\coach_c_evaluation_v2\\session2_original_gru_release\\Coach_C_Session_2_Original_GRU_Feedback.zip",
+  "sha256": "ddfc3bac61050735b7d6c50c282f4532d19f1e5d68f64fe102900f83e8b77b2a",
+  "model": "original_gru_ensemble",
+  "form_key": "COACH_C_SESSION2_ORIGINAL_GRU_V1",
+  "sent": false
+}

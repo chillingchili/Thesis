@@ -1,0 +1,390 @@
+{
+  "benchmark_version": "core-recorded-v1",
+  "metric": "Recorded file open to computed coaching result; no camera or display timing",
+  "live_two_second_target_verified": false,
+  "debuggable": true,
+  "manufacturer": "Xiaomi",
+  "model": "original GRU five-fold ensemble; no kNN",
+  "soc": "SM6225",
+  "android": "14",
+  "ram_bytes": 5913796608,
+  "start_environment": {
+    "battery_percent": 95,
+    "battery_temperature_c": 30,
+    "plugged": 1,
+    "power_save": false,
+    "thermal_status": 0
+  },
+  "window": "Android last 128 usable frames; full clip for hip\/paddle; no motion gate",
+  "pose_mode": "Lite VIDEO; one pose; CPU default; 0.5 tracking\/detection\/presence",
+  "landing_enabled": false,
+  "protocol": "One complete C001 warm-up excluded; three rounds of C001,C002,C007, no dropped frames or response filtering",
+  "clips": [
+    {
+      "name": "C001.mp4",
+      "sha256": "be54cb6af30831ed82d9a2cff2d64a55ecdf94f6e69d78da2eb0e5852fa268bb"
+    },
+    {
+      "name": "C002.mp4",
+      "sha256": "114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61"
+    },
+    {
+      "name": "C007.mp4",
+      "sha256": "6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899"
+    }
+  ],
+  "asset_sha256": {
+    "pose_landmarker_lite.task": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7",
+    "paddle_w8a32.tflite": "d084b65ee67ce58985be5fe1ebe70a7907a5e3704d4117e0474686aca53bacef",
+    "gru_fold1.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "gru_fold2.tflite": "9f7a5cefe571ce1d81d099fcc4d2165821159b8c0c4cb6c694510792210f20be",
+    "gru_fold3.tflite": "70555916b6dfeeef2389c3f3604879e8e1182c151e335c7940003de5d63a216a",
+    "gru_fold4.tflite": "f1d83af6a5dd167f77f63b8ff87b85424955098b9299419faa2fa51c7ba867b5",
+    "gru_fold5.tflite": "9b511816d9899b4f7000b524d12afcdc7c15385f9b5083472434c9b81f9d0c96"
+  },
+  "runs": [
+    {
+      "clip": "C001.mp4",
+      "round": 0,
+      "warmup": true,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 610.033853,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@3942c41",
+      "total_processing_ms": 2258.314686,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 1757.009479,
+      "pose_ms": 234.438542,
+      "hip_accumulation_ms": 0.014271,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 1,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 390.422761,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@2ccc33b",
+      "total_processing_ms": 514.333177,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 229.776198,
+      "pose_ms": 227.723073,
+      "hip_accumulation_ms": 0.012917,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 1,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 261.106563,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@78b404",
+      "total_processing_ms": 398.763125,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 197.937604,
+      "pose_ms": 157.298593,
+      "hip_accumulation_ms": 0.012813,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 1,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 252.46901,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@f929be9",
+      "total_processing_ms": 374.221198,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 173.60474,
+      "pose_ms": 181.328594,
+      "hip_accumulation_ms": 0.017604,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 2,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 364.633906,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@ffc457a",
+      "total_processing_ms": 400.282499,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 190.998854,
+      "pose_ms": 191.391302,
+      "hip_accumulation_ms": 0.015782,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 2,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 280.148385,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@b7507",
+      "total_processing_ms": 375.759219,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 199.032448,
+      "pose_ms": 159.582448,
+      "hip_accumulation_ms": 0.013594,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 2,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 271.076771,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@fb671a0",
+      "total_processing_ms": 577.49,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 248.839427,
+      "pose_ms": 309.794167,
+      "hip_accumulation_ms": 0.013021,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 3,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 278.008541,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@1b8aa15",
+      "total_processing_ms": 531.051458,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 303.241198,
+      "pose_ms": 192.427292,
+      "hip_accumulation_ms": 0.025781,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 3,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 263.67724,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@4b605f6",
+      "total_processing_ms": 422.639532,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 254.070625,
+      "pose_ms": 153.554427,
+      "hip_accumulation_ms": 0.014271,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 3,
+      "warmup": false,
+      "environment_before": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      },
+      "pose_reset_load_ms": 250.897552,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "success": false,
+      "error": "Canvas: trying to use a recycled bitmap android.graphics.Bitmap@6d3293",
+      "total_processing_ms": 377.949375,
+      "decoded_frames": 1,
+      "usable_frames": 1,
+      "decode_ms": 212.707083,
+      "pose_ms": 144.783333,
+      "hip_accumulation_ms": 0.01224,
+      "paddle_ms": 0,
+      "environment_after": {
+        "battery_percent": 95,
+        "battery_temperature_c": 30,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 0
+      }
+    }
+  ],
+  "model_load_ms": 732.170208,
+  "completed": true,
+  "end_environment": {
+    "battery_percent": 95,
+    "battery_temperature_c": 30,
+    "plugged": 1,
+    "power_save": false,
+    "thermal_status": 0
+  }
+}

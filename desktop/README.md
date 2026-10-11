@@ -1,5 +1,9 @@
 # Serve Lab desktop tester
 
+**Current default: original five-fold GRU ensemble**, selected before Coach C Session 2 release.
+The hybrid remains an optional comparison. Approved actionable feedback wording is now used.
+See [the current evaluation amendment](../evaluation/coach_c/session2_gru/README.md).
+
 Double-click **launchers/Serve Lab.bat** in the project root. A local Python server opens
 the interface at http://127.0.0.1:7861. Keep its console open while analyzing;
 Ctrl+C closes the server. This is a local browser application, not a packaged

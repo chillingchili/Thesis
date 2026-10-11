@@ -1,0 +1,93 @@
+{
+  "video": {
+    "fps": 59.94005994005994,
+    "frames": 123,
+    "duration": 2.05205,
+    "width": 1920,
+    "height": 1080
+  },
+  "range": {
+    "start": 0,
+    "end": 2.05205
+  },
+  "options": {
+    "start": 0,
+    "end": null,
+    "model": "ensemble",
+    "landing": "off",
+    "moment_matching": true
+  },
+  "warnings": [],
+  "serve": {
+    "status": "ok",
+    "label": "drive",
+    "confidence": 0.4788625240325928,
+    "probabilities": {
+      "drive": 0.4788625240325928,
+      "lob": 0.1948220431804657,
+      "topspin": 0.3263154625892639
+    },
+    "model": "ensemble",
+    "model_version": "legacy",
+    "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_eligible": true,
+    "valid_frames": 123,
+    "window_frames": 123,
+    "truncated_frames": 0,
+    "moment_matching": true,
+    "preprocessing": {},
+    "components": {}
+  },
+  "shift": {
+    "status": "ok",
+    "value": 0.11200639755073966,
+    "threshold": 0.1542655138505721,
+    "sufficient": false
+  },
+  "paddle": {
+    "status": "ok",
+    "angle": 20.023317337036133,
+    "low": 13.410494542121889,
+    "high": 165.73870525360107,
+    "state": "OPTIMAL",
+    "measurements": 8,
+    "direction_validated": false
+  },
+  "landing": {
+    "status": "disabled"
+  },
+  "pose_coverage": 1.0,
+  "contact": {
+    "frame": 60,
+    "seconds": 1.0010000000000001,
+    "method": "peak right-wrist speed proxy"
+  },
+  "feedback": {
+    "status": "LOW_CONFIDENCE",
+    "messages": [
+      "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+    ],
+    "notifications": [],
+    "rule_ids": [],
+    "version": "coach-c-actionable-wording-v2",
+    "validation_status": "pending_coach_c"
+  },
+  "seconds": null,
+  "assets": {
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7"
+  },
+  "files": [],
+  "review_id": "C025",
+  "input_sha256": "d0381110bfb6d494e74ceb8426feaf9e7b883ea889ed0f9a2e97bf19ff99f234",
+  "freeze_sha256": "16db85c5ff1d0fe9d1d0d3a220b37954c34bf2000979de8c0afa7216484a9de3",
+  "recomputation": {
+    "method": "Original GRU inference on preserved pose cache; hip/paddle/contact reused",
+    "keypoints_sha256": "457a54b9961fa30c63746af5a95499482b957049dcd832a4e37ce5a0f74c0145",
+    "source_report_sha256": "fd235023d2ae1db92151cfb733ba8a2ea471eb526b38d1a11d431a71c68012fc",
+    "original_hybrid_seconds": 4.95,
+    "end_to_end_latency_measured": false
+  }
+}

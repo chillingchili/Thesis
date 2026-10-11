@@ -1,0 +1,30 @@
+{
+  "files": {
+    "android/app/build/outputs/apk/debug/app-debug.apk": "d30bc8c5c9c1e29f02e14fa5a917de6af5180b6100e836c20504cd1062db28e7",
+    "android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk": "a3079b235ef071aed84759ecff14b47f009b9cad636342a9d6e4f102ddd440b5",
+    "android/app/src/main/java/com/thesis/pickleballserve/CoreLatencyBenchmark.kt": "d0b2d0c406a7115f511ad3b4655d90a3cfafb4dd8e8fb78f448516a4c5a91d30",
+    "android/app/src/main/java/com/thesis/pickleballserve/LatencyBenchmarkActivity.kt": "b10006b94f1468d035ab9aaa71c4a2a1b109b1106610d49d4c6e1e5d352f4752",
+    "android/app/src/main/java/com/thesis/pickleballserve/PaddleStream.kt": "cc7c8621436fbe456129f5d8d6f61909f4dbc7c0ff3b8f1d497fe1736ee61053",
+    "android/app/src/main/java/com/thesis/pickleballserve/PaddleGeometry.kt": "47ae0891e345fb006c5d6436711278b427c2d88918cea0badbe26c95e8601a10",
+    "android/app/src/androidTest/java/com/thesis/pickleballserve/CoreLatencyTest.kt": "5e8bc2e0cd28bbe85a7aead572bd78b2e7891b62a7dddecb675f26be59988385",
+    "android/app/src/androidTest/java/com/thesis/pickleballserve/PaddleBitmapTest.kt": "10409f6e2c7371f2090d2c7f800aeb4144eded99ffe031c43c322e5fdd14fba0",
+    "scripts/summarize_phone_latency.py": "caee67118d5a31062c97a4d538f97d9f243eb444dfe085953a60d896f15151d7"
+  },
+  "build_checks": "assembleDebug, assembleDebugAndroidTest, testDebugUnitTest, lintDebug passed",
+  "phone_paddle_regression": "Both PaddleBitmapTest tests passed on connected Xiaomi",
+  "changes": "Added recorded-file benchmark; corrected byte-Mat bitmap conversion, RGBA grayscale channel order and float conversion for edge rectangle points. Frozen Coach C files and model weights unchanged.",
+  "setup_failures_retained": [
+    "failed_bitmap_1791641977332.json",
+    "failed_contour_1791642388329.json",
+    "failed_paddle_1791642134047.json"
+  ],
+  "conditions": "Debug build, USB connected and charging; benchmark preceded by implementation debugging. Environment is recorded per trial.",
+  "full_benchmark_status": "CoreLatencyTest passed on Xiaomi: 10 successful trials including one excluded warm-up; all frames decoded.",
+  "diagnostic_exports": [
+    "core-1791641977332.json",
+    "core-1791642134047.json",
+    "core-1791642388329.json",
+    "core-1791642724013.json"
+  ],
+  "raw_sha256": "21afdefe6cf6b00ee268fb498b6959ab22de569f9cb2ef3ac8cc30b6f98ba355"
+}

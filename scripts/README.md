@@ -5,7 +5,10 @@ because frozen evaluation manifests record their hashes and locations.
 
 | Task | Script or folder |
 |---|---|
+| Summarize exported phone latency JSON | `summarize_phone_latency.py` — [protocol](../android/LATENCY_TEST.md) |
 | Build/update the current Coach C Google form | [google_apps_script/](google_apps_script/README.md) |
+| Score Session 2 CSV/Excel responses | `score_coach_c_session2.py` — [definitions and command](../evaluation/coach_c/session2/SCORING_PLAN.md) |
+| Rebuild the 10 October manuscript revision | `revise_thesis_20261010.py` — [read before rerunning](../docs/thesis/README.md) |
 | Export tracked evidence for the partner | `export_coach_c_handoff.py` |
 | Select/finish the original 30 clips | `prepare_coach_c_evaluation.py`, `finalize_coach_c_30.py` (historical preparation) |
 | Original frozen inference | `prepare_coach_c_session2.py` (do not rerun to replace the evaluated snapshot) |

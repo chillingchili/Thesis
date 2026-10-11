@@ -1,5 +1,9 @@
 # Pickleball Serve — Android Demo
 
+**Current default: original five-fold GRU ensemble**, selected before Coach C Session 2 release.
+The hybrid remains an optional comparison. Approved actionable feedback wording is now used.
+See [the current evaluation amendment](../evaluation/coach_c/session2_gru/README.md).
+
 Rule-based feedback is now shown after each completed serve. It uses Coach B
 source-linked rules, the final GRU's 0.60 confidence gate and independent
 weight-shift/paddle states. Feedback is a research preview pending Coach C
@@ -138,3 +142,9 @@ Connected Gradle tests can uninstall the app at teardown; reinstall the debug AP
 Android Studio afterward. Prefer installing both APKs with `adb install -r` then running
 `adb shell am instrument -w -r -e class com.thesis.pickleballserve.landing.LandingPipelineTest,com.thesis.pickleballserve.landing.RealtimeTrackerTest com.thesis.pickleballserve.test/androidx.test.runner.AndroidJUnitRunner`.
 Test video fixtures live only in `src/androidTest/assets`. See `NOTE12_BENCHMARK.md` for measured results.
+
+## Phone latency benchmark
+
+The **Latency Test** button runs prepared clips automatically and exports per-stage
+timings. See [the protocol](LATENCY_TEST.md). This measures recorded-file processing;
+live capture completion to displayed feedback remains a separate measurement.
