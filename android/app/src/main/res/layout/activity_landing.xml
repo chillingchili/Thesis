@@ -14,13 +14,64 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:importantForAccessibility="no"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:visibility="gone" />
 
     <com.thesis.pickleballserve.landing.LandingOverlayView
         android:id="@+id/landingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:background="@drawable/status_background"
+            android:text="@string/back_to_live"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="@string/landing_screen_title"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/landingHelpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:minHeight="40dp"
+            android:background="@drawable/status_background"
+            android:text="?"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:contentDescription="@string/landing_info_title" />
+
+        <Button
+            android:id="@+id/loadVideoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:minHeight="40dp"
+            android:background="@drawable/status_background"
+            android:text="Load Video"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/landingStatus"
@@ -33,14 +84,5 @@
         android:text="starting..."
         android:textColor="#FFFFFF"
         android:textSize="13sp" />
-
-    <Button
-        android:id="@+id/loadVideoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="8dp"
-        android:text="Load Video"
-        android:textSize="12sp" />
 
 </FrameLayout>

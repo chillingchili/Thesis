@@ -28,12 +28,14 @@ class LatencyBenchmarkActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = getString(R.string.latency_tool)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val layout = LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(24,24,24,24) }
+        val back = Button(this).apply { text=getString(R.string.back_to_live); setOnClickListener { finish() } }
         status=TextView(this).apply { text="Recorded-clip latency test: 3 prepared clips, 3 rounds, one warm-up. Includes decode, pose, hip, paddle, GRU and feedback. This does not measure live capture-to-display delay."; textSize=17f }
         run=Button(this).apply { text="Run latency test"; setOnClickListener { start() } }
         save=Button(this).apply { text="Export results"; isEnabled=false; setOnClickListener { export.launch(resultFile?.name ?: "latency.json") } }
-        layout.addView(run); layout.addView(save); layout.addView(status)
+        layout.addView(back); layout.addView(run); layout.addView(save); layout.addView(status)
         setContentView(ScrollView(this).apply { addView(layout) })
         if (intent.getBooleanExtra("autostart", false)) start()
     }

@@ -1,7 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.PickleballServe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:statusBarColor">#000000</item>
-        <item name="android:navigationBarColor">#000000</item>
+    <style name="Theme.PickleballServe" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/accent</item><item name="colorPrimaryVariant">@color/accent</item>
+        <item name="colorOnPrimary">#FFFFFF</item><item name="colorSecondary">@color/accent</item>
+        <item name="android:statusBarColor">@color/page</item><item name="android:navigationBarColor">@color/page</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:fontFamily">sans</item>
     </style>
+    <style name="ResultCaption"><item name="android:layout_width">match_parent</item><item name="android:layout_height">wrap_content</item><item name="android:textSize">12sp</item><item name="android:textStyle">bold</item><item name="android:letterSpacing">0.08</item><item name="android:textColor">@color/muted</item></style>
+    <style name="ResultValue"><item name="android:layout_width">match_parent</item><item name="android:layout_height">wrap_content</item><item name="android:textSize">19sp</item><item name="android:textStyle">bold</item><item name="android:textColor">@color/ink</item><item name="android:layout_marginTop">8dp</item></style>
+    <style name="ResultNote"><item name="android:layout_width">match_parent</item><item name="android:layout_height">wrap_content</item><item name="android:textSize">13sp</item><item name="android:textColor">@color/muted</item><item name="android:layout_marginTop">6dp</item></style>
 </resources>

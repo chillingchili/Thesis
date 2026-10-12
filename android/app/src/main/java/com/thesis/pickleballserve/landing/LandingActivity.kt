@@ -18,6 +18,8 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.thesis.pickleballserve.R
 import com.thesis.pickleballserve.databinding.ActivityLandingBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -32,6 +34,7 @@ class LandingActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var inferenceExecutor: ExecutorService
     private var cameraProvider: ProcessCameraProvider? = null
+    private var cameraUseCases: Array<androidx.camera.core.UseCase> = emptyArray()
     // Interpreters belong to inferenceExecutor; tracking/decoder belong to cameraExecutor.
     private var yolo: YoloRunner? = null
     private val inferenceBusy = AtomicBoolean(false)
@@ -91,6 +94,14 @@ class LandingActivity : AppCompatActivity() {
         binding.loadVideoButton.isEnabled = false
         binding.landingStatus.text = "Loading analysis models…"
         binding.loadVideoButton.setOnClickListener { pickVideo.launch(arrayOf("video/*")) }
+        binding.backButton.setOnClickListener { finish() }
+        binding.landingHelpButton.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.landing_info_title))
+                .setMessage(getString(R.string.landing_info_body) + "\n\n" + getString(R.string.landing_zones_body))
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+        }
         val video = intent.getStringExtra("video")
         val fpsExtra = intent.getFloatExtra("fps", 0f).toDouble()
         inferenceExecutor.execute {
@@ -162,7 +173,7 @@ class LandingActivity : AppCompatActivity() {
                 val provider = providerFuture.get()
                 cameraProvider = provider
                 val preview = Preview.Builder().setTargetAspectRatio(androidx.camera.core.AspectRatio.RATIO_4_3).build().also {
-                    binding.landingPreview.scaleType = androidx.camera.view.PreviewView.ScaleType.FIT_CENTER
+                    binding.landingPreview.scaleType = androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
                     it.setSurfaceProvider(binding.landingPreview.surfaceProvider)
                 }
                 val analysis = ImageAnalysis.Builder()
@@ -170,8 +181,9 @@ class LandingActivity : AppCompatActivity() {
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
                 analysis.setAnalyzer(cameraExecutor) { proxy -> analyzeProxy(proxy) }
-                provider.unbindAll()
+                provider.unbind(*cameraUseCases)
                 provider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+                cameraUseCases = arrayOf(preview, analysis)
             } catch (e: Exception) {
                 Log.e(TAG, "camera start failed", e)
                 binding.landingStatus.text = "Camera unavailable. You can still load a video."
@@ -329,7 +341,7 @@ class LandingActivity : AppCompatActivity() {
 
     private fun startReplay(path: String?, uri: Uri?, fpsExtra: Double) {
         replayStarted = true
-        cameraProvider?.unbindAll()
+        cameraProvider?.unbind(*cameraUseCases)
         binding.landingPreview.visibility = View.GONE
         binding.replayFrame.visibility = View.VISIBLE
         binding.loadVideoButton.isEnabled = false
@@ -452,7 +464,7 @@ class LandingActivity : AppCompatActivity() {
     override fun onDestroy() {
         stopped = true
         replayStarted = true
-        cameraProvider?.unbindAll()
+        cameraProvider?.unbind(*cameraUseCases)
         // Queue cleanup behind the current frame; never close an interpreter during inference.
         cameraExecutor.execute { realtime.close(); normalizer.close() }
         cameraExecutor.shutdown()

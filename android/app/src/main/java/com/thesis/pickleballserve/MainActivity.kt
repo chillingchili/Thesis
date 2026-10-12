@@ -5,13 +5,28 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Matrix
+import android.net.Uri
+import android.provider.Settings
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.PopupMenu
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.RejectedExecutionException
 import android.graphics.PointF
 import android.os.Bundle
 import android.os.SystemClock
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.util.Size
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -22,6 +37,9 @@ import androidx.core.content.ContextCompat
 import com.thesis.pickleballserve.databinding.ActivityMainBinding
 import com.thesis.pickleballserve.landing.LandingActivity
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -66,7 +84,21 @@ class MainActivity : AppCompatActivity() {
     @Volatile private var paddleStream: PaddleStream? = null
     private var feedbackEngine: FeedbackEngine? = null
     @Volatile private var paddleFailed = false
-    @Volatile private var resultGeneration = 0L
+    private val sessionEpoch = SessionEpoch()
+    private val callbackGeneration = ThreadLocal<Long>()
+    private val resultGeneration: Long get() = sessionEpoch.current
+    private val inputEpoch = AtomicLong()
+    private val poseQueued = AtomicBoolean(false)
+    private lateinit var analysisExecutor: ExecutorService
+    private var cameraProvider: ProcessCameraProvider? = null
+    private var cameraUseCases: Array<androidx.camera.core.UseCase> = emptyArray()
+    @Volatile private var foreground = false
+    @Volatile private var destroyed = false
+    @Volatile private var modelsReady = false
+    private var inputRunning = false
+    private var permissionRequested = false
+    private var lastPoseSeenMs = 0L
+    private var lastStatusMs = 0L
     private var posePriority = true
     private var revisedEnd = false
     private var lastPaddleSubmitMs = 0L
@@ -75,6 +107,16 @@ class MainActivity : AppCompatActivity() {
     private val serveWindow = ServeWindow(preRollMs = 1000L)
 
     private var mode = RunMode.ENSEMBLE  // Original GRU selected before Coach C Session 2 release.
+
+    /** Back camera is the study setup; front camera is offered as an input selection. */
+    private var cameraFacing = CameraSelector.LENS_FACING_BACK
+
+    /** Fullscreen hides the result row so the shot can be framed on the tripod. */
+    private var fullscreen = false
+
+    /** Spoken results keep the player on the court; same strings as on screen. */
+    private var speakResults = true
+    private var tts: TextToSpeech? = null
 
     private val minFramesForInfer = 48
 
@@ -114,158 +156,349 @@ class MainActivity : AppCompatActivity() {
 
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) startCamera()
-            else {
-                Toast.makeText(this, "Camera permission required", Toast.LENGTH_LONG).show()
-                finish()
-            }
+            if (granted) startInput() else showPermissionRequired()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        permissionRequested = savedInstanceState?.getBoolean("permissionRequested") ?: false
         posePriority = intent.getBooleanExtra("research_pose_priority", true)
         revisedEnd = intent.getBooleanExtra("research_end_v2", false)
-        Log.i(LATENCY_TAG, "policy pose_priority=$posePriority end_v2=$revisedEnd")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        WindowCompat.getInsetsController(window, binding.root).isAppearanceLightNavigationBars = true
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            insets
+        }
         cameraExecutor = Executors.newSingleThreadExecutor()
-        // Paddle detection (~600ms/frame on this phone) runs off the pose callback so
-        // pose, the motion gate and end detection keep up with the camera. The queue
-        // is bounded: when paddle falls behind it drops the oldest sample and keeps
-        // the newest, since the frames around contact are the ones that matter.
-        paddleExecutor = ThreadPoolExecutor(
-            1, 1, 0L, TimeUnit.MILLISECONDS, LinkedBlockingQueue(6),
-        ).apply {
-            rejectedExecutionHandler = java.util.concurrent.RejectedExecutionHandler { r, exec ->
-                exec.queue.poll()
-                paddleDropped++
-                exec.execute(r)
+        analysisExecutor = Executors.newSingleThreadExecutor()
+        paddleExecutor = ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, LinkedBlockingQueue(6))
+        binding.menuButton.setOnClickListener { showMenu() }
+        binding.previewView.setOnClickListener {
+            setFullscreen(binding.resultsScroll.visibility == View.VISIBLE)
+        }
+        onBackPressedDispatcher.addCallback(this) {
+            if (fullscreen) setFullscreen(false)
+            else { isEnabled = false; onBackPressedDispatcher.onBackPressed() }
+        }
+        tts = TextToSpeech(this) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                val availability = tts?.setLanguage(Locale.ENGLISH)
+                if (availability == TextToSpeech.LANG_MISSING_DATA ||
+                    availability == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.w("MainActivity", "Spoken results unavailable: no English voice data")
+                }
+            } else Log.w("MainActivity", "Spoken results unavailable: TTS init failed")
+        }
+        binding.serveInfoButton.setOnClickListener {
+            showInfo(R.string.serve_definitions_title, R.string.serve_definitions_body)
+        }
+        binding.hipInfoButton.setOnClickListener {
+            showInfo(R.string.hip_info_title, R.string.hip_info_body)
+        }
+        binding.paddleInfoButton.setOnClickListener {
+            showInfo(R.string.paddle_info_title, R.string.paddle_info_body)
+        }
+        paddleExecutor.execute {
+            paddleStream = PaddleStream.load(applicationContext)
+            if (paddleStream == null) Log.e("MainActivity", "Paddle stream unavailable")
+        }
+        analysisExecutor.execute {
+            try {
+                gru = GruClassifier.load(applicationContext, ensemble = true)
+                knn = runCatching { KnnClassifier.load(applicationContext) }.getOrNull()
+                shiftDetector = ShiftDetector.load(applicationContext)
+                feedbackEngine = runCatching {
+                    FeedbackEngine.fromJson(assets.open("feedback_rules.json").bufferedReader().use { it.readText() })
+                }.getOrNull()
+                modelsReady = true
+                runOnUiThread {
+                    if (!destroyed) {
+                        updateModeLabel()
+                        if (foreground) startInput()
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Model initialization failed", e)
+                runOnUiThread { if (!destroyed) showFailure("Analysis unavailable", "The analysis models could not load. Retry to prepare them again.") }
+            } catch (e: LinkageError) {
+                Log.e("MainActivity", "Model runtime unavailable", e)
+                runOnUiThread { if (!destroyed) showFailure("Analysis unavailable", "The model runtime could not start on this device.") }
             }
         }
+    }
 
+    private fun postUi(generation: Long = callbackGeneration.get() ?: resultGeneration, block: () -> Unit) {
+        runOnUiThread { if (!destroyed && foreground && sessionEpoch.accepts(generation)) block() }
+    }
+
+    private fun setStatus(title: String, detail: String, busy: Boolean = false) {
+        binding.statusLine.text = if (detail.isBlank()) title else "$title · $detail"
+        binding.statusProgress.visibility = if (busy) View.VISIBLE else View.GONE
+    }
+
+    private fun clearCards(analyzing: Boolean = false) {
+        val text = if (analyzing) getString(R.string.analyzing) else getString(R.string.waiting)
+        binding.classLabel.text = text
+        binding.confLabel.setText(R.string.confidence_empty)
+        binding.shiftLabel.text = text
+        binding.paddleLabel.text = text
+        binding.feedbackTitle.setText(R.string.coaching_title)
+        binding.feedbackLabel.text = if (analyzing) "Checking the measurements from this serve…" else getString(R.string.coaching_empty)
+        listOf(binding.classLabel, binding.confLabel, binding.shiftLabel, binding.paddleLabel).forEach {
+            it.setTextColor(ContextCompat.getColor(this, R.color.ink))
+        }
+        binding.probDriveBar.progress = 0; binding.probLobBar.progress = 0; binding.probTopspinBar.progress = 0
+        binding.probDrive.text = "Drive —"; binding.probLob.text = "Lob —"; binding.probTopspin.text = "Topspin —"
+    }
+
+    /** Called only on the analysis worker; UI invalidation happens immediately. */
+    private fun resetAnalysis() {
+        serveWindow.clear(); emaProbs = null; gateActive = false; lowMotionSinceMs = 0L
+        refractoryUntilMs = 0L; lastServeEndMs = 0L; lastAngles = null; motionRate.reset()
+        motionRing.fill(0f); motionRingIdx = 0; motionRingCount = 0
+        idleMean = 0f; idleDev = .02f; lastPoseSeenMs = 0L
+        shiftDetector?.clear(); paddleStream?.clear()
+    }
+
+    /** Fullscreen framing for tripod setup; Back leaves it before leaving. */
+    private fun setFullscreen(on: Boolean) {
+        fullscreen = on
+        binding.resultsScroll.visibility = if (on) View.GONE else View.VISIBLE
+    }
+
+    private fun showMenu() {
+        val popup = PopupMenu(this, binding.menuButton)
+        popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
+        popup.menu.findItem(R.id.action_fullscreen).isChecked = fullscreen
+        popup.menu.findItem(R.id.action_speak).isChecked = speakResults
+        popup.menu.findItem(R.id.action_session).title =
+            getString(R.string.session_serves) + " (${SessionStore.size()})"
+        popup.menu.findItem(
+            if (cameraFacing == CameraSelector.LENS_FACING_FRONT) R.id.action_camera_front
+            else R.id.action_camera_back
+        ).isChecked = true
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_setup -> {
+                    MaterialAlertDialogBuilder(this).setTitle(R.string.setup_title).setMessage(R.string.setup_body)
+                        .setPositiveButton(R.string.understood, null).show()
+                    true
+                }
+                R.id.action_reset -> {
+                    sessionEpoch.invalidate()
+                    clearCards()
+                    analysisExecutor.execute { resetAnalysis() }
+                    setStatus(getString(R.string.ready_title), getString(R.string.camera_hint))
+                    true
+                }
+                R.id.action_fullscreen -> {
+                    setFullscreen(!fullscreen)
+                    item.isChecked = fullscreen
+                    true
+                }
+                R.id.action_session -> {
+                    startActivity(Intent(this, SessionActivity::class.java)); true
+                }
+                R.id.action_speak -> {
+                    speakResults = !speakResults
+                    item.isChecked = speakResults
+                    if (!speakResults) tts?.stop()
+                    true
+                }
+                R.id.action_camera_back -> {
+                    item.isChecked = true
+                    if (cameraFacing != CameraSelector.LENS_FACING_BACK) switchCamera(CameraSelector.LENS_FACING_BACK)
+                    true
+                }
+                R.id.action_camera_front -> {
+                    item.isChecked = true
+                    if (cameraFacing != CameraSelector.LENS_FACING_FRONT) switchCamera(CameraSelector.LENS_FACING_FRONT)
+                    true
+                }
+                R.id.action_probabilities -> {
+                    binding.probabilityPanel.visibility =
+                        if (binding.probabilityPanel.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                    true
+                }
+                R.id.action_compare -> {
+                    startActivity(Intent(this, ServeReplayActivity::class.java)); true
+                }
+                R.id.action_landing -> {
+                    startActivity(Intent(this, LandingActivity::class.java)); true
+                }
+                R.id.action_latency -> {
+                    startActivity(Intent(this, LatencyBenchmarkActivity::class.java)); true
+                }
+                R.id.action_change_model -> { changeMode(); true }
+                R.id.action_about -> {
+                    MaterialAlertDialogBuilder(this).setTitle(R.string.about_tool).setMessage(R.string.about_body)
+                        .setPositiveButton(R.string.understood, null).show()
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+    private fun showInfo(titleRes: Int, bodyRes: Int) {
+        MaterialAlertDialogBuilder(this).setTitle(titleRes).setMessage(bodyRes)
+            .setPositiveButton(R.string.understood, null).show()
+    }
+
+    /** Switch live input cameras without losing the session; research replay keeps its own source. */
+    private fun switchCamera(facing: Int) {
+        if (intent.getStringExtra(EXTRA_REPLAY_CLIP) != null) {
+            cameraFacing = facing
+            Toast.makeText(this, R.string.camera_switch_note, Toast.LENGTH_LONG).show()
+            return
+        }
+        cameraFacing = facing
+        val provider = cameraProvider
+        if (!inputRunning || provider == null || destroyed || !foreground) {
+            Toast.makeText(this, R.string.camera_switch_note, Toast.LENGTH_SHORT).show()
+            return
+        }
         try {
-            gru = GruClassifier.load(this, ensemble = true)
-        } catch (e: Throwable) {
-            Log.e("MainActivity", "GRU load failed", e)
-            binding.classLabel.text = "GRU LOAD ERR"
-            binding.confLabel.text = e.message ?: "load failed"
-        }
-
-        try {
-            knn = KnnClassifier.load(this)
-        } catch (e: Throwable) {
-            Log.e("MainActivity", "kNN load failed", e)
-            // continue without hybrid
-            if (mode == RunMode.HYBRID) mode = RunMode.ENSEMBLE
-        }
-
-        shiftDetector = ShiftDetector.load(this)
-        // Loaded on the paddle worker, not the main thread: a GpuDelegate must be
-        // created on the same thread that later invokes it (see LandingActivity,
-        // which does the same for its YOLO runner). Until this completes, paddle
-        // samples are silently skipped; pose, the gate and the GRU are unaffected.
-        paddleExecutor.execute {
-            val loaded = PaddleStream.load(applicationContext)
-            paddleStream = loaded
-            if (loaded == null) Log.e("MainActivity", "Paddle stream unavailable")
-        }
-        feedbackEngine = try {
-            FeedbackEngine.fromJson(assets.open("feedback_rules.json").bufferedReader().use { it.readText() })
+            provider.unbind(*cameraUseCases)
+            val epoch = inputEpoch.get()
+            val preview = Preview.Builder().build().also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+            val analysis = ImageAnalysis.Builder().setTargetResolution(Size(640, 480))
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build()
+            analysis.setAnalyzer(cameraExecutor) { image ->
+                if (foreground && !destroyed && epoch == inputEpoch.get()) analyzeFrame(image) else image.close()
+            }
+            provider.bindToLifecycle(this, cameraSelector(), preview, analysis)
+            cameraUseCases = arrayOf(preview, analysis)
         } catch (e: Exception) {
-            Log.e("MainActivity", "Feedback rules unavailable", e)
-            null
+            Log.e("MainActivity", "Camera switch failed", e)
+            showFailure("Camera unavailable", "Close other camera apps, then retry.")
+            return
         }
+        sessionEpoch.invalidate()
+        analysisExecutor.execute { resetAnalysis() }
+        clearCards()
+        setStatus(getString(R.string.ready_title), getString(R.string.camera_switch_note))
+    }
 
-        updateModeLabel()
+    private fun cameraSelector() = CameraSelector.Builder().requireLensFacing(cameraFacing).build()
 
-        binding.modeToggle.setOnClickListener {
-            synchronized(this) {
-            mode = when (mode) {
+    /** Reads the same strings shown on screen, so the player can stay on court. */
+    private fun speak(record: ServeRecord) {
+        if (!speakResults) return
+        val engine = tts ?: return
+        val conf = record.confidence?.let { "(${(it * 100).toInt()} percent). " } ?: ""
+        engine.speak("Serve ${record.number}. ${record.serveType}. $conf${record.feedback}",
+            TextToSpeech.QUEUE_FLUSH, null, "serve-${record.number}")
+    }
+
+    private fun changeMode() {
+        if (!modelsReady) return
+        sessionEpoch.invalidate()
+        clearCards()
+        setStatus("Changing comparison model…", "Your next attempt will use the selected model.", true)
+        analysisExecutor.execute {
+            resetAnalysis()
+            val next = when (mode) {
                 RunMode.SINGLE -> RunMode.ENSEMBLE
                 RunMode.ENSEMBLE -> if (knn != null) RunMode.HYBRID else RunMode.SINGLE
                 RunMode.HYBRID -> RunMode.SINGLE
             }
-            // Reload GRU for single vs ensemble
             try {
-                gru?.close()
-                gru = GruClassifier.load(this, ensemble = mode != RunMode.SINGLE)
-            } catch (e: Throwable) {
-                Toast.makeText(this, "GRU reload failed: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-            updateModeLabel()
-            binding.resetButton.performClick()
-            Toast.makeText(this, "Mode: $mode", Toast.LENGTH_SHORT).show()
+                val replacement = GruClassifier.load(applicationContext, ensemble = next != RunMode.SINGLE)
+                gru?.close(); gru = replacement; mode = next
+                postUi { updateModeLabel(); binding.probabilityPanel.visibility = View.VISIBLE
+                    setStatus("Comparison model ready", "${mode.name.lowercase()} selected. Reset does not change the model.") }
+            } catch (e: Exception) {
+                postUi { setStatus("Model unchanged", "Could not load the comparison model. Your previous model remains active.") }
             }
         }
+    }
 
-        binding.resetButton.setOnClickListener {
-            synchronized(this) {
-            resultGeneration++
-            serveWindow.clear()
-            emaProbs = null
-            gateActive = false
-            lowMotionSinceMs = 0L
-            refractoryUntilMs = 0L
-            lastServeEndMs = 0L
-            lastAngles = null
-            motionRate.reset()
-            motionRing.fill(0f)
-            motionRingIdx = 0
-            motionRingCount = 0
-            shiftDetector?.clear()
-            paddleStream?.clear()
-            binding.framesLabel.text = "READY (waiting for serve)"
-            binding.classLabel.text = "--"
-            binding.confLabel.text = "Conf: --"
-            binding.classLabel.setTextColor(Color.WHITE)
-            binding.confLabel.setTextColor(Color.parseColor("#B0BEC5"))
-            binding.shiftLabel.text = "WEIGHT SHIFT: --"
-            binding.shiftLabel.setTextColor(Color.parseColor("#B0BEC5"))
-            binding.paddleLabel.text = "PADDLE: --"
-            binding.paddleLabel.setTextColor(Color.parseColor("#B0BEC5"))
-            binding.feedbackLabel.text = "Record a serve to receive feedback."
-            binding.probDriveBar.progress = 0
-            binding.probLobBar.progress = 0
-            binding.probTopspinBar.progress = 0
-            binding.probDrive.text = "Drive   --%"
-            binding.probLob.text = "Lob     --%"
-            binding.probTopspin.text = "Topspin --%"
+    private fun showPermissionRequired() {
+        inputRunning = false
+        binding.statusState.setText(R.string.camera_permission_title)
+        setStatus(getString(R.string.camera_permission_title), getString(R.string.camera_permission_note))
+        binding.recoveryButton.visibility = View.VISIBLE
+        val settings = permissionRequested && !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+        binding.recoveryButton.setText(if (settings) R.string.open_settings else R.string.allow_camera)
+        binding.recoveryButton.setOnClickListener {
+            if (settings) startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName")))
+            else { permissionRequested = true; requestPermission.launch(Manifest.permission.CAMERA) }
+        }
+    }
+
+    private fun showFailure(title: String, detail: String) {
+        if (destroyed) return
+        stopInput()
+        clearCards()
+        binding.statusState.text = title
+        setStatus(title, detail)
+        binding.recoveryButton.visibility = View.VISIBLE
+        binding.recoveryButton.setText(R.string.retry)
+        binding.recoveryButton.setOnClickListener { recreate() }
+    }
+
+    private fun startInput() {
+        if (!foreground || destroyed || !modelsReady || inputRunning) return
+        val replay = intent.getStringExtra(EXTRA_REPLAY_CLIP)
+        if (replay == null && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            showPermissionRequired(); return
+        }
+        inputRunning = true
+        binding.root.keepScreenOn = true
+        binding.recoveryButton.visibility = View.GONE
+        setStatus(getString(R.string.initializing), "Starting the camera and pose tracker…", true)
+        if (replay != null) startClipReplay(replay, intent.getBooleanExtra(EXTRA_REPLAY_LOOP, false)) else startCamera()
+    }
+
+    private fun createPose(epoch: Long): PosePipeline = PosePipeline(
+        context = applicationContext, useGpu = intent.getBooleanExtra("research_pose_gpu", true),
+        onPose = { pts, bmp, timestamp, real ->
+            if (foreground && !destroyed && epoch == inputEpoch.get() && poseQueued.compareAndSet(false, true)) {
+                val points = Array(pts.size) { PointF(pts[it].x, pts[it].y) }
+                val generation = resultGeneration
+                try { analysisExecutor.execute {
+                    try { if (foreground && epoch == inputEpoch.get() && sessionEpoch.accepts(generation)) {
+                        callbackGeneration.set(generation)
+                        lastPoseSeenMs = SystemClock.uptimeMillis()
+                        onPoseDetected(points, bmp, timestamp, real)
+                    } } finally { callbackGeneration.remove(); poseQueued.set(false) }
+                } } catch (_: RejectedExecutionException) { poseQueued.set(false) }
             }
-        }
-
-        binding.landingButton.setOnClickListener {
-            startActivity(Intent(this, LandingActivity::class.java))
-        }
-
-        binding.replayButton.setOnClickListener {
-            startActivity(Intent(this, ServeReplayActivity::class.java))
-        }
-        binding.latencyButton.setOnClickListener {
-            startActivity(Intent(this, LatencyBenchmarkActivity::class.java))
-        }
-
-        posePipeline = PosePipeline(
-            context = this,
-            useGpu = intent.getBooleanExtra("research_pose_gpu", true),
-            onPose = { pts, bmp, timestamp, real -> onPoseDetected(pts, bmp, timestamp, real) },
-            onError = { msg ->
-                runOnUiThread { binding.poseLabel.text = "POSE ERR: $msg" }
+        },
+        onMissing = {
+            if (foreground && epoch == inputEpoch.get() && poseQueued.compareAndSet(false, true)) {
+                val generation = resultGeneration
+                try { analysisExecutor.execute {
+                    try { if (foreground && epoch == inputEpoch.get() && sessionEpoch.accepts(generation)) {
+                        callbackGeneration.set(generation); onPoseMissing()
+                    } }
+                    finally { callbackGeneration.remove(); poseQueued.set(false) }
+                } } catch (_: RejectedExecutionException) { poseQueued.set(false) }
             }
-        )
-
-        val replayClip = intent.getStringExtra(EXTRA_REPLAY_CLIP)
-        if (replayClip != null) {
-            startClipReplay(replayClip, intent.getBooleanExtra(EXTRA_REPLAY_LOOP, false))
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            startCamera()
-        } else {
-            requestPermission.launch(Manifest.permission.CAMERA)
+        },
+        onError = { msg -> Log.e("MainActivity", msg)
+            postUi { if (epoch == inputEpoch.get())
+                showFailure("Pose tracking unavailable", "Retry analysis. Ensure this device supports the bundled models.") }
         }
+    )
 
-        binding.framesLabel.text = "READY (waiting for serve)"
+    private fun onPoseMissing() {
+        val now = SystemClock.uptimeMillis()
+        if (gateActive && lastPoseSeenMs != 0L && now - lastPoseSeenMs >= 1500L) {
+            resetAnalysis()
+            postUi { clearCards(); binding.classLabel.text = "Incomplete capture"
+                binding.feedbackLabel.text = "The player left view before analysis completed. Keep your full body visible and try another serve."
+                setStatus("Capture interrupted", getString(R.string.tracking_lost_note)) }
+        }
+        if (now - lastStatusMs >= 500L) {
+            lastStatusMs = now
+            postUi { binding.statusState.setText(R.string.tracking_lost) }
+        }
     }
 
     private fun updateModeLabel() {
@@ -285,59 +518,68 @@ class MainActivity : AppCompatActivity() {
      * unchanged, so what the screen shows is the live path running.
      */
     private fun startClipReplay(clipName: String, loop: Boolean) {
-        val file = File(filesDir, "latency_input/$clipName")
-        if (!file.isFile) {
-            binding.poseLabel.text = "REPLAY MISSING"
-            binding.framesLabel.text = "Put $clipName in files/latency_input"
-            Log.e("MainActivity", "Replay clip not found: ${file.absolutePath}")
-            return
+        val base = File(filesDir, "latency_input").canonicalFile
+        val file = File(base, clipName).canonicalFile
+        if (file.parentFile != base || !file.isFile) {
+            showFailure("Replay unavailable", "The selected research clip is not available on this phone."); return
         }
-        posePipeline?.start(this)
-        binding.poseLabel.text = "Pose: replay"
-        binding.framesLabel.text = if (loop) "REPLAY $clipName (looping)" else "REPLAY $clipName"
-        clipReplay = ServeClipReplay(
-            file = file,
-            onFrame = { bitmap, real -> posePipeline?.analyze(bitmap, real) },
-            onDone = { frames -> Log.i(LATENCY_TAG, "replay_done clip=$clipName frames_sent=$frames") },
-            loop = loop,
-        ).also { it.start() }
+        val epoch = inputEpoch.get()
+        cameraExecutor.execute {
+            if (!foreground || epoch != inputEpoch.get()) return@execute
+            val pipeline = createPose(epoch).also { posePipeline = it }
+            if (!pipeline.start(applicationContext)) return@execute
+            postUi { binding.statusState.text = "Recorded live-path replay"
+                setStatus("Preparing recorded serve", "Research replay uses the live analysis path.") }
+            clipReplay = ServeClipReplay(file = file,
+                onFrame = { bitmap, real ->
+                    if (foreground && epoch == inputEpoch.get()) runCatching { cameraExecutor.execute {
+                        if (foreground && epoch == inputEpoch.get()) posePipeline?.analyze(bitmap, real)
+                    } }
+                },
+                onDone = { frames -> Log.i(LATENCY_TAG, "replay_done clip=$clipName frames_sent=$frames") }, loop = loop
+            ).also { if (foreground && epoch == inputEpoch.get()) it.start() }
+        }
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener({
-            val cameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(binding.previewView.surfaceProvider)
-            }
-            val imageAnalysis = ImageAnalysis.Builder()
-                // Pose is fed at analysis resolution, not preview resolution. 640x480
-                // cuts pose cost ~3x versus an unpinned default and still resolves a
-                // full-body serve; matches the landing stream's setting.
-                .setTargetResolution(Size(640, 480))
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
-                .also { a ->
-                    a.setAnalyzer(cameraExecutor) { ip -> analyzeFrame(ip) }
-                }
+        val epoch = inputEpoch.get()
+        val future = ProcessCameraProvider.getInstance(this)
+        future.addListener({
+            if (!foreground || destroyed || epoch != inputEpoch.get()) return@addListener
             try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis
-                )
-                posePipeline?.start(this)
-                binding.poseLabel.text = "Pose: starting..."
+                val provider = future.get().also { cameraProvider = it }
+                val preview = Preview.Builder().build().also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+                val analysis = ImageAnalysis.Builder().setTargetResolution(Size(640, 480))
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build()
+                cameraExecutor.execute {
+                    if (!foreground || epoch != inputEpoch.get()) return@execute
+                    val pipeline = createPose(epoch).also { posePipeline = it }
+                    if (!pipeline.start(applicationContext)) return@execute
+                    postUi { binding.statusState.text = "Live camera · side view"
+                        setStatus(getString(R.string.ready_title), getString(R.string.camera_hint)) }
+                }
+                analysis.setAnalyzer(cameraExecutor) { image ->
+                    if (foreground && epoch == inputEpoch.get()) analyzeFrame(image) else image.close()
+                }
+                provider.unbind(*cameraUseCases)
+                provider.bindToLifecycle(this, cameraSelector(), preview, analysis)
+                cameraUseCases = arrayOf(preview, analysis)
             } catch (e: Exception) {
-                Log.e("MainActivity", "Camera bind failed", e)
-                binding.poseLabel.text = "CAMERA ERR"
+                Log.e("MainActivity", "Camera start failed", e)
+                showFailure("Camera unavailable", "Close other camera apps, then retry.")
             }
         }, ContextCompat.getMainExecutor(this))
     }
 
     private fun analyzeFrame(imageProxy: ImageProxy) {
-        val bitmap = imageProxy.toBitmap()
-        imageProxy.close()
-        posePipeline?.analyze(bitmap)
+        try {
+            val raw = imageProxy.toBitmap()
+            val rotation = imageProxy.imageInfo.rotationDegrees
+            val bitmap = if (rotation == 0) raw else Bitmap.createBitmap(raw, 0, 0, raw.width, raw.height,
+                Matrix().apply { postRotate(rotation.toFloat()) }, true).also { if (it !== raw) raw.recycle() }
+            posePipeline?.analyze(bitmap)
+        } catch (e: Exception) { Log.e("MainActivity", "Camera frame failed", e) }
+        finally { imageProxy.close() }
     }
 
     /**
@@ -376,8 +618,6 @@ class MainActivity : AppCompatActivity() {
                 paddleExecutor.queue.clear()
                 paddleDropped = 0L
                 paddleThrottled = 0L
-                paddleBusy.set(false)
-                resultGeneration++
                 paddleFailed = false
                 serveWindow.begin()
                 emaProbs = null
@@ -387,25 +627,19 @@ class MainActivity : AppCompatActivity() {
                     landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
                 }
                 addPaddleSample(landmarks, bitmap)
-                runOnUiThread {
-                    binding.poseLabel.text = "Pose: OK"
-                    binding.framesLabel.text = "Capturing serve (${serveWindow.size} poses)"
-                    binding.feedbackLabel.text = "Analyzing this serve..."
-                    binding.shiftLabel.text = "WEIGHT SHIFT: ANALYZING"
-                    binding.paddleLabel.text = "PADDLE: ANALYZING"
-                    binding.classLabel.text = "--"
-                    binding.confLabel.text = "Conf: --"
+                postUi {
+                    binding.statusState.text = "Pose: OK"
+                    clearCards(analyzing = true)
+                    setStatus("Analyzing your serve…", "Keep the setup and follow-through in view.", true)
                 }
             } else {
                 // absorb standing noise (and any recovery swing during refractory)
                 // BEFORE comparing — the triggering frame itself never updates stats
                 idleMean += 0.1f * (motion - idleMean)
                 idleDev += 0.1f * (abs(motion - idleMean) - idleDev)
-                runOnUiThread {
-                    binding.poseLabel.text = "Pose: OK"
-                    binding.framesLabel.text =
-                        if (inRefractory) "DONE (result held)"
-                        else "READY (waiting for serve)"
+                postUi {
+                    binding.statusState.text = "Pose: OK"
+                    if (!inRefractory) binding.statusLine.setText(R.string.ready_title)
                 }
             }
             return
@@ -455,10 +689,8 @@ class MainActivity : AppCompatActivity() {
                 "paddle_drain=${drainMs}ms paddle_dropped=$paddleDropped paddle_throttled=$paddleThrottled " +
                 "final_infer=${inferDone - inferStart}ms " +
                 "pred=${finalPrediction?.first} conf=${finalPrediction?.second}")
-            updateShiftLabel()
-            updatePaddleLabel()
             updateFeedback(finalPrediction)
-            if (finalPrediction == null) runOnUiThread {
+            if (finalPrediction == null) postUi {
                 binding.classLabel.text = "UNAVAILABLE"
                 binding.confLabel.text = "Insufficient serve classification data"
                 binding.probDriveBar.progress = 0
@@ -476,20 +708,16 @@ class MainActivity : AppCompatActivity() {
             emaProbs = null
             shiftDetector?.clear()
             paddleStream?.clear()
-            runOnUiThread {
-                binding.poseLabel.text = "Pose: OK"
-                binding.framesLabel.text = "DONE (result held)"
+            postUi {
+                binding.statusState.text = "Pose: OK"
+                binding.statusProgress.visibility = View.GONE
             }
             return
         }
 
-        runOnUiThread {
-            binding.poseLabel.text = "Pose: OK"
-            binding.framesLabel.text = if (frames < minFramesForInfer) {
-                "WARMUP $frames / $minFramesForInfer"
-            } else {
-                "Capturing serve ($frames poses)"
-            }
+        postUi {
+            binding.statusState.text = "Pose: OK"
+            binding.statusLine.text = "Analyzing your serve…"
         }
         // Run the unchanged ensemble only at serve end; intermediate inference
         // competes with pose acquisition and changes no final feedback decision.
@@ -513,79 +741,56 @@ class MainActivity : AppCompatActivity() {
         return hipX to bodyH
     }
 
-    /** Deterministic shift verdict computed once at serve end, held on screen. */
-    private fun updateShiftLabel() {
-        val ok = shiftDetector?.passed()
-        runOnUiThread {
-            if (ok == null) {
-                binding.shiftLabel.text = "WEIGHT SHIFT: UNAVAILABLE"
-                binding.shiftLabel.setTextColor(Color.parseColor("#B0BEC5"))
-            } else if (ok) {
-                binding.shiftLabel.text = "WEIGHT SHIFT: \u2713"
-                binding.shiftLabel.setTextColor(Color.parseColor("#4CAF50"))
-            } else {
-                binding.shiftLabel.text = "WEIGHT SHIFT: \u2717"
-                binding.shiftLabel.setTextColor(Color.parseColor("#F44336"))
-            }
-        }
-    }
-
-    /** Paddle-orientation verdict computed once at serve end, held on screen. */
-    private fun updatePaddleLabel() {
-        val stream = paddleStream.takeUnless { paddleFailed }
-        val state = stream?.let {
-            FeedbackEngine.paddleState(it.computeForFeedback(), it.low, it.high, it.directionValidated)
-        }
-        val color = when {
-            state == null -> Color.parseColor("#B0BEC5")
-            state != FeedbackEngine.PaddleState.OPTIMAL -> Color.parseColor("#F44336")
-            else -> Color.parseColor("#4CAF50")
-        }
-        val text = when (state) {
-            null -> "PADDLE: UNAVAILABLE"
-            FeedbackEngine.PaddleState.OPTIMAL -> "PADDLE: WITHIN RANGE"
-            FeedbackEngine.PaddleState.OUTSIDE_BASELINE -> "PADDLE: OUTSIDE RANGE"
-            FeedbackEngine.PaddleState.TOO_OPEN -> "PADDLE: TOO OPEN"
-            FeedbackEngine.PaddleState.TOO_CLOSED -> "PADDLE: TOO CLOSED"
-        }
-        runOnUiThread {
-            binding.paddleLabel.text = text
-            binding.paddleLabel.setTextColor(color)
-        }
-    }
-
-    /** Evaluate the same completed serve before any stream buffers are cleared. */
+    /** Snapshot all measurements once, before the session buffers are cleared. */
     private fun updateFeedback(prediction: Pair<String, Float>?) {
-        val generation = resultGeneration
-        val paddle = paddleStream.takeUnless { paddleFailed }?.let {
-            FeedbackEngine.paddleState(it.computeForFeedback(), it.low, it.high, it.directionValidated)
-        }
+        val generation = callbackGeneration.get() ?: resultGeneration
+        val hipValue = shiftDetector?.compute()
+        val hipPassed = shiftDetector?.passed()
+        val stream = paddleStream.takeUnless { paddleFailed }
+        val angle = stream?.computeForFeedback()
+        val paddle = stream?.let { FeedbackEngine.paddleState(angle, it.low, it.high, it.directionValidated) }
         val result = feedbackEngine?.evaluate(FeedbackEngine.Input(
             serveType = prediction?.first, gruConfidence = prediction?.second,
-            shiftSufficient = shiftDetector?.passed(), paddle = paddle,
+            shiftSufficient = hipPassed, paddle = paddle,
             independentMechanics = intent.getBooleanExtra("research_motion_rate", true) &&
                 serveWindow.size >= finalMinFrames && serveWindow.durationMs >= 1500L,
-            // LandingActivity analyzes a separate clip, not a synchronized secondary stream.
             placementActive = false,
         ))
+        val endMs = lastServeEndMs
+        val peakMs = lastMotionPeakMs
+        val startMs = serveStartMs
         Log.i("Feedback", "version=${result?.version} status=${result?.status} rules=${result?.ruleIds} paddle=${paddle ?: "UNAVAILABLE"}")
-        runOnUiThread {
-            if (generation != resultGeneration) return@runOnUiThread
-            binding.feedbackTitle.text = if (result?.validationStatus == "pending_coach_c")
-                "COACHING FEEDBACK · RESEARCH PREVIEW" else "COACHING FEEDBACK"
-            binding.feedbackLabel.text = result?.text ?: "Coaching feedback unavailable: rules could not be loaded."
-            if (intent.hasExtra(EXTRA_REPLAY_CLIP)) {
-                Log.i("FeedbackOutput", org.json.JSONObject().put("status", result?.status?.name)
-                    .put("text", binding.feedbackLabel.text.toString()).toString())
-            }
-            // The number the 2s thesis target is judged on: end-detection -> text on screen.
+        val hipText = ServePresentation.hip(hipValue, hipPassed)
+        val paddleText = ServePresentation.paddle(angle, paddle)
+        val titleText = when {
+            result == null -> "COACHING UNAVAILABLE"
+            result.status == FeedbackEngine.Status.CORRECTIVE && (prediction?.second ?: 0f) < FeedbackEngine.MIN_CONFIDENCE -> "GENERAL MECHANICS · NEXT ATTEMPT"
+            result.status == FeedbackEngine.Status.LOW_CONFIDENCE -> "MORE EVIDENCE NEEDED"
+            else -> getString(R.string.coaching_title)
+        }
+        val bodyText = result?.text ?: "Coaching rules could not be loaded. Your available measurements are shown above."
+        val record = ServeRecord(
+            number = SessionStore.nextNumber(),
+            time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()),
+            serveType = prediction?.let { ServePresentation.classification(it.first, it.second) } ?: "Unavailable",
+            confidence = prediction?.second,
+            hip = hipText,
+            paddle = paddleText,
+            feedbackTitle = titleText,
+            feedback = bodyText,
+        )
+        SessionStore.add(record)
+        speak(record)
+        postUi(generation) {
+            binding.shiftLabel.text = hipText
+            binding.paddleLabel.text = paddleText
+            binding.feedbackTitle.text = titleText
+            binding.feedbackLabel.text = bodyText
+            setStatus("Analysis complete", getString(R.string.results_note))
+            if (intent.hasExtra(EXTRA_REPLAY_CLIP)) Log.i("FeedbackOutput", org.json.JSONObject()
+                .put("status", result?.status?.name).put("text", binding.feedbackLabel.text.toString()).toString())
             val shown = SystemClock.uptimeMillis()
-            if (lastServeEndMs != 0L) {
-                Log.i(LATENCY_TAG, "feedback_shown shown=$shown " +
-                    "end_to_shown=${shown - lastServeEndMs}ms " +
-                    "peak_to_shown=${shown - lastMotionPeakMs}ms " +
-                    "serve_total=${shown - serveStartMs}ms")
-            }
+            if (endMs != 0L) Log.i(LATENCY_TAG, "feedback_shown shown=$shown end_to_shown=${shown-endMs}ms peak_to_shown=${shown-peakMs}ms serve_total=${shown-startMs}ms")
         }
     }
 
@@ -606,7 +811,7 @@ class MainActivity : AppCompatActivity() {
         if (bitmap != null && !permit) paddleThrottled++
         val sample = stream.prepare(landmarks[RIGHT_WRIST].x, landmarks[RIGHT_WRIST].y, permit)
         if (sample == null || bitmap == null) return
-        val generation = resultGeneration
+        val generation = callbackGeneration.get() ?: resultGeneration
         if (posePriority && !paddleBusy.compareAndSet(false, true)) { paddleDropped++; return }
         lastPaddleSubmitMs = now
         try {
@@ -614,10 +819,12 @@ class MainActivity : AppCompatActivity() {
                 try {
                     if (generation == resultGeneration) stream.detect(sample, bitmap)
                 } catch (e: Exception) {
-                    if (generation == resultGeneration) runOnUiThread { markPaddleFailed(e) }
+                    runCatching { analysisExecutor.execute {
+                        if (generation == resultGeneration && !destroyed) markPaddleFailed(e)
+                    } }
                 } finally { paddleBusy.set(false) }
             }
-        } catch (e: Throwable) { paddleBusy.set(false); markPaddleFailed(e) }
+        } catch (_: RejectedExecutionException) { paddleBusy.set(false); paddleDropped++ }
     }
 
     private fun markPaddleFailed(e: Throwable) {
@@ -680,7 +887,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun runInference(validFrames: Int, finalResult: Boolean = false): Pair<String, Float>? {
         val g = gru ?: return null
-        val generation = resultGeneration
+        val generation = callbackGeneration.get() ?: resultGeneration
         val sampled = serveWindow.input()
         val window = sampled.tensor
         val inputFrames = sampled.validFrames
@@ -710,18 +917,15 @@ class MainActivity : AppCompatActivity() {
             emaProbs = smoothed
 
             val (label, conf) = g.predict(smoothed)
-            val confColor = when {
-                conf >= confHigh -> Color.parseColor("#4CAF50")
-                conf >= confMed  -> Color.parseColor("#FFC107")
-                else             -> Color.parseColor("#F44336")
-            }
+            val confColor = ContextCompat.getColor(this,
+                if (conf >= FeedbackEngine.MIN_CONFIDENCE) R.color.accent else R.color.warning)
 
-            runOnUiThread {
-                if (generation != resultGeneration) return@runOnUiThread
-                binding.classLabel.text = if (conf >= FeedbackEngine.MIN_CONFIDENCE) label.uppercase() else "UNCERTAIN"
+            postUi {
+                if (generation != resultGeneration) return@postUi
+                binding.classLabel.text = ServePresentation.classification(label, conf)
                 binding.classLabel.setTextColor(confColor)
                 val finalSource = if (knnProbs != null) "Final hybrid" else "Final GRU"
-                binding.confLabel.text = "${if (finalResult) finalSource else "Conf"}: ${"%.1f".format(conf * 100f)}%"
+                binding.confLabel.text = "${"%.1f".format(conf * 100f)}% confidence · ${if (conf < FeedbackEngine.MIN_CONFIDENCE) "serve type uncertain" else "model prediction"}"
                 binding.confLabel.setTextColor(confColor)
                 binding.probDrive.text = "Drive   ${"%.0f".format(smoothed[0] * 100)}%"
                 binding.probLob.text = "Lob     ${"%.0f".format(smoothed[1] * 100)}%"
@@ -733,7 +937,7 @@ class MainActivity : AppCompatActivity() {
             return g.predict(combined)
         } catch (e: Throwable) {
             Log.e("MainActivity", "Inference failed", e)
-            runOnUiThread { binding.confLabel.text = "INFER ERR: ${e.message}" }
+            postUi { binding.confLabel.text = "INFER ERR: ${e.message}" }
             return null
         }
     }
@@ -753,13 +957,57 @@ class MainActivity : AppCompatActivity() {
         return out
     }
 
+    override fun onResume() {
+        super.onResume()
+        foreground = true
+        if (modelsReady) startInput()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("permissionRequested", permissionRequested)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun stopInput() {
+        inputRunning = false
+        inputEpoch.incrementAndGet()
+        sessionEpoch.invalidate()
+        binding.root.keepScreenOn = false
+        cameraProvider?.unbind(*cameraUseCases)
+        cameraUseCases = emptyArray()
+        clipReplay?.stop(); clipReplay = null
+        cameraExecutor.execute { posePipeline?.stop(); posePipeline = null }
+        analysisExecutor.execute { resetAnalysis() }
+    }
+
+    override fun onStop() {
+        foreground = false
+        if (modelsReady && binding.statusProgress.visibility == View.VISIBLE) {
+            clearCards()
+            binding.feedbackLabel.text = "The attempt was interrupted. Start a new serve when you return."
+        }
+        stopInput()
+        binding.statusState.setText(R.string.paused)
+        binding.statusProgress.visibility = View.GONE
+        super.onStop()
+    }
+
     override fun onDestroy() {
-        super.onDestroy()
+        destroyed = true
+        sessionEpoch.invalidate()
         clipReplay?.stop()
+        runCatching { tts?.stop(); tts?.shutdown() }
+        tts = null
+        // Close each model after in-flight work, on its owning worker.
+        cameraExecutor.execute { posePipeline?.stop(); posePipeline = null }
         cameraExecutor.shutdown()
-        paddleExecutor.shutdownNow()
-        posePipeline?.stop()
-        gru?.close()
-        paddleStream?.close()
+        analysisExecutor.execute {
+            gru?.close(); gru = null
+            paddleExecutor.queue.clear()
+            paddleExecutor.execute { paddleStream?.close(); paddleStream = null }
+            paddleExecutor.shutdown()
+        }
+        analysisExecutor.shutdown()
+        super.onDestroy()
     }
 }

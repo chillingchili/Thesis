@@ -33,8 +33,8 @@ Thesis proof-of-concept: live camera → BlazePose (MediaPipe) → 5 joint angle
 4. Run on device/emulator (back camera).
 
 ## Toggle
-- **Toggle Mode** button: switches single ↔ ensemble at runtime.
-- **Reset Buffer**: clears the 128-frame window.
+- **Menu → Change comparison model**: switches single ↔ ensemble ↔ hybrid at runtime.
+- **Menu → New attempt**: clears the 128-frame window and current results (model selection is kept).
 
 ## Gradle deps (already in app/build.gradle.kts)
 - CameraX 1.3.4
@@ -54,7 +54,21 @@ Thesis proof-of-concept: live camera → BlazePose (MediaPipe) → 5 joint angle
 - Live accuracy ≈ holdout ceiling (~50–60%), not the 86.7% CV number (subject shift).
 - Single-person pose only (NumPoses=1).
 - Right-handed angle assumption (matches training).
-- Portrait orientation locked.
+- Landscape orientation locked (all activities). There is no title bar: the
+  camera is full-bleed wide (edge to edge, fills the frame) with only a
+  compact status pill and a floating **Menu** over the feed (setup guide,
+  new attempt, back/front camera selector, class probabilities, model
+  comparison, landing review, latency test, model switching, about).
+  Serve Type, Hip Movement, Paddle Angle, and Feedback form four columns
+  sized to fit without scrolling (scroll remains only as a large-text
+  fallback), each with a (?) reference definition. Tapping the preview or
+  Menu → Fullscreen camera hides the results for tripod framing (Back
+  returns). Every completed serve is logged under Menu → Session serves
+  (in-memory only, cleared on demand) and spoken aloud via on-device TTS
+  (toggle in Menu) so the player can stay on the court. Ball landing is not
+  on the main screen — it has its own full-screen review with a wide
+  preview, court overlay, zone legend (?), video loading, and back
+  navigation.
 
 ## Ball and landing analysis
 
@@ -142,6 +156,24 @@ Connected Gradle tests can uninstall the app at teardown; reinstall the debug AP
 Android Studio afterward. Prefer installing both APKs with `adb install -r` then running
 `adb shell am instrument -w -r -e class com.thesis.pickleballserve.landing.LandingPipelineTest,com.thesis.pickleballserve.landing.RealtimeTrackerTest com.thesis.pickleballserve.test/androidx.test.runner.AndroidJUnitRunner`.
 Test video fixtures live only in `src/androidTest/assets`. See `NOTE12_BENCHMARK.md` for measured results.
+
+## Thesis install (sideload, no Play Store)
+
+This is a thesis-only build distributed as an APK for on-device testing, not
+via Google Play.
+
+1. Build (Gradle wrapper is committed; JDK 17 required):
+   `cd android && ./gradlew :app:assembleDebug`
+2. Install `android/app/build/outputs/apk/debug/app-debug.apk`
+   (package `com.thesis.pickleballserve`, version `1.1-thesis`, minSdk 26)
+   via `adb install -r` or by copying it to the phone and opening it.
+3. Grant camera permission on first launch. The app is fully offline: the
+   manifest requests only `CAMERA` (transitive network/storage permissions
+   from libraries are stripped), and analysis never leaves the phone.
+4. Hold the phone landscape on a tripod (study setup: dominant-hand side,
+   ~2 m height, angled toward the net). Recording starts automatically on
+   motion and results appear after the motion settles; **New attempt**
+   clears the screen for the next serve.
 
 ## Phone latency benchmark
 

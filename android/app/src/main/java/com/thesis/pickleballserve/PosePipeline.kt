@@ -26,6 +26,7 @@ class PosePipeline(
     context: Context,
     private val useGpu: Boolean = false,
     private val onPose: (landmarks: Array<PointF>, bitmap: Bitmap?, timestampMs: Long, realFrame: Boolean) -> Unit,
+    private val onMissing: () -> Unit = {},
     private val onError: (String) -> Unit = {}
 ) {
     companion object {
@@ -37,6 +38,7 @@ class PosePipeline(
 
     private var activeGpu = useGpu
     private var landmarker: PoseLandmarker? = null
+    @Volatile private var running = false
     private var lastTimestampMs = 0L
 
     // Cache landmark array to avoid per-frame allocation
@@ -46,7 +48,9 @@ class PosePipeline(
     private data class Frame(val timestamp: Long, val bitmap: Bitmap, val real: Boolean)
     private val bitmapRing = ArrayDeque<Frame>()
 
-    fun start(context: Context) {
+    fun start(context: Context): Boolean {
+        if (landmarker != null) return true
+        running = true
         try {
             val baseOptions = BaseOptions.builder()
                 .setModelAssetPath(MODEL_ASSET)
@@ -60,7 +64,8 @@ class PosePipeline(
                 .setMinTrackingConfidence(0.5f)
                 .setNumPoses(1)
                 .setResultListener { result: PoseLandmarkerResult, inputImage: MPImage ->
-                    handleResult(result, result.timestampMs())
+                    try { if (running) handleResult(result, result.timestampMs()) }
+                    finally { inputImage.close() }
                 }
                 .setErrorListener { e: RuntimeException ->
                     Log.e(TAG, "PoseLandmarker error", e)
@@ -69,16 +74,18 @@ class PosePipeline(
                 .build()
             landmarker = PoseLandmarker.createFromOptions(context, options)
             Log.i(TAG, "PoseLandmarker started model=$MODEL_ASSET gpu=$activeGpu")
+            return true
         } catch (e: Throwable) {
             if (activeGpu) {
                 activeGpu = false
                 Log.w(TAG, "GPU pose initialization failed; falling back to CPU", e)
-                start(context)
-                return
+                return start(context)
             }
             Log.e(TAG, "Failed to start PoseLandmarker", e)
             onError("Failed to load pose model: ${e.message}. " +
                     "Ensure $MODEL_ASSET is in app/src/main/assets/.")
+            running = false
+            return false
         }
     }
 
@@ -105,7 +112,7 @@ class PosePipeline(
 
     private fun handleResult(result: PoseLandmarkerResult, timestampMs: Long) {
         if (result.landmarks().isEmpty()) {
-            // No pose this frame — caller can decide whether to keep buffering
+            onMissing()
             return
         }
         val pose = result.landmarks()[0]  // first (only) pose
@@ -127,6 +134,7 @@ class PosePipeline(
     }
 
     fun stop() {
+        running = false
         try { landmarker?.close() } catch (_: Throwable) {}
         landmarker = null
         synchronized(ringLock) { bitmapRing.clear() }

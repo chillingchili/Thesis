@@ -1,0 +1,10 @@
+<resources>
+    <color name="page">#F3F5F1</color>
+    <color name="ink">#172C25</color>
+    <color name="muted">#53655C</color>
+    <color name="accent">#17694D</color>
+    <color name="accent_soft">#E3EFE7</color>
+    <color name="line">#DAE2DA</color>
+    <color name="camera_bg">#14231D</color>
+    <color name="warning">#8A4B0A</color>
+</resources>

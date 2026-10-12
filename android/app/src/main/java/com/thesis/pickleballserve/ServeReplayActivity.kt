@@ -63,11 +63,13 @@ class ServeReplayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = getString(R.string.compare_models)
         val layout=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL;setPadding(24,24,24,24) }
+        val back=Button(this).apply { text=getString(R.string.back_to_live);setOnClickListener { finish() } }
         status=TextView(this).apply { text="Choose a video trimmed to one complete serve (up to 12 seconds).\nThis comparison keeps the beginning and end of the serve.";textSize=17f }
         choose=Button(this).apply { text="Choose serve video";setOnClickListener { pick.launch(arrayOf("video/*")) } }
         save=Button(this).apply { text="Save comparison";isEnabled=false;setOnClickListener { export.launch("serve-comparison.json") } }
-        layout.addView(choose);layout.addView(save);layout.addView(status)
+        layout.addView(back);layout.addView(choose);layout.addView(save);layout.addView(status)
         setContentView(ScrollView(this).apply { addView(layout) })
     }
 
