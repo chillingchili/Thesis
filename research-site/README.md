@@ -7,7 +7,7 @@ http://127.0.0.1:7863.
 The site includes the original reported experiments, bundled GRU/kNN/hybrid,
 v2 retraining, v3 augmentation/input comparisons, v4 calibrated fusion,
 detector training logs, actual training-clip output samples, thesis objectives,
-and pending expert/phone evaluation. It makes no network requests. Archivo is
+and the completed expert review and recorded-phone benchmark. It makes no network requests. Archivo is
 self-hosted under the included Open Font License.
 
 Regenerate the saved dataset and media copies after source results change:
@@ -23,8 +23,13 @@ of the Android app and Serve Lab.
 Scores retain their original evaluation contexts. Historical September figures
 are reported values, often rounded, not fresh re-evaluations. Detector values
 come from each run's final logged validation epoch, not a best-checkpoint test.
-The original paper remains a proposal/methodology source; completed experiments
-and pending steps are explicitly identified on the page.
+The downloadable manuscript and Chapters 5–6 include the 12 October findings. Historical experiments retain their original scope. Live timing remains unverified.
+
+Refresh current findings and chapter downloads without regenerating media:
+
+```powershell
+python scripts/refresh_research_findings.py
+```
 
 The gallery deliberately includes three correct training examples (Drive, Lob,
 Topspin) and one error example. This curation is not a performance estimate.

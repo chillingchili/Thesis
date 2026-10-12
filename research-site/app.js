@@ -6,7 +6,7 @@
   const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[character]));
   const percent = (value) => Number.isFinite(value) ? `${(value * 100).toFixed(1)}%` : '—';
   const classes = ['Drive', 'Lob', 'Topspin'];
-  const state = {study: 'v3', mode: 'gru', metric: 'diagnostic', selected: null, sample: 0, output: 0};
+  const state = {study: 'mobile', mode: 'gru', metric: 'diagnostic', selected: null, sample: 0, output: 0};
   const studyInfo = {
     v3: 'Matched input experiments / 209 eligible training clips. Diagnostic predictions average five GRU folds. Video variants follow their original clip into training folds; validation uses originals only.',
     v4: 'Nested fusion development / 209 eligible clips. Diagnostic predictions use single final fits, not v3’s five-fold ensembles. Lean control was selected on training-player macro-F1. Final confidence acceptance is disabled.',
@@ -109,10 +109,10 @@
     }
     if (report.feedback) {
       const feedback = report.feedback;
-      const title = feedback.status === 'PARTIAL' ? 'Partial measurements' : feedback.status === 'LOW_CONFIDENCE' ? 'Coaching withheld' : 'Corrective feedback';
+      const title = feedback.status === 'PARTIAL' ? 'Partial measurements' : feedback.status === 'LOW_CONFIDENCE' ? 'Coaching withheld' : feedback.status === 'POSITIVE' ? 'Positive feedback' : 'Corrective feedback';
       html += `<div class="feedback-box"><p class="eyebrow">${title} / saved rule output</p>${feedback.messages.map((message) => `<p>${escape(message)}</p>`).join('')}</div>`;
       if (feedback.notifications?.length) html += `<p class="output-source-note">${feedback.notifications.map(escape).join(' ')}</p>`;
-      html += '<p class="fineprint">Feedback appropriateness has not been validated by Coach C. A model confidence value is not a verified probability of correctness.</p>';
+      html += '<p class="fineprint">These historical gallery clips were not part of Coach C’s 30-clip review. A model confidence value is not a verified probability of correctness.</p>';
     } else html += `<div class="feedback-box"><p class="eyebrow">Classifier output only</p><p>${escape(output.note)}</p></div>`;
     html += `<p class="output-source-note">${serve.label.toLowerCase() === sample.truth.toLowerCase() ? 'Prediction matches' : 'Prediction differs from'} the ${sample.truth} reference label. ${serve.truncated_frames ? `${serve.truncated_frames} valid frames omitted by this legacy window.` : 'Complete-serve resampling used.'}</p>`;
     if (sample.role === 'limitation') html += '<p class="fineprint">Limitation example: the GRU predicted Lob for a Coach B-labeled Drive, despite high confidence. A correct mechanics cue does not correct an incorrect subtype prediction.</p>';

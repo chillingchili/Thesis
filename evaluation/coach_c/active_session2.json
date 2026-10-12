@@ -4,5 +4,11 @@
   "summary": "evaluation/coach_c/session2_gru/summary.json",
   "form_key": "COACH_C_SESSION2_ORIGINAL_GRU_V1",
   "supersedes": "evaluation/coach_c/session2",
-  "sent": false
+  "sent": true,
+  "response_export_received": "2026-10-12",
+  "response_scores": "evaluation/coach_c/session2_gru/coach_c_scores_20261012",
+  "form_deployment_independently_verified": true,
+  "interpretation_review": "display_verified_rating_interpretation_unresolved",
+  "form_verification_scope": "Current editor text, 2026-10-12; all 30 outputs match. Historical state at submission not independently proven.",
+  "form_url": "https://docs.google.com/forms/d/1FyeMXCF6ZbRgBOWaCh22ER2_4jvVvR6AtOZY6SWguFw/edit"
 }

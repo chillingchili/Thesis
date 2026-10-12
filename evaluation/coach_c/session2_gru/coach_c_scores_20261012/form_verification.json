@@ -1,0 +1,13 @@
+{
+  "checked_on": "2026-10-12",
+  "form_url": "https://docs.google.com/forms/d/1FyeMXCF6ZbRgBOWaCh22ER2_4jvVvR6AtOZY6SWguFw/edit",
+  "method": "Read-only browser inspection of Google Forms editor textboxes; comparison with frozen report messages, notifications and serve labels; whitespace ignored because DOM textContent joins line breaks.",
+  "outputs_checked": 30,
+  "text_mismatches": [],
+  "response_count_displayed": 1,
+  "instructions_verified": true,
+  "historical_display_at_submission_independently_proven": false,
+  "response_interpretation_flags_resolved": false,
+  "form_modified": false,
+  "coach_contacted": false
+}

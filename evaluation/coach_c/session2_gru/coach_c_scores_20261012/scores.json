@@ -1,0 +1,156 @@
+{
+  "total_clips": 30,
+  "counts": {
+    "valid": 27,
+    "not_valid": 1,
+    "no_coaching_feedback_to_assess": 2,
+    "missing": 0
+  },
+  "complete": true,
+  "observed_valid_of_30_pct": 90.0,
+  "final_valid_of_30_pct": 90.0,
+  "assessed_denominator": 28,
+  "valid_among_assessed_pct": 96.42857142857143,
+  "no_coaching_feedback_to_assess_pct": 6.666666666666667,
+  "missing_pct": 0.0,
+  "corrective_or_positive_output_count": 21,
+  "corrective_or_positive_output_coverage_pct": 70.0,
+  "model_status_counts": {
+    "LOW_CONFIDENCE": 8,
+    "CORRECTIVE": 19,
+    "PARTIAL": 1,
+    "POSITIVE": 2
+  },
+  "ratings_by_model_status": [
+    {
+      "model_status": "CORRECTIVE",
+      "rating": "No coaching feedback to assess",
+      "count": 2
+    },
+    {
+      "model_status": "CORRECTIVE",
+      "rating": "Valid",
+      "count": 17
+    },
+    {
+      "model_status": "LOW_CONFIDENCE",
+      "rating": "Not valid",
+      "count": 1
+    },
+    {
+      "model_status": "LOW_CONFIDENCE",
+      "rating": "Valid",
+      "count": 7
+    },
+    {
+      "model_status": "PARTIAL",
+      "rating": "Valid",
+      "count": 1
+    },
+    {
+      "model_status": "POSITIVE",
+      "rating": "Valid",
+      "count": 2
+    }
+  ],
+  "review_flags": {
+    "notice_only_output_rated_valid_or_not_valid": [
+      "C001",
+      "C003",
+      "C004",
+      "C005",
+      "C013",
+      "C014",
+      "C025",
+      "C026",
+      "C029"
+    ],
+    "substantive_output_marked_no_coaching": [
+      "C021",
+      "C024"
+    ]
+  },
+  "independent_classification_accuracy": null,
+  "notes": [
+    "No-coaching and missing are distinct; neither is scored as Valid.",
+    "Review flags preserve coach answers unchanged; do not automatically recode them.",
+    "Assessed-only validity is secondary and may be provisional when responses are incomplete.",
+    "Source is one expert; clip counts do not establish inter-rater reliability or player-independent effectiveness."
+  ],
+  "source_file": "Pickleball Feedback Validation - Coach C - Session 2 - Original GRU (30 Clips) (Responses).xlsx",
+  "source_sha256": "97c6770609a55cbb71921f1e5721bce8e71a3f4ed7f33cf35d4fc84c80b27e49",
+  "import_metadata": {
+    "sheet": "Form Responses 1",
+    "selected_response_row": null,
+    "source_rows": {
+      "C001": 2,
+      "C002": 2,
+      "C003": 2,
+      "C004": 2,
+      "C005": 2,
+      "C006": 2,
+      "C007": 2,
+      "C008": 2,
+      "C009": 2,
+      "C010": 2,
+      "C011": 2,
+      "C012": 2,
+      "C013": 2,
+      "C014": 2,
+      "C015": 2,
+      "C016": 2,
+      "C017": 2,
+      "C018": 2,
+      "C019": 2,
+      "C020": 2,
+      "C021": 2,
+      "C022": 2,
+      "C023": 2,
+      "C024": 2,
+      "C025": 2,
+      "C026": 2,
+      "C027": 2,
+      "C028": 2,
+      "C029": 2,
+      "C030": 2
+    },
+    "timestamp_raw": "46307.56625361111",
+    "timestamp_note": "Original export value; timezone not inferred"
+  },
+  "scored_utc": "2026-10-12T05:41:24.737692+00:00",
+  "declared_form_version": "original-gru-v1 / classification-in-output-v1 / coach-c-actionable-wording-v2",
+  "form_deployment_independently_verified": false,
+  "frozen_report_sha256": {
+    "C001": "13672ff139e8f166739c923ac8db4d1312f2668104fd56b467b2bab597cd3ecf",
+    "C002": "ab8cfc4d800a16e70ce9addcf04ce959190a03e0045e6c2e3821865d41ce1907",
+    "C003": "610eb17b084d2e83e2dd1bc627ac9f28087df448c3acff7dd5e9b7cdbfe6e7b9",
+    "C004": "6d0308247043a5d2f99c53eb5a05b07e8a11748613970f09259d2945c8983b39",
+    "C005": "da9d9dab87ccb21d63fc8f663f27d957dbc26ef4c8231351f92ca0400c4a54f5",
+    "C006": "c44d67421b0507f4141527dfc2e891b494eae3ddab1b81b39d450fc6f5b027c6",
+    "C007": "31e92801621f137b9983e43166a1a38c6ac4a7f80815ac77fc933ae8eb2d29a5",
+    "C008": "96ed80ef344bb6a41eaa69a216c815a2579d47d3dc3e75b24ea83bb72eb73cff",
+    "C009": "d919cc19572e92d7237af69fcce874a911e52f6556216338bd113f08b7b6fd36",
+    "C010": "9fcfb2fe7eb5704df45a435fec413d3682334f7eb7788266288c454492837f44",
+    "C011": "30c1c59c4da5f93640cf412cbedf936062c4d755be100871c5e37d70696e9261",
+    "C012": "1e449b37a87ee3e249d2be44beb699d0f457eb4a6d12323c217401f296000851",
+    "C013": "edb5856bba87f1c20bde82689b35666bfaa319774a96e90ab208eb4b8ec3ff57",
+    "C014": "a1e612d2e08c572f351004ff4f671e3f7042a5fdef887f14b178328b3cba5e26",
+    "C015": "4ede0647032a3cd8cccb25aa0432a41fb472af976d32a463f7b0717acc60bed7",
+    "C016": "ac6a6f7eb2b86a10679b4b4366252147cab442c0c2ba8b06bcb99e00d257f945",
+    "C017": "aac0729ac6dfa65a59674a4d6e57826094ea6b815fccdbb5a8fce4ab6798d5a5",
+    "C018": "c0b180e5fcc4b493e42227d82a07fe1db67bb9b73878cd0c27841c4ae0d3c661",
+    "C019": "870e5d15540b02b8458918b121cd7588393e2fef8c07fde21402de65965fcca4",
+    "C020": "eaaa4cc2815c8ee45344e6169880a9aa9f9fc0ca4cb443c170cf5a1dad47febc",
+    "C021": "1d5979d802451d0e01bee6e7cd1bc09aeac44053f55ec2da6b75d23408b28568",
+    "C022": "2f7e135753f95b4cad2e32a60d609f53edd5249fc044269ae277f5c12dce7c66",
+    "C023": "0bca386bd838f94614e5e4a5a4eaa3fe422f8d872703713c857531f50b70a647",
+    "C024": "2a9e9a2033d16476e3342a343e34216f2d876fa20bd161c6c17985df4588e42c",
+    "C025": "bac057b09ef683c42a93ec13341ef4760f34955861c9a2d0eea1fb4e6a0be683",
+    "C026": "cb07b39a2276716da58585e3ff7f160e467731b7ad4cfb6f0771b778fc6daedf",
+    "C027": "9b0d56dac3c339c333e05074067665118c49cdd13d4c9d59e9e488507810c752",
+    "C028": "b7ceffe23f155ea2a4234f83ac1d71bfa6c14d5326e87303cb721eaad0030f63",
+    "C029": "63e9784e03a5e230d1b85b9c9110a71c3bb8c168f8e730f3b93e2ddaad671ceb",
+    "C030": "67598cbe3734dfd3ca12817af3cfe12722e441460c5b1c1b98514ad2da87cb36"
+  },
+  "scorer_sha256": "9bbac953a4ae036db317ce474bd82e1e75e6871a0301e4291d60e30fec18e9ec"
+}

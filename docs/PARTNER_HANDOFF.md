@@ -1,4 +1,10 @@
 # Partner handoff — current original-GRU evaluation
+## Session 2 received — 12 October 2026
+
+[Scored response export](../evaluation/coach_c/session2_gru/coach_c_scores_20261012/REPORT.md): 27 Valid, one Not valid (C001), two No coaching feedback to assess (C021, C024), zero missing. Primary Valid/30 = 90.0%; secondary Valid/(Valid + Not valid) = 96.4%.
+
+[Interpretation review](../evaluation/coach_c/session2_gru/coach_c_scores_20261012/INTERPRETATION_REVIEW.md): eight Valid answers concern frozen notice-only outputs, while two corrective outputs were marked no coaching. The present deployed form was checked: all 30 output texts match the frozen reports. The remaining limitation is interpretation of the selected categories. Answers remain unchanged. Chapters 5–6 and the website now report these results and limitations.
+
 
 The selected Session 2 classifier is the **original five-fold GRU ensemble**,
 without kNN weighting. Android and desktop defaults now select it. Hip and paddle
@@ -14,8 +20,7 @@ Coach C comments occurred.
 
 - [Active GRU outputs, preview and amendment](../evaluation/coach_c/session2_gru/README.md).
 - [New Session 2 form instructions](../scripts/google_apps_script/README.md).
-  Create a NEW form using key COACH_C_SESSION2_ORIGINAL_GRU_V1. Do not send the
-  old hybrid form link or feedback ZIP. Google deployment is not verified here.
+  The original-GRU form has been completed. Retain it and its responses unchanged; the current displayed outputs have been verified.
 - [Current manuscript](thesis/README.md), aligned with the GRU selection and actual results.
 - [Scoring plan](../evaluation/coach_c/session2/SCORING_PLAN.md).
   Run python scripts/score_coach_c_session2.py with the response export; its
@@ -29,13 +34,9 @@ classification accuracy is unavailable. The original 30 clips remain unchanged.
 
 The GRU version produces 19 corrective, two positive, eight low-confidence and
 one partial output: 21/30 substantive coaching (70.0%). The archived hybrid had
-17/30 (56.7%). Coverage is not validated coaching quality. Session 2 must assess
-the actual suggestions. Keep all 30 in the denominator and report missing answers
-separately from No coaching feedback to assess.
+17/30 (56.7%). Coverage is distinct from the submitted validity ratings. All 30 remain in the primary denominator; missing and no-coaching responses remain separate.
 
-Preview the new form and observe the planned interval before sharing. Record
-actual session dates and version. After collection, score the responses and
-complete Table 12 and the conclusions. The [Xiaomi recorded-video benchmark](../evaluation/phone_latency/note12_20261010/REPORT.md)
+Table 12 and the conclusions now include the completed ratings. Adviser review, final typesetting and any additional live-timing evidence remain. The [Xiaomi recorded-video benchmark](../evaluation/phone_latency/note12_20261010/REPORT.md)
 is complete: nine successful measured runs, 68.6 s median and 104.7 s slowest.
 Paddle processing is the main bottleneck. Live capture-to-display latency still
 needs measurement; these results do not verify the two-second target or desktop/phone parity.
@@ -50,7 +51,7 @@ evaluation/coach_c/baseline and evaluation/coach_c/session2 remain unchanged
 hybrid snapshots. Their old readiness statuses are superseded by
 evaluation/coach_c/active_session2.json. Original run artifacts remain under
 outputs/. Do not rerun the historical handoff exporter to overwrite these records.
-No Session 2 responses have been received and no coach message has been sent here.
+Session 2 responses have now been received; see the scored results above. No coach message has been sent here.
 
 
 Paddle preprocessing optimization is installed and verified on the Xiaomi: grayscale crop preparation fell from 5.20 to 1.38 ms with identical tested pixels and angles. This is a component improvement; the subsequent full recorded-clip benchmark found effectively unchanged latency; live latency remains unmeasured. See [the optimization evidence](../evaluation/phone_latency/note12_optimization_20261010/REPORT.md).

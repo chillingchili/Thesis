@@ -3,7 +3,7 @@
   "source_sha256": "d36107663c6a3734616cd6765bd465c2ab9db16c365b4cfbfd7fd3fe1cf74150",
   "source_preserved": "docs/thesis/source/Pascua-Leones_Thesis_2026-10-10.md",
   "working_copy": "docs/thesis/Pascua-Leones_Thesis_Current.md",
-  "working_copy_sha256": "2257d60734009ebf6919c8570567cf5dcd046e716fad4309b132709ebd2099e0",
+  "working_copy_sha256": "6c1aee04faa0f830c0cad9bae430571979f4eeb21cbcf229694a1c52ccdb2880",
   "replaced_source_lines": [
     456,
     466,
@@ -107,8 +107,8 @@
   ],
   "chapters_1_to_3_preserved": false,
   "bibliography_appendices_and_image_definitions_preserved": true,
-  "session2_results": "pending",
-  "device_latency": "pending",
+  "session2_results": "complete_with_category_interpretation_limitation",
+  "device_latency": "recorded_file_complete_live_boundary_unverified",
   "model_and_feedback_changed": true,
   "consistency_pass": true,
   "consistency_revised_paragraph_prefixes": [
@@ -151,7 +151,7 @@
     10,
     12
   ],
-  "results_tables_renumbered": "7\u201312",
+  "results_tables_renumbered": "7\u201314",
   "original_source_unchanged": true,
   "consistency_notes": [
     "Historical schedule dates retained; activity wording aligned with output-informed review.",
@@ -159,5 +159,11 @@
     "Existing citations not independently re-verified."
   ],
   "selected_model": "original_gru_ensemble",
-  "pre_session2_model_amendment": "The selected Session 2 configuration was amended after Session 1 receipt but before outputs were sent to Coach C. Researchers had already inspected Session 1 judgments. Original GRU was selected using the existing matched diagnostic comparison, not by fitting model weights, thresholds or cue text to those judgments. All 30 clips remain; classifications were recomputed from preserved poses and hip/paddle/contact measurements were reused unchanged. The earlier hybrid outputs remain archived. This chronology is disclosed rather than described as a model frozen before Session 1. Android and desktop now default to original GRU, with phone capture and latency still requiring validation."
+  "pre_session2_model_amendment": "The selected Session 2 configuration was amended after Session 1 receipt but before outputs were sent to Coach C. Researchers had already inspected Session 1 judgments. Original GRU was selected using the existing matched diagnostic comparison, not by fitting model weights, thresholds or cue text to those judgments. All 30 clips remain; classifications were recomputed from preserved poses and hip/paddle/contact measurements were reused unchanged. The earlier hybrid outputs remain archived. This chronology is disclosed rather than described as a model frozen before Session 1. Android and desktop now default to original GRU, with phone capture and latency still requiring validation.",
+  "findings_finalized": "2026-10-12",
+  "finalization_evidence": [
+    "evaluation/coach_c/session2_gru/coach_c_scores_20261012/scores.json",
+    "evaluation/coach_c/session2_gru/coach_c_scores_20261012/form_verification.json",
+    "evaluation/phone_latency/note12_optimized_full_20261010/comparison.json"
+  ]
 }

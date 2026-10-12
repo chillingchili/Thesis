@@ -1,0 +1,74 @@
+{
+  "snapshot": "2026-10-12",
+  "selected_model": "Original five-fold GRU ensemble; no kNN contribution",
+  "expert_review": {
+    "total_clips": 30,
+    "counts": {
+      "valid": 27,
+      "not_valid": 1,
+      "no_coaching_feedback_to_assess": 2,
+      "missing": 0
+    },
+    "final_valid_of_30_pct": 90.0,
+    "assessed_denominator": 28,
+    "valid_among_assessed_pct": 96.42857142857143,
+    "corrective_or_positive_output_count": 21,
+    "corrective_or_positive_output_coverage_pct": 70.0,
+    "model_status_counts": {
+      "LOW_CONFIDENCE": 8,
+      "CORRECTIVE": 19,
+      "PARTIAL": 1,
+      "POSITIVE": 2
+    },
+    "ratings_by_model_status": [
+      {
+        "model_status": "CORRECTIVE",
+        "rating": "No coaching feedback to assess",
+        "count": 2
+      },
+      {
+        "model_status": "CORRECTIVE",
+        "rating": "Valid",
+        "count": 17
+      },
+      {
+        "model_status": "LOW_CONFIDENCE",
+        "rating": "Not valid",
+        "count": 1
+      },
+      {
+        "model_status": "LOW_CONFIDENCE",
+        "rating": "Valid",
+        "count": 7
+      },
+      {
+        "model_status": "PARTIAL",
+        "rating": "Valid",
+        "count": 1
+      },
+      {
+        "model_status": "POSITIVE",
+        "rating": "Valid",
+        "count": 2
+      }
+    ]
+  },
+  "interpretation": "Submitted ratings preserved. Eight notice-only outputs rated Valid; two corrective outputs marked no coaching. Rating percentages do not establish corrective-feedback accuracy or player improvement.",
+  "form_verification": "All 30 current editor outputs match frozen reports; submission-time presentation not independently reconstructed.",
+  "phone_benchmark": {
+    "baseline": "../note12_20261010",
+    "baseline_median_ms": 68618.921485,
+    "optimized_median_ms": 68576.096224,
+    "median_reduction_percent": 0.062410279953706294,
+    "baseline_max_ms": 104650.11022,
+    "optimized_max_ms": 94284.463402,
+    "model_assets_and_clips_identical": true,
+    "output_differences": [],
+    "max_confidence_delta": 0.0,
+    "interpretation": "No meaningful overall speedup demonstrated. Separate sequential runs do not isolate thermal/scheduling variation.",
+    "successful_measured_runs_per_configuration": 9,
+    "distinct_clips": 3,
+    "timing_boundary": "recorded-file opening to computed feedback; initial model setup excluded",
+    "live_two_second_target": "unverified"
+  }
+}

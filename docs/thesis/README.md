@@ -1,4 +1,4 @@
-# Current thesis working revision — 10 October 2026
+# Current thesis working revision — 12 October 2026
 
 Use [Pascua-Leones_Thesis_Current.md](Pascua-Leones_Thesis_Current.md) for the
 full working manuscript. It is based on the supplied **Pascua-Leones Thesis (5).md**.
@@ -19,13 +19,12 @@ the selected GRU from the archived hybrid comparison.
   from multimodal measurement integration, and align objectives and limitations
   with the actual instruments. GRU-only scores remain labeled as GRU results.
 - Figures 4–7 and 12 use editable Mermaid diagrams; Figures 8–10 specify output
-  states without unsupported whole-form verdicts. Result tables are now 7–12,
+  states without unsupported whole-form verdicts. Result tables are now 7–14,
   avoiding duplicate numbering. The contents and figure/table lists were refreshed.
 - Chapter 4 now distinguishes the proposed design from the selected original GRU, limited measurement rules, actual coach instruments and timing amendment.
 - New [Chapters 5–6](CHAPTERS_5_6.md) report the completed experiments, all 30 frozen
-  outputs, and Session 1's 27 Bad Form / three Good Form judgments.
-- Session 2 counts and physical-phone timing remain pending. The planned one-day
-  interval is recorded as a plan, not an already completed delay or guarantee against bias.
+  outputs, both coach sessions and the Xiaomi recorded-video benchmark.
+- Session 2: 27 Valid, one Not valid, two no-coaching answers; 90.0% primary rating, with interpretation limitations. Recorded-file median: 68.576 s; live two-second timing remains unverified.
 - The scoring definitions retain all 30 clips and distinguish no assessable coaching
   from unanswered questions. See the [scoring plan](../../evaluation/coach_c/session2/SCORING_PLAN.md).
 - The classifier changed from hybrid to original GRU. Measurements, confidence
@@ -45,12 +44,9 @@ the selected GRU from the archived hybrid comparison.
 
 ## Remaining manuscript work
 
-1. Import Session 2 after the coach submits it. Fill Table 12 and finalize the
-   corresponding discussion and conclusions using actual ratings.
-2. Record the actual session dates and deployed Google form version. The local
-   script cannot verify what the coach was shown.
-3. Measure physical-device latency and live behavior before claiming the two-second
-   target or equivalent desktop/phone behavior.
+1. Review the completed findings and response-category limitation; do not recode coach answers.
+2. Confirm administrative session chronology if required. The present form was checked against all 30 reports; historical submission-time display cannot be reconstructed from that check alone.
+3. Measure live capture-to-display timing before claiming the two-second target or desktop/phone equivalence. Recorded-file timing is complete.
 4. Review the amended objectives and scope with the adviser. The numerical GRU
    target was not silently reassigned to the hybrid. Historical appendix invitations
    retain their original subtype-label requests, qualified in the main text.

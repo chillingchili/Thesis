@@ -13,6 +13,7 @@ import subprocess
 from pathlib import Path
 
 import cv2
+from refresh_research_findings import update_current_findings
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'research-site'
@@ -191,6 +192,7 @@ def main():
             'calibration': calibration, 'capture': v4['capture'],
             'coach_status': {k: status[k] for k in ['selected_beginner_clips', 'pending_coach_clips', 'prior_diagnostic_overlap', 'coach_c_annotations_pending']},
             'sources': SOURCES}
+    update_current_findings(data)
     serialized = json.dumps(data, ensure_ascii=True, indent=2)
     (ASSETS / 'research-data.json').write_text(serialized, encoding='utf-8')
     (ASSETS / 'research-data.js').write_text('window.RESEARCH_DATA = ' + serialized + ';\n', encoding='utf-8')

@@ -21,7 +21,7 @@ September 2026
 
 # **ABSTRACT** {#abstract}
 
-This study develops and evaluates a multimodal computer-vision prototype for pickleball serve classification and rule-based practice feedback. The selected classifier is the original five-fold Gated Recurrent Unit (GRU) ensemble, with no kNN contribution to its predictions. Separate normalized hip movement and image-plane paddle measurements support deterministic coaching rules at a 0.60 classification-confidence threshold. The earlier GRU–kNN5 hybrid remains a comparison model. Historical original-GRU stratified cross-validation averaged 86.7%, while a separate retrained ensemble achieved 90.9%; on the matched 175-clip diagnostic set, original GRU, hybrid and retrained GRU achieved 51.4%, 49.7% and 46.9%, respectively. Before Session 2 release, the researchers selected original GRU based on that existing comparison. The switch occurred after Session 1 receipt and is disclosed as a protocol amendment, not a preregistered independent test. The revised 30-clip run produced 19 corrective, two positive, eight low-confidence and one partial output, giving substantive coaching coverage of 70.0%. Coach C supplied 27 Bad Form and three Good Form judgments in Session 1; independent subtype labels were omitted. Session 2 feedback-validity ratings and physical-phone latency remain pending. The study demonstrates an implemented prototype with limited generalization and measurement scope, rather than established coach replacement.
+This study developed and evaluated a multimodal computer-vision prototype for pickleball serve classification and rule-based practice feedback. The selected original five-fold GRU ensemble operates with a 0.60 confidence gate and separate hip-movement and image-plane paddle measurements. The earlier GRU–kNN5 hybrid remains a comparison. Historical original-GRU stratified cross-validation was 86.7%, while a matched, previously inspected 175-clip diagnostic set yielded 51.4%, compared with 46.9% for the retrained v2 ensemble and 49.7% for the hybrid. On 30 selected clips, the system produced 19 corrective, two positive, eight low-confidence and one partial output, giving 70.0% substantive coaching coverage. Coach C judged 27 clips Bad Form and three Good Form in Session 1. Session 2 returned 27 Valid, one Not valid and two No coaching feedback to assess responses: 90.0% rated Valid across all clips and 96.4% among Valid/Not valid answers. Eight Valid answers concerned notice-only outputs and two corrective outputs were marked no coaching, limiting interpretation of these percentages. The current form's 30 outputs matched frozen reports; historical submission-time presentation was not independently reconstructed. Xiaomi recorded-video processing had a 68.576-second optimized median, with no meaningful total improvement over baseline. This timing does not verify the proposed live two-second target. The study demonstrates a limited prototype and completed descriptive review, with partially attained objectives; it does not establish independent Coach C subtype accuracy, improved serving performance or coach replacement.
 
 # **TABLE OF CONTENTS** {#table-of-contents}
 
@@ -155,7 +155,7 @@ This study develops and evaluates a multimodal computer-vision prototype for pic
 
 [5.6 Coach C Session 1 Findings](#5.6-coach-c-session-1-findings)
 
-[5.7 Session 2 Analysis Plan and Pending Results](#5.7-session-2-analysis-plan-and-pending-results)
+[5.7 Coach C Session 2 Findings](#5.7-coach-c-session-2-findings)
 
 [5.8 Verification, Limitations and Objective Attainment](#5.8-verification-limitations-and-objective-attainment)
 
@@ -235,7 +235,11 @@ Table 10. Frozen Output Availability
 
 Table 11. Session 1 Judgments by Feedback Status
 
-Table 12. Pending Session 2 Results
+Table 12. Session 2 Submitted Ratings and Denominators
+
+Table 13. Recorded-video Android Benchmark
+
+Table 14. Objective Attainment and Evidence Limits
 
 # **CHAPTER 1** {#chapter-1}
 
@@ -271,7 +275,7 @@ Specifically, this study:
 * Organizes recordings, participant membership and form annotations, distinguishing the annotated training inventory, legacy model population and previously exposed evaluation material.
 * Uses the original five-fold GRU ensemble for subtype classification and combines its output with available hip and paddle measurements for deterministic feedback. Retains GRU–kNN5 as a separately reported comparison.
 * Reports GRU development cross-validation and separate participant-held-out and matched diagnostic comparisons, including hybrid performance. The original 85% stratified-GRU target is retained with its stated scope; it is not redefined as a measured hybrid result.
-* Evaluates the contextual validity of displayed feedback through Coach C’s two-session review, reporting valid, invalid, unavailable-coaching and missing-response counts separately. Session 2 and physical-device timing remain pending.
+* Evaluates the contextual validity of displayed feedback through Coach C’s two-session review, reporting valid, invalid, unavailable-coaching and missing-response counts separately. Session 2 is complete; recorded-file Android timing is available, while the live two-second timing boundary remains unverified.
 
   ## **1.3 Significance of the Study** {#1.3-significance-of-the-study}
 
@@ -310,7 +314,7 @@ This study focuses on recorded pickleball serves categorized as Drive, Lob and T
 
 The study excludes other strokes and does not act as a serve-legality adjudicator. Recordings cover right-handed participants at the stated venues. Coach A supplies professional demonstrations and a subset of explicitly good-form reference recordings; professional status alone is not a form label. Coach B supplies construction-set form judgments and comments. Coach C supplies independent form judgments in Session 1 and reviews model feedback in Session 2. Neither actual instrument collects separate subtype labels, and Session 2 is output-informed rather than blinded to the model’s advice.
 
-The implemented mobile proof of concept uses native Android/Kotlin and TFLite assets, alongside a Python recorded-clip runner used for the Coach C batch. The selected classifier averages the five original GRU folds without kNN weighting. The Android default and the recorded-clip default both select this ensemble; capture-window parity is not assumed. Planned phone measurements cover the Snapdragon 685/6 GB and Dimensity 7300 Pro/8 GB device profiles. Their latency results remain pending; successful model export or desktop execution does not demonstrate the two-second target.
+The implemented mobile proof of concept uses native Android/Kotlin and TFLite assets, alongside a Python recorded-clip runner used for the Coach C batch. The selected classifier averages the five original GRU folds without kNN weighting. The Android default and the recorded-clip default both select this ensemble; capture-window parity is not assumed. Recorded-file benchmarking is complete on the Xiaomi Note 12 running Android 14; the optimized median was 68.576 seconds across nine measured runs of three clips. The second planned device profile and live capture-end-to-displayed-feedback timing remain unverified. Successful builds do not establish the live latency target.
 
   As a proof of concept, the primary contribution is demonstrated technical feasibility of the pipeline, subtype classification and rule-based feedback generation from video, rather than a complete end-user product. Accordingly, the interface artefacts in Section 4.5.3 are limited to output-state diagrams documenting how the four core system outputs and the partial-delivery behaviour in FR7 are surfaced to the user. Production-oriented design artefacts such as full navigation flows and use case diagrams remain outside scope, as they suit projects specifying multi-screen interface layouts and detailed actor-system interaction for a deployed application.
 
@@ -331,7 +335,7 @@ The present evaluation uses prepared recordings. Live ingestion, autonomous trig
 * **Single-Expert Annotation Constraint:** Coach B supplies construction-set form judgments and Coach C supplies evaluation judgments on different clips. This does not support inter-rater reliability. Independent subtype labels were omitted, and recorded category labels must retain their actual provenance. Reference measurements from explicitly good-form Coach A clips do not establish a consensus biomechanical standard.
 * **Annotation and Population Constraints:** The supplied recording inventory reports 812 clips, with a 210-clip construction annotation allocation and 30 evaluation clips. Legacy classifiers use a distinct 438-sample population, and 175 beginner clips have diagnostic exposure. These overlapping scopes cannot be summed or described as though every recording outside the annotation allocation was computationally unused. Only three participants contribute to the principal training inventory.
 * **Environmental and Extraction Vulnerabilities:** Because recordings are captured exclusively under artificial court lighting regardless of time of day, the dataset introduces known vulnerabilities to motion blur and reduced contrast, which may degrade paddle angle estimations when OpenCV's minAreaRect processes high-velocity swing contours. These vulnerabilities apply equally to the auxiliary ball detection module when a secondary camera is in use.   
-* **Hardware-Specific Latency Constraints:** Physical-device latency and live behavior remain unmeasured in the available evaluation record. The planned device profiles define measurement targets, not verified minimum operating specifications.
+* **Hardware-Specific Latency Constraints:** Recorded-file measurements are available for one Xiaomi Note 12. Live capture-to-display behavior and the second planned device profile remain unverified; these measurements do not establish minimum operating specifications.
 * **Handedness:** All participants are right-handed, and horizontal-flip augmentation is deliberately excluded (Section 4.3.2). The trained classifier is therefore not expected to generalize to left-handed players, and left-handed support would require additional collection.   
 * **Unrepresented Movement and Body Configurations:** The study has not validated performance for participants using prostheses or with limb differences, or for other body configurations and movement conditions absent from its sample. Tracking and coaching reliability for those populations cannot be inferred from the current data.
 
@@ -516,7 +520,7 @@ Systems engineered for real-time, on-device sports analytics face a persistent t
 
 # **DESIGN AND METHODOLOGY** {#design-and-methodology}
 
-This chapter describes the research setting, data preparation, implemented multimodal pipeline and expert-review procedure. It distinguishes the initial production design from the recorded-clip configuration actually evaluated. The completed computational work and Coach C Session 1 are reported as completed activities; Session 2 feedback ratings and physical-device latency measurements remain pending as of 10 October 2026. Changes to the initial proposal are stated explicitly rather than treated as evidence that every original requirement was fulfilled.
+This chapter describes the research setting, data preparation, implemented multimodal pipeline and expert-review procedure. It distinguishes the proposed production design from the recorded-clip configuration actually evaluated. Both Coach C sessions and the Xiaomi recorded-file benchmark are complete as of 12 October 2026; live timing remains unverified. Changes to the initial proposal are disclosed explicitly.
 
 ## **4.1 Research Environment and Respondents** {#4.1-research-environment-and-respondents}
 
@@ -546,7 +550,7 @@ The project used Python, TensorFlow/Keras and associated computer-vision tools f
 
 * Inference environment
 
-The planned physical-device validation profiles are a Snapdragon 685 device with 6 GB RAM and Android 14, and a MediaTek Dimensity 7300 Pro 5G device with 8 GB RAM and Android 16. Physical-phone latency and live-capture measurements have not been completed in the available record. The Coach C packet was generated through the desktop recorded-clip runner using Android-compatible legacy assets; the selected original-GRU revision recomputes classifications from the preserved pose caches. This does not establish end-to-end parity with the phone's live capture window or attainment of the two-second target.
+The planned physical-device validation profiles are a Snapdragon 685 device with 6 GB RAM and Android 14, and a MediaTek Dimensity 7300 Pro 5G device with 8 GB RAM and Android 16. Recorded-file timing is complete on the Xiaomi Note 12; live-capture timing and the second planned device profile remain unverified. The Coach C packet was generated through the desktop recorded-clip runner using Android-compatible legacy assets; the selected original-GRU revision recomputes classifications from the preserved pose caches. This does not establish end-to-end parity with the phone's live capture window or attainment of the two-second target.
 
 
   ### **4.1.2 Respondents** {#4.1.2-respondents}
@@ -657,7 +661,7 @@ flowchart TD
  D --> F[Recompute all 30 GRU predictions; unchanged gate and cue templates]
  E --> F
  F --> G[Freeze new version and create separate form]
- G --> H[Session 2 after planned interval; ratings pending]
+ G --> H[Session 2 completed; category interpretation qualified]
 ```
 
 ### 
@@ -766,7 +770,7 @@ Functional Requirements:
 1. The system must deliver its complete classification output and corrective feedback within two seconds of serve completion.   
 2. The original classification target is at least 85% stratified cross-validation accuracy for the GRU across the recorded classes. Results are reported with their model, label source, sample count and split procedure. A GRU-only result cannot certify the hybrid or establish transfer to new players. Crossing this numerical development target is not sufficient evidence of deployment readiness.
 3. The selected original GRU retains the 0.60 threshold, now applied to the maximum ensemble probability without kNN averaging. The switch was authorized before Session 2 release on the basis of the earlier diagnostic comparison. No model retraining or threshold fitting used Coach C’s comments.
-4. The two-second core-pipeline target must be measured on the lower-bound device, with hardware and timing boundaries reported. Both latency requirements remain pending until physical-device measurements are available. Auxiliary landing time, if exercised, is reported separately.
+4. The two-second live core-pipeline target requires a capture-end-to-displayed-feedback measurement with hardware and timing boundaries reported. The completed recorded-file benchmark measures a different interval and does not establish this target. Auxiliary landing time, if exercised, is reported separately.
 
    ### 
 
@@ -786,7 +790,7 @@ flowchart TD
  C --> E
  E --> F[New frozen reports]
  F --> G[New Session 2 form]
- H[Android original-GRU default; phone validation pending]
+ H[Android original-GRU default; recorded-file benchmark complete]
 ```
 
 Figure 6 shows the evaluated recorded-clip architecture and the separate native Android proof of concept. Frozen reports connect inference to the coach instrument. The diagram does not establish equal capture windows or measured real-time phone performance.
@@ -872,7 +876,7 @@ Data collection and preparation produced the recording inventory, form annotatio
 
 *Phase 3: Model Building and Training*
 
-Model building produced the legacy GRU/kNN assets, separate retrained candidates, empirical movement/orientation references and a human-encoded rule table. Development experiments and their selection procedures are reported separately. Neither Coach C's Session 1 comments nor pending Session 2 judgments are used to fit the frozen reviewed model.
+Model building produced the legacy GRU/kNN assets, separate retrained candidates, empirical movement/orientation references and a human-encoded rule table. Development experiments and their selection procedures are reported separately. Neither Coach C's Session 1 comments nor Session 2 judgments are used to fit the frozen reviewed model.
 
 *Phase 4: Evaluation and Validation*
 
@@ -884,7 +888,7 @@ Model export and Android builds support deployment preparation. The current repo
 
 ## **4.7 Development Approaches**  {#4.7-development-approaches}
 
-The implementation and automated experiments are complete to the extent reported in Chapter 5. Coach C's Session 1 has been received, while Session 2 and physical-device measurements remain pending. The following approaches distinguish the proposed architecture from the software actually present in the repository.
+The implementation, automated experiments, both Coach C sessions and Xiaomi recorded-file benchmarks are complete to the extent reported in Chapter 5. Live timing remains unverified. The following approaches distinguish the proposed architecture from the software actually evaluated.
 
 **Figure 12**  
 *Bottom-up Approach Model of the System*
@@ -894,7 +898,7 @@ flowchart BT
  A[Pose and detector geometry] --> B[Original GRU classification and separate measurements]
  B --> C[Confidence gate and rule-based feedback]
  C --> D[Recorded-clip prototype and Android default]
- D --> E[Expert review and pending phone validation]
+ D --> E[Expert review complete; live timing unverified]
 ```
 
 ### **4.7.1 Architectural Style**  {#4.7.1-architectural-style}
@@ -1082,7 +1086,7 @@ The model method is applied across the two core processing streams, the optional
 
 The models are simplified representations. Pose-derived joint angles and timing features describe projected movement, not complete three-dimensional biomechanics. Hip-center movement does not directly measure force or foot loading. A paddle contour's long axis does not establish physical face tilt. A wrist-speed peak is an estimated event rather than verified ball impact. The optional court homography assumes a planar surface. The IF-THEN engine encodes a limited set of researcher-authored, coach-informed practice cues; its validity is the subject of Session 2, not a premise established by implementation.
 
-The GRU was selected as a compact temporal model consistent with the project's small-data and mobile objectives. Model choice remains an empirical engineering decision: the available experiments do not prove that all alternative temporal architectures are unsuitable. Further model complexity would require appropriately separated evaluation and sufficient data. The final conclusions therefore distinguish implementation feasibility, observed classification performance, feedback availability and pending expert validation.
+The GRU was selected as a compact temporal model consistent with the project's small-data and mobile objectives. Model choice remains an empirical engineering decision: the available experiments do not prove that all alternative temporal architectures are unsuitable. Further model complexity would require appropriately separated evaluation and sufficient data. The final conclusions therefore distinguish implementation feasibility, observed classification performance, feedback availability and completed expert review with category-interpretation limitations.
 
 
 ### **4.10.5 Session 2 Scoring and Missing-Output Accounting** {#4.10.5-session-2-scoring-and-missing-output-accounting}
@@ -1099,7 +1103,7 @@ The scoring script matches C001–C030 by question header or clip ID, preserves 
 
 ## **5.1 Scope of the Reported Results** {#5.1-scope-of-the-reported-results}
 
-This chapter reports the completed classifier experiments, the frozen multimodal outputs for the 30 selected evaluation clips, and Coach C's completed Session 1 form judgments. Session 2 feedback-validity ratings and physical-phone latency measurements were not available when this draft was prepared on 10 October 2026. Consequently, the chapter distinguishes measured findings from pending evaluation outcomes. No Session 2 ratings have been estimated or inferred from Session 1 comments.
+This chapter reports the completed classifier experiments, frozen multimodal outputs for all 30 selected clips, Coach C's two-session review, and recorded-video measurements on the Xiaomi Note 12. Results were consolidated on 12 October 2026. Submitted ratings are preserved without reinterpretation. Recorded-file processing and the proposed live capture-end-to-displayed-feedback latency target are treated as different measurements.
 
 Three kinds of evidence are reported separately. Stratified cross-validation measures discrimination among clips sampled from the available training participants. Participant-held-out development and the existing Beginner 3/4 diagnostic set examine transfer under different sampling conditions. Coach C's evaluation examines form judgments and the contextual validity of feedback on the selected 30 clips. Because the actual coach instrument omits independent serve-type labels, it cannot provide independent Coach C subtype-classification accuracy.
 
@@ -1189,35 +1193,66 @@ Coach C submitted one complete form-review response covering all 30 clips. Twent
 | Good Form | 1 | 2 | 0 | 0 | 3 |
 | Total | 19 | 2 | 8 | 1 | 30 |
 
-With the selected GRU configuration, 18 of 19 corrective outputs occur on clips Coach C judged Bad Form; the remaining corrective output is on C008, judged Good Form. C019 and C022, also judged Good Form, receive positive feedback on the limited assessed measurements. These associations do not establish that individual cues are valid or that the model classifies whole-form quality. Session 2 must judge the displayed suggestions independently of this descriptive comparison.
+With the selected GRU configuration, 18 of 19 corrective outputs occur on clips Coach C judged Bad Form; the remaining corrective output is on C008, judged Good Form. C019 and C022, also judged Good Form, receive positive feedback on the limited assessed measurements. These associations do not establish that individual cues are valid or that the model classifies whole-form quality. The Session 2 ratings below assess the displayed outputs separately from this descriptive comparison.
 
 The actual coach instrument did not collect independent Drive/Lob/Topspin labels. Comments disputing an intended category, including the description of C030 as an under-spin serve, were preserved as comments and were not converted into a complete classification reference set. No independent Coach C subtype accuracy or whole-form classifier accuracy is reported.
 
-## **5.7 Session 2 Analysis Plan and Pending Results** {#5.7-session-2-analysis-plan-and-pending-results}
+## **5.7 Coach C Session 2 Findings** {#5.7-coach-c-session-2-findings}
 
-The researchers plan to deliver Session 2 after a one-day interval from Session 1. The coach will view the same videos with the frozen model prediction and approved feedback, without access to Session 1 answers through the instrument. This separation may reduce immediate recall but does not guarantee that the coach will forget earlier judgments. The actual session dates and presentation version must be recorded before reporting the completed procedure.
+The Session 2 export received on 12 October 2026 contains one complete submission covering all 30 clips. The form presents each video, its frozen original-GRU classification and feedback, and three choices: Valid, Not valid, or No coaching feedback to assess. Session 1 answers are not displayed within this instrument. A one-day separation was planned to reduce immediate recall; the available presentation check does not independently establish the actual viewing interval or eliminate recall bias.
 
-Each clip requires one response: Valid, Not valid, or No coaching feedback to assess. Let V, I and U denote those counts and M denote unanswered items. All clips remain in the accounting, so V + I + U + M = 30. The primary result is 100V/30. A secondary result, 100V/(V + I), describes validity among assessed outputs and is unavailable when V + I = 0. U and M are distinct: the former is an explicit judgment about absence of assessable coaching, whereas the latter denotes incomplete data collection.
+Let V, I and U denote the three response counts and M denote missing answers. The fixed primary measure is 100V/30; the secondary measure is 100V/(V + I). All clips remain in the accounting, with V + I + U + M = 30. These definitions were retained when scoring the submitted export.
 
-**Table 12. Session 2 results to be completed after submission**
+**Table 12. Session 2 submitted ratings and denominators**
 
-| Measure | Result at this draft |
-|---|---|
-| Valid, Not valid, and No coaching feedback to assess counts | Pending |
-| Primary validity percentage, V/30 | Pending |
-| Secondary validity among assessed outputs, V/(V + I) | Pending |
-| Missing responses | Not yet determined from a Session 2 export |
-| Independently measured coaching effectiveness over subsequent attempts | Not measured by this instrument |
+| Measure | Observed result |
+|---|---:|
+| Valid | 27 |
+| Not valid | 1 |
+| No coaching feedback to assess | 2 |
+| Missing responses | 0 |
+| Primary: rated Valid among all clips, V/30 | 27/30 (90.0%) |
+| Secondary: rated Valid among Valid/Not valid answers, V/(V + I) | 27/28 (96.4%) |
+| Frozen corrective or positive output coverage | 21/30 (70.0%) |
 
-The scoring script preserves the source export, matches answers by clip ID, and rejects duplicate IDs or unknown response values. Multiple submissions require explicit selection. It does not silently combine attempts or convert Session 1 comments into ratings. It flags inconsistent use of the no-coaching option for documented review without changing the submitted answers. Synthetic test data used to verify the script are not research observations.
+C001 received Not valid. C021 and C024 received No coaching feedback to assess even though both frozen outputs contain a hip-movement corrective cue. Among the 21 corrective or positive outputs, 19 were rated Valid and two received the no-coaching response. Among nine uncertainty or partial notices without substantive coaching, eight were rated Valid and one Not valid. Thus, the 90.0% primary result describes the coach's submitted ratings across displayed outputs; it is not an estimate of actionable-coaching accuracy, subtype accuracy, or improvement in subsequent serves.
+
+These 11 category/status discrepancies were retained as interpretation flags, not automatically corrected. The form combines validity and availability in one question. A Valid answer to an uncertainty notice may concern the notice itself, but the coach's intent cannot be inferred from the export. Equally, the two no-coaching answers cannot be silently changed to invalid or excluded. The secondary 96.4% therefore also requires the category-interpretation limitation.
+
+On 12 October, all 30 classification and feedback texts in the current Google Form editor matched the frozen reports after whitespace normalization. C021 and C024 displayed the expected corrective text. This rules out a discrepancy in the current editor; it does not independently reconstruct what was displayed at the exact time of submission. The original workbook, source hash, clip-level scores, frozen report hashes and subsequent form-verification record are preserved. No model, threshold, feedback text or submitted answer was changed during this analysis.
+
+The review provides descriptive evidence from one expert on a small, previously exposed sample. No new numerical passing threshold was imposed after receipt. It does not establish inter-rater reliability, participant-independent coaching effectiveness or the ability to replace a coach.
 
 ## **5.8 Verification, Limitations and Objective Attainment** {#5.8-verification-limitations-and-objective-attainment}
 
-The current local verification includes 36 targeted Python checks for the desktop, hybrid and development-feedback code, together with Apps Script mock checks for exact feedback, batching, recovery and migration. The Session 2 scorer additionally passes 12 synthetic-input tests covering CSV/XLSX reading, denominator definitions, missing values, duplicate fields, multiple submissions and source preservation. These are implementation checks, not evidence of coaching validity. Physical-phone latency and live-camera performance remain unmeasured in the available record.
+The Session 2 scorer passed 12 synthetic-input tests covering export parsing, denominator definitions, missing values, duplicate fields, multiple submissions and source preservation. Android build, unit, lint and targeted device checks supported the benchmark implementation. Software checks establish implementation behavior, not biomechanical correctness or coaching effectiveness.
 
-The evidence supports implementation of a multimodal prototype and achievement of the numerical stratified-CV target under documented GRU conditions. It does not establish feedback validity on all observed mechanics or reliable coach replacement. The selected GRU gate withholds coaching on 26.7% of the clips. Hip displacement remains an image-plane movement proxy, and paddle orientation remains an image-plane axis estimate rather than verified physical face tilt. One independent expert and a small, previously exposed evaluation set further limit generalization.
+**Table 13. Recorded-video Android benchmark**
 
-The final interpretation of contextual feedback validity must wait for Session 2. Results below a target or with limited coverage should be reported as unmet or partially met objectives, not removed from the evaluation. The distinction between a functioning implementation and an effective coaching system is central to the conclusions.
+| Measure | Baseline | Optimized |
+|---|---:|---:|
+| Successful measured runs | 9/9 | 9/9 |
+| Median processing time | 68.619 s | 68.576 s |
+| Slowest measured run | 104.650 s | 94.284 s |
+| Compared outputs changed after optimization | — | 0/9 |
+
+Each configuration processed three saved clips (C001, C002 and C007) in three measured rounds, excluding one warm-up run. The Xiaomi Note 12 ran Android 14. The timed interval begins when the recorded file is opened and ends when feedback is computed, including decoding, pose extraction, hip/paddle analysis, GRU inference and feedback construction. Initial model/pose setup is recorded separately. These debug-build, charging-device measurements do not time live capture completion or the final screen display; repeated runs of three clips are not nine independent recordings.
+
+The crop-preparation optimization reduced its measured component time from approximately 5.20 to 1.38 ms with identical tested pixels and angles. Overall median processing fell by only 0.06%, which does not demonstrate a meaningful total speedup. The same model assets and clips were used, and all nine compared predictions and feedback outputs were unchanged. Separate sequential runs do not isolate thermal or scheduling variation. Android's temporal window also differs from the Coach C recorded-clip path, so these checks do not establish desktop/phone output parity.
+
+**Table 14. Objective attainment and evidence limits**
+
+| Objective | Supported conclusion |
+|---|---|
+| At least 85% stratified GRU CV | Numerically reached in historical original-GRU and separate v2 experiments; populations differ from one another and cannot be treated as the same proposal dataset |
+| Transfer to other players | Limited: selected original GRU achieved 51.4% on the previously inspected 175-clip diagnostic set |
+| Contextual feedback review | Completed: 27/30 rated Valid, with category-interpretation limitations; no prespecified numerical pass threshold |
+| Substantive feedback availability | 21/30 clips (70.0%); availability is distinct from validity |
+| Live feedback within two seconds after capture | Not verified by the recorded-file benchmark; no claim of target attainment |
+| Capture retention and subtype-distinguishability gates | Final gate outcomes not established by the available evidence |
+| Independent Coach C subtype accuracy | Unavailable: independent subtype labels were intentionally omitted |
+
+The evidence supports an implemented multimodal prototype and a completed descriptive expert review. It does not establish reliable coach replacement. Hip movement is an image-plane displacement proxy; paddle orientation is an image-plane axis estimate rather than verified physical face tilt. Low-confidence withholding, limited participant diversity, retrospective model selection before Session 2 release, prior exposure of evaluation clips, one expert and the response-category ambiguity constrain the conclusions. These limitations remain part of the final findings rather than reasons to discard unfavorable clips.
 
 # **CHAPTER 6** {#chapter-6}
 
@@ -1227,7 +1262,7 @@ The final interpretation of contextual feedback validity must wait for Session 2
 
 The study developed a recorded-video prototype using the original five-fold GRU ensemble, a 0.60 confidence gate, separate hip/paddle measurements and deterministic practice cues. The earlier GRU–kNN5 hybrid remains an archived comparison. Auxiliary landing is excluded from the 30-clip evaluation. Original GRU was selected after Session 1 receipt but before Session 2 release, without retraining or adapting cues to Coach C’s comments.
 
-The work included legacy-model audits, GRU retraining, augmentation and feature experiments, hybrid evaluation, and preparation of a two-session expert review. The final review instrument differs from the initial proposal: Coach C supplies overall-form judgments and comments in Session 1, then evaluates displayed feedback in Session 2. Independent subtype labels were intentionally omitted. This change limits external classification validation and must remain explicit in the final manuscript.
+The work included legacy-model audits, GRU retraining, augmentation and feature experiments, hybrid evaluation, and completion of a two-session expert review and recorded-video Android benchmarks. The final review instrument differs from the initial proposal: Coach C supplies overall-form judgments and comments in Session 1, then evaluates displayed feedback in Session 2. Independent subtype labels were intentionally omitted. This change limits external classification validation and must remain explicit in the final manuscript.
 
 ## **6.2 Summary of Findings** {#6.2-summary-of-findings}
 
@@ -1237,27 +1272,29 @@ Raw-video augmentation improved a matched participant-held-out angle-model resul
 
 All 30 selected clips produced classifications and hip measurements; 26 produced paddle measurements. The selected original GRU configuration yields 19 corrective, two positive, eight low-confidence and one partial output. Substantive coaching coverage is 21/30 (70.0%), compared with 17/30 (56.7%) for the archived hybrid. This change measures availability rather than validated coaching quality.
 
-Coach C judged 27 clips Bad Form and three Good Form in Session 1. The agreement between a Bad Form judgment and the presence of corrective feedback cannot establish the validity of that correction. Session 2 ratings and physical-device performance results remain pending. No final percentage for feedback validity, independent Coach C classification accuracy, or phone latency is claimed.
+Coach C judged 27 clips Bad Form and three Good Form in Session 1. Session 2 contained 27 Valid, one Not valid and two No coaching feedback to assess answers, with none missing. The fixed primary result was 90.0% (27/30); the secondary result was 96.4% (27/28). Eight Valid answers concern notice-only outputs, while two corrective outputs were marked no coaching. All answers were retained, so these figures describe submitted output ratings rather than an unqualified measure of corrective-feedback accuracy.
+
+The Xiaomi recorded-file benchmark completed all nine measured runs per configuration. Median processing was 68.619 seconds before and 68.576 seconds after crop optimization, with unchanged compared outputs. The component improvement did not materially improve overall processing time. The proposed live two-second boundary remains unverified.
 
 ## **6.3 Conclusions** {#6.3-conclusions}
 
-The completed work demonstrates that the proposed components can be assembled into a recorded-video analysis prototype with explicit classification, measurement and feedback outputs. The stated stratified-CV numerical target was reached in identified GRU experiments. However, the selected original GRU's external reliability, feedback coverage and physical-device performance must be assessed separately rather than inferred from those development scores.
+The study implemented an original-GRU multimodal recorded-video prototype that produces classifications, limited movement/orientation measurements, practical cues and explicit uncertainty notices. Identified GRU experiments reached the historical stratified-CV numerical target, but diagnostic performance shows that this result cannot be extended to reliable recognition across new participants.
 
-The present evidence does not support a claim that the system replaces a coach. It provides a limited set of automatic practice cues and uncertainty notices. Substantial withholding, imperfect participant transfer, unvalidated physical interpretations of some proxies, and pending Session 2 evidence prevent a stronger effectiveness conclusion. A complete thesis can report these limitations and partially attained objectives, but the pending outcomes must be filled from collected evidence rather than favorable assumptions.
+Coach C's completed review supplies favorable submitted ratings for most displayed outputs, accompanied by a material interpretation limitation. Only 70.0% of the selected clips contain substantive coaching, and the combined availability/validity choices were not used consistently with frozen output status. The study therefore supports the feasibility of producing and reviewing limited automated practice cues, not a claim of comprehensive biomechanical assessment, improved player performance or coach replacement.
 
-These conclusions are provisional with respect to contextual feedback validity and deployment latency. They should be finalized only after the remaining measurements are available, while retaining all 30 selected clips and the frozen evaluated version in the reported analysis.
+The thesis objectives were partially attained. Implementation and descriptive expert review are complete within their stated scope; reliable participant transfer and the live latency requirement have not been demonstrated. Reporting these outcomes completes the present findings without converting missing evidence or limited results into successful objectives.
 
 ## **6.4 Recommendations** {#6.4-recommendations}
 
-First, complete Session 2 with the current form and a documented interval, preserving the model, confidence gate and feedback wording. Report the three response categories and full-set validity alongside substantive coaching coverage. If the coach provides clarification, retain the original response and document any interpretation separately. Refinements based on this evaluation should be identified as a later development version requiring new validation.
+First, preserve the completed Session 2 responses and report validity alongside coverage and the category/status cross-tabulation. Any later coach clarification should be recorded separately without overwriting the original answers. A future instrument should ask feedback availability and validity separately, and distinguish substantive coaching from uncertainty notices. Changes informed by this review require a later model version and new validation data.
 
-Second, measure end-to-end core-pipeline latency and actual behavior on the intended Android devices. Separate camera acquisition, inference and optional landing processing where relevant, and retain the device specifications and measurement procedure. Desktop runtimes and successful builds are insufficient substitutes.
+Second, measure live capture-end-to-displayed-feedback latency on the intended Android devices using a clearly defined timing boundary. Optimize the dominant decoding/pose/paddle work and verify output behavior after each change. The completed recorded-video benchmark and small crop optimization do not substantiate the two-second live target. Additional clips, devices and controlled repeated measurements would improve deployment evidence.
 
 Third, when resources permit, prioritize additional independent training participants and clearer label provenance over repeatedly generating variants of the same players. Use participant-separated development checks and consistent extraction/windowing to evaluate proposed improvements. Independently labeled mechanics or contact events may support later validation, but they are not additional requirements imposed on Coach C for the present review.
 
 Fourth, restrict each feedback rule to measurements the implementation can support. Do not claim verified ground-force transfer, paddle-face opening or closing, ball spin, serve legality, wrist lag or whole-form correctness without appropriate validation. Preserve useful partial results while making the scope of every cue clear.
 
-Finally, reconcile the final manuscript with the selected original GRU and separate measurement streams, actual instrument, training populations, prior diagnostic exposure and recorded timing change. Maintain the distinction between intended recording categories, coach form judgments, predicted subtypes, and feedback-validity ratings. These records make the final conclusions traceable even when some intended performance objectives are not met.
+Finally, maintain the final manuscript with the selected original GRU and separate measurement streams, actual instrument, training populations, prior diagnostic exposure and recorded timing change. Maintain the distinction between intended recording categories, coach form judgments, predicted subtypes, and feedback-validity ratings. These records make the final conclusions traceable even when some intended performance objectives are not met.
 
 
 
@@ -1473,12 +1510,14 @@ Thank you very much.
 
 Respectfully,
 
-|  Ethan Job T. Leones *Student Researcher* |   Joseph Gabriel Pascua*Student Researcher* |
+|  Ethan Job T. Leones *Student Researcher* |   Joseph Gabriel Pascua
+*Student Researcher* |
 | :---- | :---- |
 
 Noted by:                                                             Approved by:
 
-| Glenn B. Pepito Thesis Project Adviser | Jann RamsesProfessional Pickleball Player |
+| Glenn B. Pepito Thesis Project Adviser | Jann Ramses
+Professional Pickleball Player |
 | :---- | :---- |
 
 ## 
