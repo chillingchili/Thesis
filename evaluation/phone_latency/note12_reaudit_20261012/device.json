@@ -1,0 +1,15 @@
+{
+  "apk_sha256": "a3165396c5359d2d67cb09100fd2100e0f43214e13c2ce7001632f4aaf6f3f33",
+  "assets": {
+    "assets/gru_fold1.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "assets/gru_fold2.tflite": "9f7a5cefe571ce1d81d099fcc4d2165821159b8c0c4cb6c694510792210f20be",
+    "assets/gru_fold3.tflite": "70555916b6dfeeef2389c3f3604879e8e1182c151e335c7940003de5d63a216a",
+    "assets/gru_fold4.tflite": "f1d83af6a5dd167f77f63b8ff87b85424955098b9299419faa2fa51c7ba867b5",
+    "assets/gru_fold5.tflite": "9b511816d9899b4f7000b524d12afcdc7c15385f9b5083472434c9b81f9d0c96",
+    "assets/gru_single.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "assets/manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "assets/serve_research/manifest.json": "0d090195a0508933341ebfb59dd9f2bdea15a6058b2c329e23ae299ea5184cd2"
+  },
+  "device": "23021RAAEG",
+  "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 0\n  Max charging voltage: 0\n  Charge counter: 3370000\n  status: 2\n  health: 2\n  present: true\n  level: 72\n  scale: 100\n  voltage: 4061\n  temperature: 340\n  technology: Li-poly"
+}

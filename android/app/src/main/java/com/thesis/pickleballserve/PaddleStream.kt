@@ -159,7 +159,15 @@ class PaddleStream private constructor(
      * Detection is the expensive step (~600ms on this phone) and runs outside
      * the lock so clear() from another thread can never block on it.
      */
+    internal data class Sample(val index: Int, val generation: Long, val wristX: Float, val wristY: Float)
+
     fun add(wristX: Float, wristY: Float, bitmap: Bitmap?) {
+        val sample = prepare(wristX, wristY, bitmap != null)
+        if (bitmap != null && sample != null) detect(sample, bitmap)
+    }
+
+    /** Ordered, cheap bookkeeping runs on the pose thread. */
+    internal fun prepare(wristX: Float, wristY: Float, hasBitmap: Boolean): Sample? {
         var idx = 0
         var gen = 0L
         var detect = false
@@ -179,10 +187,17 @@ class PaddleStream private constructor(
             lastWristX = wristX
             lastWristY = wristY
 
-            detect = bitmap != null && strideCount++ % DETECT_STRIDE == 0
+            detect = hasBitmap && strideCount++ % DETECT_STRIDE == 0
         }
-        val frame = bitmap ?: return
-        if (!detect) return
+        return if (detect) Sample(idx, gen, wristX, wristY) else null
+    }
+
+    /** Expensive detection may finish later; generation prevents cross-serve writes. */
+    internal fun detect(sample: Sample, frame: Bitmap) {
+        val idx = sample.index
+        val gen = sample.generation
+        val wristX = sample.wristX
+        val wristY = sample.wristY
         val dets = detector.detectAll(frame)
         val maxPx = PaddleDetector.WRIST_MAX_PX * frame.width / PaddleDetector.REF_WIDTH_PX
         val det = PaddleDetector.pick(dets, wristX * frame.width, wristY * frame.height, maxPx)

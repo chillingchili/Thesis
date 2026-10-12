@@ -17,6 +17,7 @@ class FeedbackEngine private constructor(
         val gruConfidence: Float?,
         val shiftSufficient: Boolean?,
         val paddle: PaddleState?,
+        val independentMechanics: Boolean = false,
         val placementActive: Boolean = false,
         val placementZone: String? = null,
     )
@@ -38,10 +39,29 @@ class FeedbackEngine private constructor(
             notes += if (zone == null) "Ball landing unavailable." else "Ball landing: $zone."
         }
         fun result(status: Status, messages: List<String>, ids: List<String> = emptyList()) =
-            Result(status, ids, messages, notes.toList(), version, validationStatus)
+            Result(status, ids, messages, notes.toList(),
+                if (input.independentMechanics) version + "+mobile-mechanics-v1" else version,
+                if (input.independentMechanics) "experimental_mobile" else validationStatus)
 
         val subtype = input.serveType?.lowercase(Locale.ROOT)
         val confidence = input.gruConfidence
+        val classificationReliable = subtype in SERVE_TYPES && confidence != null &&
+            confidence.isFinite() && confidence in MIN_CONFIDENCE..1f
+        if (input.independentMechanics && !classificationReliable) {
+            // Only rules explicitly applicable to EVERY supported serve type qualify.
+            // MainActivity requires >=32 real poses spanning >=1500ms for this path.
+            val independentConditions = buildSet {
+                if (input.shiftSufficient == false) add("shift_insufficient")
+                if (input.paddle == PaddleState.OUTSIDE_BASELINE) add("paddle_outside_baseline")
+            }
+            val common = rules.filter {
+                it.serveTypes.containsAll(SERVE_TYPES) && it.condition in independentConditions
+            }
+            if (common.isNotEmpty()) {
+                notes += "Serve classification is uncertain. This feedback covers measured mechanics only."
+                return result(Status.CORRECTIVE, common.map { it.text }, common.map { it.id })
+            }
+        }
         if (subtype !in SERVE_TYPES || confidence == null || !confidence.isFinite() ||
             confidence !in 0f..1f) {
             return result(Status.INSUFFICIENT_DATA,

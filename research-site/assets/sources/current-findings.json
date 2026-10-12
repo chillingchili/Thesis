@@ -70,5 +70,123 @@
     "distinct_clips": 3,
     "timing_boundary": "recorded-file opening to computed feedback; initial model setup excluded",
     "live_two_second_target": "unverified"
+  },
+  "mobile_followup": {
+    "variants": {
+      "cpu": {
+        "expected_clips": 30,
+        "replay_complete": 30,
+        "clips_with_output": 29,
+        "multiple_outputs": 2,
+        "status_counts": {
+          "LOW_CONFIDENCE": 2,
+          "INSUFFICIENT_DATA": 23,
+          "NO_OUTPUT": 1,
+          "PARTIAL": 2,
+          "CORRECTIVE": 2
+        },
+        "classification_available": 6,
+        "recording_category_agreements": 1,
+        "confident_classifications": 4,
+        "confident_category_agreements": 1,
+        "substantive_feedback": 2,
+        "substantive_with_category_agreement": 1,
+        "paddle_available": 2,
+        "frozen_substantive": 21,
+        "same_status_as_frozen": 4,
+        "exact_feedback_matches": 2,
+        "gate_to_ui_median_ms": 26,
+        "gate_to_ui_max_ms": 397,
+        "before_source_end": 3,
+        "within_0_to_2s_after_source_end": 26,
+        "over_2s_after_source_end": 0,
+        "all_displayed_events": 31,
+        "clips_with_any_substantive_output": 2,
+        "all_event_status_counts": {
+          "LOW_CONFIDENCE": 2,
+          "INSUFFICIENT_DATA": 25,
+          "PARTIAL": 2,
+          "CORRECTIVE": 2
+        }
+      },
+      "gpu": {
+        "expected_clips": 30,
+        "replay_complete": 30,
+        "clips_with_output": 26,
+        "multiple_outputs": 1,
+        "status_counts": {
+          "NO_OUTPUT": 4,
+          "LOW_CONFIDENCE": 19,
+          "CORRECTIVE": 5,
+          "INSUFFICIENT_DATA": 1,
+          "PARTIAL": 1
+        },
+        "classification_available": 25,
+        "recording_category_agreements": 12,
+        "confident_classifications": 6,
+        "confident_category_agreements": 4,
+        "substantive_feedback": 5,
+        "substantive_with_category_agreement": 4,
+        "paddle_available": 1,
+        "frozen_substantive": 21,
+        "same_status_as_frozen": 6,
+        "exact_feedback_matches": 1,
+        "gate_to_ui_median_ms": 152.0,
+        "gate_to_ui_max_ms": 1165,
+        "before_source_end": 2,
+        "within_0_to_2s_after_source_end": 24,
+        "over_2s_after_source_end": 0,
+        "all_displayed_events": 27,
+        "clips_with_any_substantive_output": 5,
+        "all_event_status_counts": {
+          "LOW_CONFIDENCE": 19,
+          "CORRECTIVE": 5,
+          "INSUFFICIENT_DATA": 2,
+          "PARTIAL": 1
+        }
+      },
+      "improved": {
+        "expected_clips": 30,
+        "replay_complete": 30,
+        "clips_with_output": 27,
+        "multiple_outputs": 1,
+        "status_counts": {
+          "NO_OUTPUT": 3,
+          "CORRECTIVE": 18,
+          "PARTIAL": 3,
+          "LOW_CONFIDENCE": 3,
+          "INSUFFICIENT_DATA": 3
+        },
+        "classification_available": 24,
+        "recording_category_agreements": 14,
+        "confident_classifications": 10,
+        "confident_category_agreements": 7,
+        "substantive_feedback": 18,
+        "substantive_with_category_agreement": 11,
+        "paddle_available": 1,
+        "frozen_substantive": 21,
+        "same_status_as_frozen": 16,
+        "exact_feedback_matches": 2,
+        "gate_to_ui_median_ms": 126,
+        "gate_to_ui_max_ms": 423,
+        "before_source_end": 3,
+        "within_0_to_2s_after_source_end": 23,
+        "over_2s_after_source_end": 1,
+        "all_displayed_events": 28,
+        "clips_with_any_substantive_output": 18,
+        "all_event_status_counts": {
+          "CORRECTIVE": 18,
+          "PARTIAL": 3,
+          "LOW_CONFIDENCE": 4,
+          "INSUFFICIENT_DATA": 3
+        }
+      }
+    },
+    "scope": "Post-review development replay; same 30 clips, one replay per configuration; not independently expert-rated.",
+    "independent_mechanics_outputs": 11,
+    "classification_threshold": 0.6,
+    "two_second_target": "not established",
+    "late_source_end_ms": 3126,
+    "timing_boundary": "detected end to UI text assignment; excludes decoding/model setup and physical camera acquisition"
   }
 }

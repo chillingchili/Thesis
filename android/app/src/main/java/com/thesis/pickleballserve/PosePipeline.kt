@@ -9,6 +9,7 @@ import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.framework.image.MPImage
 import com.google.mediapipe.tasks.components.containers.NormalizedLandmark
 import com.google.mediapipe.tasks.core.BaseOptions
+import com.google.mediapipe.tasks.core.Delegate
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
@@ -23,16 +24,18 @@ import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
  */
 class PosePipeline(
     context: Context,
-    private val onPose: (landmarks: Array<PointF>, bitmap: Bitmap?) -> Unit,
+    private val useGpu: Boolean = false,
+    private val onPose: (landmarks: Array<PointF>, bitmap: Bitmap?, timestampMs: Long, realFrame: Boolean) -> Unit,
     private val onError: (String) -> Unit = {}
 ) {
     companion object {
         private const val TAG = "PosePipeline"
         // Model asset: download pose_landmarker_lite.task (or _full / _heavy) into assets/
         private const val MODEL_ASSET = "pose_landmarker_lite.task"
-        private const val BITMAP_RING = 5
+        private const val BITMAP_RING = 32
     }
 
+    private var activeGpu = useGpu
     private var landmarker: PoseLandmarker? = null
     private var lastTimestampMs = 0L
 
@@ -40,12 +43,14 @@ class PosePipeline(
     private val landmarkPts = Array(33) { PointF() }
 
     private val ringLock = Any()
-    private val bitmapRing = ArrayDeque<Pair<Long, Bitmap>>()
+    private data class Frame(val timestamp: Long, val bitmap: Bitmap, val real: Boolean)
+    private val bitmapRing = ArrayDeque<Frame>()
 
     fun start(context: Context) {
         try {
             val baseOptions = BaseOptions.builder()
                 .setModelAssetPath(MODEL_ASSET)
+                .setDelegate(if (activeGpu) Delegate.GPU else Delegate.CPU)
                 .build()
             val options = PoseLandmarker.PoseLandmarkerOptions.builder()
                 .setBaseOptions(baseOptions)
@@ -63,8 +68,14 @@ class PosePipeline(
                 }
                 .build()
             landmarker = PoseLandmarker.createFromOptions(context, options)
-            Log.i(TAG, "PoseLandmarker started model=$MODEL_ASSET")
+            Log.i(TAG, "PoseLandmarker started model=$MODEL_ASSET gpu=$activeGpu")
         } catch (e: Throwable) {
+            if (activeGpu) {
+                activeGpu = false
+                Log.w(TAG, "GPU pose initialization failed; falling back to CPU", e)
+                start(context)
+                return
+            }
             Log.e(TAG, "Failed to start PoseLandmarker", e)
             onError("Failed to load pose model: ${e.message}. " +
                     "Ensure $MODEL_ASSET is in app/src/main/assets/.")
@@ -72,7 +83,7 @@ class PosePipeline(
     }
 
     /** Feed a camera frame (from CameraX ImageAnalysis / Preview). */
-    fun analyze(bitmap: Bitmap) {
+    fun analyze(bitmap: Bitmap, realFrame: Boolean = true) {
         val lm = landmarker ?: return
         // LIVE_STREAM requires strictly increasing timestamps
         val now = SystemClock.uptimeMillis()
@@ -80,7 +91,7 @@ class PosePipeline(
         lastTimestampMs = ts
 
         synchronized(ringLock) {
-            bitmapRing.addLast(ts to bitmap)
+            bitmapRing.addLast(Frame(ts, bitmap, realFrame))
             while (bitmapRing.size > BITMAP_RING) bitmapRing.removeFirst()
         }
 
@@ -109,14 +120,15 @@ class PosePipeline(
             // interior/signed angles only depend on directions).
             landmarkPts[i].set(lm.x(), lm.y())
         }
-        val bitmap = synchronized(ringLock) {
-            bitmapRing.minByOrNull { kotlin.math.abs(it.first - timestampMs) }?.second
-        }
-        onPose(landmarkPts, bitmap)
+        val frame = synchronized(ringLock) {
+            bitmapRing.firstOrNull { it.timestamp == timestampMs }
+        } ?: return // Never associate a pose with a different image or synthetic-frame flag.
+        onPose(landmarkPts, frame.bitmap, timestampMs, frame.real)
     }
 
     fun stop() {
         try { landmarker?.close() } catch (_: Throwable) {}
         landmarker = null
+        synchronized(ringLock) { bitmapRing.clear() }
     }
 }

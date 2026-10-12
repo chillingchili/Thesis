@@ -165,5 +165,12 @@
     "evaluation/coach_c/session2_gru/coach_c_scores_20261012/scores.json",
     "evaluation/coach_c/session2_gru/coach_c_scores_20261012/form_verification.json",
     "evaluation/phone_latency/note12_optimized_full_20261010/comparison.json"
-  ]
+  ],
+  "mobile_update_20261012": {
+    "manuscript_sha256": "e306a067c5fa9906d6e11ad00a80aa68dbc34044610bce8395401bea29bb68ce",
+    "chapters_sha256": "99e4578827848b51e84a51893e1b815209ce2c223b98350d6020801e25d37951",
+    "evidence": "evaluation/coach_c/mobile_gpu_rate_20261012/results.json",
+    "pilot": "evaluation/coach_c/mobile_hold_pilot_20261012/comparison.json",
+    "scope": "Post-review mobile development, separate from frozen Coach C ratings"
+  }
 }

@@ -1,0 +1,107 @@
+[
+  {
+    "clip": "C001",
+    "serve": {
+      "status": "ok",
+      "label": "topspin",
+      "confidence": 0.5151654481887817,
+      "probabilities": {
+        "drive": 0.006647580768913031,
+        "lob": 0.4781869947910309,
+        "topspin": 0.5151654481887817
+      },
+      "model": "ensemble",
+      "model_version": "legacy",
+      "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+      "feedback_eligible": true,
+      "valid_frames": 128,
+      "window_frames": 128,
+      "truncated_frames": 91,
+      "moment_matching": true,
+      "preprocessing": {},
+      "components": {}
+    },
+    "feedback": {
+      "status": "LOW_CONFIDENCE",
+      "messages": [
+        "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through."
+      ],
+      "notifications": [],
+      "rule_ids": [],
+      "version": "coach-c-actionable-wording-v2",
+      "validation_status": "pending_coach_c"
+    }
+  },
+  {
+    "clip": "C002",
+    "serve": {
+      "status": "ok",
+      "label": "topspin",
+      "confidence": 0.6638410687446594,
+      "probabilities": {
+        "drive": 0.3107267916202545,
+        "lob": 0.025432121008634567,
+        "topspin": 0.6638410687446594
+      },
+      "model": "ensemble",
+      "model_version": "legacy",
+      "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+      "feedback_eligible": true,
+      "valid_frames": 128,
+      "window_frames": 128,
+      "truncated_frames": 21,
+      "moment_matching": true,
+      "preprocessing": {},
+      "components": {}
+    },
+    "feedback": {
+      "status": "CORRECTIVE",
+      "messages": [
+        "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced."
+      ],
+      "notifications": [],
+      "rule_ids": [
+        "C4_WEIGHT_TRANSFER"
+      ],
+      "version": "coach-c-actionable-wording-v2",
+      "validation_status": "pending_coach_c"
+    }
+  },
+  {
+    "clip": "C007",
+    "serve": {
+      "status": "ok",
+      "label": "topspin",
+      "confidence": 0.6163994669914246,
+      "probabilities": {
+        "drive": 0.17273618280887604,
+        "lob": 0.21086427569389343,
+        "topspin": 0.6163994669914246
+      },
+      "model": "ensemble",
+      "model_version": "legacy",
+      "model_manifest_sha256": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+      "feedback_eligible": true,
+      "valid_frames": 128,
+      "window_frames": 128,
+      "truncated_frames": 32,
+      "moment_matching": true,
+      "preprocessing": {},
+      "components": {}
+    },
+    "feedback": {
+      "status": "CORRECTIVE",
+      "messages": [
+        "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+        "Your paddle orientation differed from the reference serves. Try a slower practice swing, keep your grip relaxed, and maintain a consistent paddle position through contact."
+      ],
+      "notifications": [],
+      "rule_ids": [
+        "C4_WEIGHT_TRANSFER",
+        "C6_PADDLE_REVIEW"
+      ],
+      "version": "coach-c-actionable-wording-v2",
+      "validation_status": "pending_coach_c"
+    }
+  }
+]

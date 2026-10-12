@@ -44,3 +44,7 @@ than an untouched holdout. No Coach C judgments are invented.
 Deploy the entire `research-site` directory to any static host when ready to
 publish. Research recordings are bundled in the local site; decide which media
 to share before public publication.
+
+## Mobile follow-up
+
+The phone section reports the post-review 30-clip development comparison (2/30 to 18/30 corrective outputs), classification-independent cue policy and unresolved capture/timing limits. It does not transfer Coach C ratings to the new phone outputs. Downloads are synchronized with the current manuscript; refresh them with `scripts/refresh_research_findings.py`.

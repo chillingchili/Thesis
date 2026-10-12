@@ -1,0 +1,21 @@
+{
+  "tests": {
+    "tests": 43,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "build": "passed",
+  "lint": "passed",
+  "original_gru_hashes_unchanged": true,
+  "final_apk_sha256": "e3bbc8254d3c9a2ae162a164e7749be6e73e10d2109b0dc96d205e49a3336f06",
+  "tested_apk_sha256": "6ce86f8d5f25623f024f60b83736ab327e984f3fe8e5b95c896ab2f7162665c9",
+  "final_changes_after_replay": "Enable tested settings by default, hide low-confidence subtype label, add GPU-initialization CPU fallback; no inference or feedback algorithm changes",
+  "late_results": [
+    [
+      "C005",
+      3126
+    ]
+  ],
+  "installed_successfully": true
+}

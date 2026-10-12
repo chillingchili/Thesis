@@ -71,3 +71,8 @@ The subsequent consistency pass is recorded by
 Both tools protect the completed consistency pass from accidental rerunning.
 Use the current manuscript for further editing; preserve manual changes before
 attempting any reconstruction.
+
+
+## Post-review phone update
+
+The current manuscript and Chapters 5–6 now include the 30-clip live-path development comparison: corrective output coverage 2/30 CPU, 5/30 GPU, 18/30 GPU with automatic trigger/general-cue changes. Eleven final cues were classification-independent. These outputs were not rated by Coach C. Three clips had no completed output; C005 was 3.126 s after file end. No claim of consistent two-second delivery or coach replacement is made. Evidence: `evaluation/coach_c/mobile_gpu_rate_20261012/`.

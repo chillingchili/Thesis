@@ -1,0 +1,26 @@
+{
+  "device": "1fb637d",
+  "installed_successfully": true,
+  "apk_sha256": "7229e28cdd80177ce58cd62a10392e8484caeda3891551c3a999bd45ec8bb405",
+  "original_gru_assets_unchanged": true,
+  "gru_assets": {
+    "assets/gru_fold1.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "assets/gru_fold2.tflite": "9f7a5cefe571ce1d81d099fcc4d2165821159b8c0c4cb6c694510792210f20be",
+    "assets/gru_fold3.tflite": "70555916b6dfeeef2389c3f3604879e8e1182c151e335c7940003de5d63a216a",
+    "assets/gru_fold4.tflite": "f1d83af6a5dd167f77f63b8ff87b85424955098b9299419faa2fa51c7ba867b5",
+    "assets/gru_fold5.tflite": "9b511816d9899b4f7000b524d12afcdc7c15385f9b5083472434c9b81f9d0c96"
+  },
+  "jvm_tests": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "build": "passed",
+  "lint": "passed",
+  "defaults": {
+    "pose_priority": true,
+    "pose_gpu": false,
+    "end_v2": false
+  }
+}

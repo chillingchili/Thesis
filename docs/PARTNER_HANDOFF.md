@@ -1,3 +1,5 @@
+> Latest mobile follow-up (12 October): corrective output coverage increased from 2/30 to 18/30 on reused live-path replays. Eleven cues use guarded general-mechanics rules despite uncertain classification. These outputs were not rated by Coach C. Three captures failed; one output was 3.126 seconds after file end. A subsequent eight-clip longer-hold pilot added one positive output but did not recover missing captures or remove the late case, so default 350 ms hold remains. Current manuscript and website now distinguish this development result from the frozen expert study. See `evaluation/coach_c/mobile_gpu_rate_20261012/REPORT.md` and `docs/thesis/Pascua-Leones_Thesis_Current.md`.
+
 # Partner handoff — current original-GRU evaluation
 ## Session 2 received — 12 October 2026
 

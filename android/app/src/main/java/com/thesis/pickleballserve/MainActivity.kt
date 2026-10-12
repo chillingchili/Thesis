@@ -67,11 +67,14 @@ class MainActivity : AppCompatActivity() {
     private var feedbackEngine: FeedbackEngine? = null
     @Volatile private var paddleFailed = false
     @Volatile private var resultGeneration = 0L
-    private val angleBuffer = AngleBuffer(seqLen = 128, featDim = 10)
+    private var posePriority = true
+    private var revisedEnd = false
+    private var lastPaddleSubmitMs = 0L
+    private var paddleThrottled = 0L
+    private val paddleBusy = java.util.concurrent.atomic.AtomicBoolean(false)
+    private val serveWindow = ServeWindow(preRollMs = 1000L)
 
     private var mode = RunMode.ENSEMBLE  // Original GRU selected before Coach C Session 2 release.
-    private var inferCooldownMs = 0L
-    private val minInferIntervalMs = 100L
 
     private val minFramesForInfer = 48
 
@@ -90,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     private var idleMean = 0f
     private var idleDev = 0.02f
     private var lastAngles: FloatArray? = null
+    private val motionRate = MotionRate()
     private val motionRing = FloatArray(5)
     private var motionRingIdx = 0
     private var motionRingCount = 0
@@ -119,6 +123,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        posePriority = intent.getBooleanExtra("research_pose_priority", true)
+        revisedEnd = intent.getBooleanExtra("research_end_v2", false)
+        Log.i(LATENCY_TAG, "policy pose_priority=$posePriority end_v2=$revisedEnd")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -195,13 +202,14 @@ class MainActivity : AppCompatActivity() {
         binding.resetButton.setOnClickListener {
             synchronized(this) {
             resultGeneration++
-            angleBuffer.clear()
+            serveWindow.clear()
             emaProbs = null
             gateActive = false
             lowMotionSinceMs = 0L
             refractoryUntilMs = 0L
             lastServeEndMs = 0L
             lastAngles = null
+            motionRate.reset()
             motionRing.fill(0f)
             motionRingIdx = 0
             motionRingCount = 0
@@ -239,7 +247,8 @@ class MainActivity : AppCompatActivity() {
 
         posePipeline = PosePipeline(
             context = this,
-            onPose = { pts, bmp -> onPoseDetected(pts, bmp) },
+            useGpu = intent.getBooleanExtra("research_pose_gpu", true),
+            onPose = { pts, bmp, timestamp, real -> onPoseDetected(pts, bmp, timestamp, real) },
             onError = { msg ->
                 runOnUiThread { binding.poseLabel.text = "POSE ERR: $msg" }
             }
@@ -288,7 +297,7 @@ class MainActivity : AppCompatActivity() {
         binding.framesLabel.text = if (loop) "REPLAY $clipName (looping)" else "REPLAY $clipName"
         clipReplay = ServeClipReplay(
             file = file,
-            onFrame = { bitmap -> posePipeline?.analyze(bitmap) },
+            onFrame = { bitmap, real -> posePipeline?.analyze(bitmap, real) },
             onDone = { frames -> Log.i(LATENCY_TAG, "replay_done clip=$clipName frames_sent=$frames") },
             loop = loop,
         ).also { it.start() }
@@ -333,12 +342,12 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Motion gate state machine:
-     *  IDLE   - standing still: no buffer appends, no inference. Idle motion stats
+     *  IDLE   - retain one second of real poses; no inference. Idle motion stats
      *           are re-measured here (EMA mean/dev) so the trigger threshold adapts
      *           to this device/person's pose noise. A refractory window right after
      *           a serve absorbs recovery swings. UI: READY (or DONE while refractory).
-     *  ACTIVE - motion >= arm threshold started a serve: append frames, infer as
-     *           before. Ends after lowHoldMs of wall-clock low motion OR the
+     *  ACTIVE - motion >= arm threshold started a serve: retain pre-roll and
+     *           append real frames. Classify once at the end. Ends after lowHoldMs of wall-clock low motion OR the
      *           maxActiveMs force-timeout. Both are wall-clock so the end-detection
      *           delay is fixed regardless of how fast frames are processed. Final
      *           inference, then clear buffer + EMA but HOLD displayed labels.
@@ -347,34 +356,40 @@ class MainActivity : AppCompatActivity() {
      * callback stays fast enough to keep up with the camera.
      */
     @Synchronized
-    private fun onPoseDetected(landmarks: Array<PointF>, bitmap: Bitmap?) {
+    private fun onPoseDetected(landmarks: Array<PointF>, bitmap: Bitmap?, timestampMs: Long, realFrame: Boolean) {
         val feats = JointAngles.fromLandmarks(landmarks) ?: return
-        val motion = smoothMotion(computeMotion(feats))
+        val displacement = computeMotion(feats)
+        val motion = if (intent.getBooleanExtra("research_motion_rate", true))
+            motionRate.update(displacement, timestampMs) else smoothMotion(displacement)
         val now = SystemClock.uptimeMillis()
+        // Keep only fresh, real poses; the trigger sample is appended exactly once.
+        if (realFrame && (gateActive || now >= refractoryUntilMs)) serveWindow.add(timestampMs, feats)
 
         if (!gateActive) {
             val inRefractory = now < refractoryUntilMs
-            if (!inRefractory && motion >= startArm()) {
+            if (realFrame && !inRefractory && motion >= startArm()) {
                 gateActive = true
                 lowMotionSinceMs = 0L
                 serveStartMs = now
                 lastMotionPeakMs = now
                 lastMotionPeak = motion
+                paddleExecutor.queue.clear()
                 paddleDropped = 0L
+                paddleThrottled = 0L
+                paddleBusy.set(false)
                 resultGeneration++
                 paddleFailed = false
-                angleBuffer.clear()
+                serveWindow.begin()
                 emaProbs = null
                 shiftDetector?.clear()
                 paddleStream?.clear()
-                angleBuffer.add(feats)
                 shiftDetector?.let { s ->
                     landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
                 }
                 addPaddleSample(landmarks, bitmap)
                 runOnUiThread {
                     binding.poseLabel.text = "Pose: OK"
-                    binding.framesLabel.text = "WARMUP 1 / $minFramesForInfer"
+                    binding.framesLabel.text = "Capturing serve (${serveWindow.size} poses)"
                     binding.feedbackLabel.text = "Analyzing this serve..."
                     binding.shiftLabel.text = "WEIGHT SHIFT: ANALYZING"
                     binding.paddleLabel.text = "PADDLE: ANALYZING"
@@ -396,16 +411,16 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // ACTIVE: append serve frame
-        angleBuffer.add(feats)
-        shiftDetector?.let { s ->
+        // ACTIVE: current sample was already appended above.
+        if (realFrame) shiftDetector?.let { s ->
             landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
         }
         if (motion > lastMotionPeak) {
             lastMotionPeak = motion
             lastMotionPeakMs = now
         }
-        if (motion < endArm()) {
+        val quiet = if (revisedEnd) ServeEndPolicy.quiet(motion, endArm(), lastMotionPeak, now-lastMotionPeakMs) else motion < endArm()
+        if (quiet) {
             if (lowMotionSinceMs == 0L) lowMotionSinceMs = now
             // already at resting level: keep adapting idle stats so a moved/
             // repositioned standing pose can't hold the gate open
@@ -417,11 +432,11 @@ class MainActivity : AppCompatActivity() {
         // Post-contact frames carry no paddle evidence. Keep the wrist-speed
         // bookkeeping (contactFrame is derived from it) but stop paying for
         // detection on the tail that end detection is waiting out.
-        addPaddleSample(landmarks, if (lowMotionSinceMs == 0L) bitmap else null)
+        if (realFrame) addPaddleSample(landmarks, if (lowMotionSinceMs == 0L) bitmap else null)
 
-        val frames = angleBuffer.validFrames()
+        val frames = serveWindow.size
 
-        val ended = (lowMotionSinceMs != 0L && now - lowMotionSinceMs >= lowHoldMs) ||
+        val ended = (lowMotionSinceMs != 0L && now - lowMotionSinceMs >= intent.getLongExtra("research_low_hold_ms", lowHoldMs)) ||
             now - serveStartMs >= maxActiveMs
         if (ended) {
             lastServeEndMs = now
@@ -434,9 +449,10 @@ class MainActivity : AppCompatActivity() {
             val inferDone = SystemClock.uptimeMillis()
             Log.i(LATENCY_TAG, "serve_ended " +
                 "start=$serveStartMs peak=$lastMotionPeakMs end=$now frames=$frames " +
+                "window_ms=${serveWindow.durationMs} window_policy=preroll_complete_real_v1 " +
                 "start_to_peak=${lastMotionPeakMs - serveStartMs}ms " +
                 "peak_to_end=${now - lastMotionPeakMs}ms " +
-                "paddle_drain=${drainMs}ms paddle_dropped=$paddleDropped " +
+                "paddle_drain=${drainMs}ms paddle_dropped=$paddleDropped paddle_throttled=$paddleThrottled " +
                 "final_infer=${inferDone - inferStart}ms " +
                 "pred=${finalPrediction?.first} conf=${finalPrediction?.second}")
             updateShiftLabel()
@@ -455,7 +471,8 @@ class MainActivity : AppCompatActivity() {
             gateActive = false
             lowMotionSinceMs = 0L
             refractoryUntilMs = now + refractoryMs
-            angleBuffer.clear()
+            serveWindow.clear()
+            paddleExecutor.queue.clear()
             emaProbs = null
             shiftDetector?.clear()
             paddleStream?.clear()
@@ -466,19 +483,16 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val ready = frames >= minFramesForInfer && (now - inferCooldownMs >= minInferIntervalMs)
         runOnUiThread {
             binding.poseLabel.text = "Pose: OK"
             binding.framesLabel.text = if (frames < minFramesForInfer) {
                 "WARMUP $frames / $minFramesForInfer"
             } else {
-                "Frames: $frames / 128"
+                "Capturing serve ($frames poses)"
             }
         }
-        if (ready) {
-            inferCooldownMs = now
-            runInference(frames)
-        }
+        // Run the unchanged ensemble only at serve end; intermediate inference
+        // competes with pose acquisition and changes no final feedback decision.
     }
 
     /** Start trigger: comfortably above measured idle noise. */
@@ -549,15 +563,21 @@ class MainActivity : AppCompatActivity() {
         val result = feedbackEngine?.evaluate(FeedbackEngine.Input(
             serveType = prediction?.first, gruConfidence = prediction?.second,
             shiftSufficient = shiftDetector?.passed(), paddle = paddle,
+            independentMechanics = intent.getBooleanExtra("research_motion_rate", true) &&
+                serveWindow.size >= finalMinFrames && serveWindow.durationMs >= 1500L,
             // LandingActivity analyzes a separate clip, not a synchronized secondary stream.
             placementActive = false,
         ))
-        Log.i("Feedback", "version=${result?.version} status=${result?.status} rules=${result?.ruleIds}")
+        Log.i("Feedback", "version=${result?.version} status=${result?.status} rules=${result?.ruleIds} paddle=${paddle ?: "UNAVAILABLE"}")
         runOnUiThread {
             if (generation != resultGeneration) return@runOnUiThread
             binding.feedbackTitle.text = if (result?.validationStatus == "pending_coach_c")
                 "COACHING FEEDBACK · RESEARCH PREVIEW" else "COACHING FEEDBACK"
             binding.feedbackLabel.text = result?.text ?: "Coaching feedback unavailable: rules could not be loaded."
+            if (intent.hasExtra(EXTRA_REPLAY_CLIP)) {
+                Log.i("FeedbackOutput", org.json.JSONObject().put("status", result?.status?.name)
+                    .put("text", binding.feedbackLabel.text.toString()).toString())
+            }
             // The number the 2s thesis target is judged on: end-detection -> text on screen.
             val shown = SystemClock.uptimeMillis()
             if (lastServeEndMs != 0L) {
@@ -579,28 +599,25 @@ class MainActivity : AppCompatActivity() {
      */
     private fun addPaddleSample(landmarks: Array<PointF>, bitmap: Bitmap?) {
         if (paddleFailed) return
-        val wristX = landmarks[RIGHT_WRIST].x
-        val wristY = landmarks[RIGHT_WRIST].y
-        if (bitmap == null) {
-            try {
-                paddleStream?.add(wristX, wristY, null)
-            } catch (e: Exception) {
-                markPaddleFailed(e)
-            }
-            return
-        }
+        val stream = paddleStream ?: return
+        val now = SystemClock.uptimeMillis()
+        val permit = bitmap != null && (!posePriority ||
+            (now-lastPaddleSubmitMs >= 350 && paddleExecutor.activeCount == 0 && !paddleBusy.get()))
+        if (bitmap != null && !permit) paddleThrottled++
+        val sample = stream.prepare(landmarks[RIGHT_WRIST].x, landmarks[RIGHT_WRIST].y, permit)
+        if (sample == null || bitmap == null) return
+        val generation = resultGeneration
+        if (posePriority && !paddleBusy.compareAndSet(false, true)) { paddleDropped++; return }
+        lastPaddleSubmitMs = now
         try {
             paddleExecutor.execute {
                 try {
-                    paddleStream?.add(wristX, wristY, bitmap)
+                    if (generation == resultGeneration) stream.detect(sample, bitmap)
                 } catch (e: Exception) {
-                    // Report back on this thread; never throw off the worker.
-                    runOnUiThread { markPaddleFailed(e) }
-                }
+                    if (generation == resultGeneration) runOnUiThread { markPaddleFailed(e) }
+                } finally { paddleBusy.set(false) }
             }
-        } catch (e: Throwable) {
-            markPaddleFailed(e)
-        }
+        } catch (e: Throwable) { paddleBusy.set(false); markPaddleFailed(e) }
     }
 
     private fun markPaddleFailed(e: Throwable) {
@@ -664,14 +681,16 @@ class MainActivity : AppCompatActivity() {
     private fun runInference(validFrames: Int, finalResult: Boolean = false): Pair<String, Float>? {
         val g = gru ?: return null
         val generation = resultGeneration
-        val window = angleBuffer.toInputTensor()
+        val sampled = serveWindow.input()
+        val window = sampled.tensor
+        val inputFrames = sampled.validFrames
         try {
-            val gruProbs = g.infer(window, validFrames = validFrames)
+            val gruProbs = g.infer(window, validFrames = inputFrames)
 
             val knnProbs = when {
                 mode == RunMode.HYBRID && knn != null -> {
                     val knnFeats = TimingFeatures.fromFlatWindow(
-                        flattenWindow(window), validFrames
+                        flattenWindow(window), inputFrames
                     )
                     knn!!.predictProba(knnFeats)
                 }
@@ -699,7 +718,7 @@ class MainActivity : AppCompatActivity() {
 
             runOnUiThread {
                 if (generation != resultGeneration) return@runOnUiThread
-                binding.classLabel.text = label.uppercase()
+                binding.classLabel.text = if (conf >= FeedbackEngine.MIN_CONFIDENCE) label.uppercase() else "UNCERTAIN"
                 binding.classLabel.setTextColor(confColor)
                 val finalSource = if (knnProbs != null) "Final hybrid" else "Final GRU"
                 binding.confLabel.text = "${if (finalResult) finalSource else "Conf"}: ${"%.1f".format(conf * 100f)}%"

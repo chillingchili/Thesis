@@ -1,0 +1,23 @@
+# Mobile findings - 12 October 2026
+
+### Post-review mobile replay and automatic feedback refinement
+
+After the completed Coach C review, the same 30 recordings were replayed once per configuration through the live Android processing path on the Xiaomi. The source files and original five GRU assets were hash-verified. CPU pose with priority scheduling was compared with GPU pose, followed by GPU pose with a time-normalized automatic trigger and a revised feedback policy. These are development comparisons on previously inspected clips, not a new independent test. Coach C did not evaluate these updated phone outputs.
+
+| Mobile configuration | Clips with a classification, including low confidence | Corrective/positive feedback | Insufficient-data notices | No completed output |
+|---|---:|---:|---:|---:|
+| CPU pose and pose-priority scheduling | 6/30 | 2/30 | 23/30 | 1/30 |
+| GPU pose with the existing trigger | 25/30 | 5/30 | 1/30 | 4/30 |
+| GPU pose, time-normalized trigger and guarded general cues | 24/30 | 18/30 | 3/30 | 3/30 |
+
+The final configuration produced 18 corrective, three partial, three low-confidence and three insufficient-data outputs; three clips had no completed result. Thus, corrective-feedback availability was 60.0%, compared with 6.7% in the CPU configuration. The 18/30 mobile result must remain separate from the 21/30 frozen-output coverage and 27/30 Valid ratings in the expert study.
+
+The GRU weights and 0.60 classification threshold were unchanged. Motion was normalized to an 80 ms reference interval and smoothed with a 200 ms time constant to reduce dependence on processing frame rate. General mechanics cues could be emitted despite uncertain classification only when the capture retained at least 32 real poses spanning at least 1.5 seconds, the relevant measurement was available, and the existing rule explicitly applied to all three serve types. Subtype-specific advice remained withheld. Eleven of the 18 corrective outputs used this classification-independent path and explicitly disclosed classification uncertainty. The coverage gain therefore partly reflects a feedback-policy change; it is not an equivalent improvement in classifier accuracy or independently established advice validity.
+
+Ten final classifications met the 0.60 threshold; seven agreed with the stored recording category. Across all 24 available classifications, including low confidence, 14 agreed. Recording categories are not independent Coach C subtype labels. Paddle measurements were available for only one of the 30 final results, leaving an important multimodal limitation. Low-confidence subtype labels are displayed as uncertain in the updated app.
+
+Median detected-end-to-UI-assignment time was 126 ms and the maximum was 423 ms among the 27 final displayed outputs. However, C005 appeared 3.126 seconds after the source file ended; three outputs appeared before file end and three clips had no completed output. These observations do not establish consistent physical-serve-end-to-visible-feedback latency within two seconds. The replay supplied synthetic idle images before and after each video, excluded them from classifier and mechanics evidence, and excluded initial decoding/model setup from live timing. It did not test camera exposure, orientation or actual player capture. The final summary uses each clip's last displayed result; all 28 displayed events, including a multiple-output clip, were preserved.
+
+The comparisons were single-pass and sequential, with no counterbalancing for device temperature. Trigger and feedback changes were combined, so their separate effects were not isolated. Repeated use of these 30 clips for development further limits generalization claims. Forty-three JVM tests, debug build and lint checks passed for the updated implementation; software checks do not validate biomechanical advice. The original expert-review artifacts and ratings remain unchanged. Reproducible logs, per-clip messages and build identities are retained in `evaluation/coach_c/mobile_gpu_rate_20261012/`.
+
+A subsequent bounded pilot increased the automatic quiet-hold interval from 350 to 650 ms on eight selected failure/control clips. Corrective/positive output coverage rose from 2/8 to 3/8 because one insufficient-data result became positive. However, the same three clips had no completed result and C005 remained late at 3.106 seconds after file end. With no independent validation or repetition, this small availability gain was insufficient to justify replacing the current setting; the longer hold was not adopted. This selected, single-pass pilot is reported as a negative development result, not a new independent evaluation.

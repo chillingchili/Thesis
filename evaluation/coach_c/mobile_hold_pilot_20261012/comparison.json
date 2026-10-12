@@ -1,0 +1,37 @@
+{
+  "baseline": {
+    "clips": 8,
+    "status": {
+      "NO_OUTPUT": 3,
+      "CORRECTIVE": 2,
+      "PARTIAL": 2,
+      "INSUFFICIENT_DATA": 1
+    },
+    "coaching": 2,
+    "no_output": 3,
+    "late": [
+      [
+        "C005",
+        3126
+      ]
+    ]
+  },
+  "hold_650ms": {
+    "clips": 8,
+    "status": {
+      "NO_OUTPUT": 3,
+      "CORRECTIVE": 2,
+      "PARTIAL": 2,
+      "POSITIVE": 1
+    },
+    "coaching": 3,
+    "no_output": 3,
+    "late": [
+      [
+        "C005",
+        3106
+      ]
+    ]
+  },
+  "decision": "Not adopted: one additional positive output, unchanged three missing results, 3.106-second late result, no independent validity or repeatability evidence. Default remains 350ms."
+}

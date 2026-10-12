@@ -1,0 +1,137 @@
+{
+  "distilled16_6fps": {
+    "n": 209,
+    "correct": 75,
+    "accuracy_pct": 35.88516746411483,
+    "real_frames_at_least_32": 0,
+    "accepted": 0,
+    "accepted_correct": 0,
+    "accepted_accuracy_pct": null
+  },
+  "full_window_control32_matched_6fps": {
+    "n": 209,
+    "correct": 60,
+    "accuracy_pct": 28.708133971291865,
+    "real_frames_at_least_32": 0,
+    "accepted": 0,
+    "accepted_correct": 0,
+    "accepted_accuracy_pct": null
+  },
+  "hard_label16_6fps": {
+    "n": 209,
+    "correct": 88,
+    "accuracy_pct": 42.10526315789474,
+    "real_frames_at_least_32": 0,
+    "accepted": 0,
+    "accepted_correct": 0,
+    "accepted_accuracy_pct": null
+  },
+  "mobile32_6fps": {
+    "n": 209,
+    "correct": 72,
+    "accuracy_pct": 34.44976076555024,
+    "real_frames_at_least_32": 0,
+    "accepted": 0,
+    "accepted_correct": 0,
+    "accepted_accuracy_pct": null
+  },
+  "mobile_ensemble2_6fps": {
+    "n": 209,
+    "correct": 104,
+    "accuracy_pct": 49.760765550239235,
+    "real_frames_at_least_32": 0,
+    "accepted": 0,
+    "accepted_correct": 0,
+    "accepted_accuracy_pct": null
+  },
+  "distilled16_15fps": {
+    "n": 209,
+    "correct": 86,
+    "accuracy_pct": 41.14832535885167,
+    "real_frames_at_least_32": 209,
+    "accepted": 170,
+    "accepted_correct": 70,
+    "accepted_accuracy_pct": 41.1764705882353
+  },
+  "full_window_control32_matched_15fps": {
+    "n": 209,
+    "correct": 50,
+    "accuracy_pct": 23.923444976076556,
+    "real_frames_at_least_32": 209,
+    "accepted": 192,
+    "accepted_correct": 47,
+    "accepted_accuracy_pct": 24.479166666666668
+  },
+  "hard_label16_15fps": {
+    "n": 209,
+    "correct": 108,
+    "accuracy_pct": 51.67464114832536,
+    "real_frames_at_least_32": 209,
+    "accepted": 144,
+    "accepted_correct": 84,
+    "accepted_accuracy_pct": 58.333333333333336
+  },
+  "mobile32_15fps": {
+    "n": 209,
+    "correct": 79,
+    "accuracy_pct": 37.79904306220096,
+    "real_frames_at_least_32": 209,
+    "accepted": 184,
+    "accepted_correct": 72,
+    "accepted_accuracy_pct": 39.130434782608695
+  },
+  "mobile_ensemble2_15fps": {
+    "n": 209,
+    "correct": 99,
+    "accuracy_pct": 47.36842105263158,
+    "real_frames_at_least_32": 209,
+    "accepted": 162,
+    "accepted_correct": 77,
+    "accepted_accuracy_pct": 47.53086419753087
+  },
+  "distilled16_30fps": {
+    "n": 209,
+    "correct": 96,
+    "accuracy_pct": 45.933014354066984,
+    "real_frames_at_least_32": 209,
+    "accepted": 159,
+    "accepted_correct": 70,
+    "accepted_accuracy_pct": 44.0251572327044
+  },
+  "full_window_control32_matched_30fps": {
+    "n": 209,
+    "correct": 68,
+    "accuracy_pct": 32.535885167464116,
+    "real_frames_at_least_32": 209,
+    "accepted": 188,
+    "accepted_correct": 60,
+    "accepted_accuracy_pct": 31.914893617021278
+  },
+  "hard_label16_30fps": {
+    "n": 209,
+    "correct": 114,
+    "accuracy_pct": 54.54545454545455,
+    "real_frames_at_least_32": 209,
+    "accepted": 144,
+    "accepted_correct": 96,
+    "accepted_accuracy_pct": 66.66666666666667
+  },
+  "mobile32_30fps": {
+    "n": 209,
+    "correct": 94,
+    "accuracy_pct": 44.97607655502392,
+    "real_frames_at_least_32": 209,
+    "accepted": 190,
+    "accepted_correct": 87,
+    "accepted_accuracy_pct": 45.78947368421053
+  },
+  "mobile_ensemble2_30fps": {
+    "n": 209,
+    "correct": 110,
+    "accuracy_pct": 52.63157894736842,
+    "real_frames_at_least_32": 209,
+    "accepted": 156,
+    "accepted_correct": 82,
+    "accepted_accuracy_pct": 52.56410256410256
+  }
+}

@@ -79,3 +79,28 @@ Paddle preprocessing optimization is installed and verified on the Xiaomi: grays
 
 
 [Full optimized Android rerun](../evaluation/phone_latency/note12_optimized_full_20261010/REPORT.md): 9/9 measured trials passed. Median 68.576 s versus 68.619 s before (0.06% lower), effectively unchanged. This is recorded-video processing, not live-camera latency.
+
+
+## Installed live-path re-audit — 12 October 2026
+
+[Fresh replay findings](../evaluation/phone_latency/note12_reaudit_20261012/REPORT.md): 17/17 observed gate-end events updated the UI within 0.786 seconds, but 13 had insufficient frames and four were low-confidence; no substantive coaching was produced. The same original GRU weights are installed. This verifies narrow post-gate responsiveness on three replayed clips, not actual capture-to-display latency or Coach C desktop/phone equivalence.
+
+
+## Pre-roll candidate — 12 October 2026
+
+[Implementation and phone comparison](../evaluation/phone_latency/note12_preroll_20261012/REPORT.md): timestamped one-second classifier pre-roll, complete active window and final-only original-GRU inference. C001 classification availability increased from 4/9 to 10/10 observed end events, but all candidate outputs remained low-confidence or insufficient-data. All 24 candidate post-gate UI updates occurred within 0.415 s. The replay gaps omit idle camera frames, so this does not validate physical serve-end latency. Model weights, 32-observation minimum and confidence gate remain unchanged.
+
+
+## Five-method follow-up — 12 October 2026
+
+[Full experiment report](../evaluation/mobile_methods_20261012/REPORT.md) covers pose priority, revised end detection, mobile-rate training, GPU pose and GRU distillation. Pose priority is now the default; original weights and 0.60 confidence gate remain. GPU and revised end detection are opt-in research flags; new models remain isolated. All 53 observed gate-end UI updates were below 0.588 s, but one of 54 replays had no end event and source-end timing/quality limits prevent a full live two-second claim.
+
+
+## Full Coach C replay audit - 12 October 2026
+
+All 30 clips were replayed once through the CPU live app with pose priority and the original GRU. Final statuses: 2 corrective, 2 partial, 2 low confidence, 23 insufficient data, 1 no completed output. Substantive coverage was 2/30 versus 21/30 in the frozen desktop outputs. The 23 insufficient cases retained only 12-30 real poses, below the 32-pose minimum. Two clips split into two insufficient captures. Gate-end to UI assignment was 26 ms median and 397 ms maximum for final displayed outputs; these timings mostly describe notices, not successful coaching. Full physical-capture latency and cue validity are not established. See [full report](../evaluation/coach_c/mobile_live_20261012/REPORT.md), [protocol](../evaluation/coach_c/mobile_live_20261012/PROTOCOL.md), and exact messages in clip_results.csv. Coach C ratings remain attached only to the frozen outputs he reviewed.
+
+
+## Improved automatic phone configuration - 12 October 2026
+
+Installed GPU pose (CPU startup fallback), time-normalized automatic motion gating, and guarded shared-mechanics feedback despite uncertain serve classification. No manual recording button or new model weights. On the same 30 diagnostic replays: 18 corrective, 3 partial, 3 low confidence, 3 insufficient, 3 no completed output. Eleven corrective outputs use the new classification-independent rule path. Maximum detected-end to UI assignment: 423 ms; C005 was 3126 ms after source-file end. Coverage improved substantially; cue validity and consistent physical-serve-to-display <=2 seconds are not established. See [comparison and exact outputs](../evaluation/coach_c/mobile_gpu_rate_20261012/REPORT.md). This installed configuration supersedes the CPU default described in the earlier audit above.

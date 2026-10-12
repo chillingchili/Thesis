@@ -94,6 +94,22 @@ class FeedbackEngineTest {
         assertEquals("pending_coach_c", engine.evaluate(good).validationStatus)
     }
 
+    @Test fun independentMechanicsAllowsOnlySharedRulesAndDisclosesUncertainClassification() {
+        val result = engine.evaluate(good.copy(serveType = null, gruConfidence = null,
+            shiftSufficient = false, paddle = null, independentMechanics = true))
+        assertEquals(FeedbackEngine.Status.CORRECTIVE, result.status)
+        assertEquals(listOf("C4_WEIGHT_TRANSFER"), result.ruleIds)
+        assertTrue(result.text.contains("Serve classification is uncertain"))
+        assertEquals("experimental_mobile", result.validationStatus)
+    }
+
+    @Test fun independentMechanicsNeverGuessesSubtypeSpecificPaddleAdvice() {
+        val result = engine.evaluate(good.copy(gruConfidence = 0.5f,
+            paddle = FeedbackEngine.PaddleState.TOO_CLOSED, independentMechanics = true))
+        assertEquals(FeedbackEngine.Status.LOW_CONFIDENCE, result.status)
+        assertTrue(result.ruleIds.isEmpty())
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun unknownConditionInRuleTableFailsLoading() {
         FeedbackEngine.fromJson(File("src/main/assets/feedback_rules.json").readText()

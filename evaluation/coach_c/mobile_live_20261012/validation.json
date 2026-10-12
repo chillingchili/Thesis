@@ -1,0 +1,15 @@
+{
+  "jvm_tests": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "build": "passed",
+  "lint": "passed",
+  "all_30_source_replays_completed": true,
+  "status_totals_verified": true,
+  "displayed_status_event_consistency_verified": true,
+  "model_weights_unchanged": true,
+  "production_behavior_change": "None this run; replay-only feedback text logging added"
+}

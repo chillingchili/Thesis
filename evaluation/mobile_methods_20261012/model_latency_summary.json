@@ -1,0 +1,16 @@
+{
+  "mobile32": {
+    "n": 30,
+    "median_ms": 16.612578499999998,
+    "max_ms": 18.98198,
+    "max_probability_delta_vs_keras": 5.2102382658292257e-08,
+    "bytes": 32012
+  },
+  "distilled16": {
+    "n": 30,
+    "median_ms": 16.193776,
+    "max_ms": 23.015156,
+    "max_probability_delta_vs_keras": 2.734542846605237e-07,
+    "bytes": 20236
+  }
+}

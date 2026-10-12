@@ -33,7 +33,7 @@ import kotlin.math.min
  */
 class ServeClipReplay(
     private val file: File,
-    private val onFrame: (Bitmap) -> Unit,
+    private val onFrame: (Bitmap, Boolean) -> Unit,
     private val onDone: (framesSent: Int) -> Unit = {},
     private val analysisWidth: Int = 640,
     private val analysisHeight: Int = 480,
@@ -86,10 +86,13 @@ class ServeClipReplay(
             val step = Math.round(count * 1000.0 / durationMs / cameraFps).toInt().coerceAtLeast(1)
             val decodeStart = SystemClock.uptimeMillis()
             val frames = ArrayList<Bitmap>((count + step - 1) / step)
-            for (index in 0 until count step step) {
+            // Decode contiguous batches once, preserving exact source-frame selection.
+            for (start in 0 until count step 16) {
                 if (!running) break
-                val raw = retriever.getFrameAtIndex(index, params) ?: continue
-                frames.add(fitInto(raw))
+                val batch = retriever.getFramesAtIndex(start, minOf(16, count-start), params)
+                for ((offset, raw) in batch.withIndex()) {
+                    if ((start+offset) % step == 0) frames.add(fitInto(raw)) else raw.recycle()
+                }
             }
             val decodeMs = SystemClock.uptimeMillis() - decodeStart
             require(frames.size >= 2) { "Could not decode frames" }
@@ -97,9 +100,13 @@ class ServeClipReplay(
                     "in ${decodeMs}ms (${decodeMs / frames.size}ms/frame) " +
                     "size=${frames[0].width}x${frames[0].height}")
 
+            var round = 0
             do {
+                idle(frames.first(), 1500L)
+                Log.i(TAG, "replay_start clip=${file.name} round=${++round} time=${SystemClock.uptimeMillis()}")
                 sent += playOnce(frames, durationMs)
-                if (running && loop) SystemClock.sleep(gapMs)
+                Log.i(TAG, "source_end clip=${file.name} round=$round time=${SystemClock.uptimeMillis()}")
+                idle(frames.last(), gapMs)
             } while (running && loop)
             Log.i(TAG, "Replay finished clip=${file.name} frames_sent=$sent")
         } catch (e: Throwable) {
@@ -124,13 +131,22 @@ class ServeClipReplay(
             if (elapsed > durationMs) break
             val index = ((elapsed * frames.size) / durationMs).toInt().coerceIn(0, frames.lastIndex)
             if (index != lastFrame) {
-                onFrame(frames[index])
+                onFrame(frames[index], true)
                 sent++
                 lastFrame = index
             }
             next += intervalMs
         }
         return sent
+    }
+
+    /** Repeated idle frames exercise end detection, never supply classification evidence. */
+    private fun idle(bitmap: Bitmap, durationMs: Long) {
+        val until = SystemClock.uptimeMillis() + durationMs
+        while (running && SystemClock.uptimeMillis() < until) {
+            onFrame(bitmap, false)
+            SystemClock.sleep(1000L / cameraFps)
+        }
     }
 
     /** Scales down to the analysis box, preserving aspect. Leaves smaller frames alone. */

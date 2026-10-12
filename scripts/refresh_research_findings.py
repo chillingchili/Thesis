@@ -29,10 +29,24 @@ def update_current_findings(data):
             'distinct_clips': 3, 'timing_boundary': 'recorded-file opening to computed feedback; initial model setup excluded',
             'live_two_second_target': 'unverified'},
     }
+    mobile_paths = {
+        'cpu': 'evaluation/coach_c/mobile_live_20261012/results.json',
+        'gpu': 'evaluation/coach_c/mobile_gpu_20261012/results.json',
+        'improved': 'evaluation/coach_c/mobile_gpu_rate_20261012/results.json',
+    }
+    findings['mobile_followup'] = {
+        'variants': {name: json.loads((ROOT / path).read_text())['summary'] for name, path in mobile_paths.items()},
+        'scope': 'Post-review development replay; same 30 clips, one replay per configuration; not independently expert-rated.',
+        'independent_mechanics_outputs': 11,
+        'classification_threshold': 0.60,
+        'two_second_target': 'not established',
+        'late_source_end_ms': 3126,
+        'timing_boundary': 'detected end to UI text assignment; excludes decoding/model setup and physical camera acquisition',
+    }
     data.update(findings)
     data['coach_status'] = {'session1': 'complete', 'session2': 'complete_with_interpretation_limitation', 'prior_diagnostic_overlap': 24, 'selected_clips': 30}
     sources = data.setdefault('sources', {})
-    for path in [scores_path, phone_path, verification_path]:
+    for path in [scores_path, phone_path, verification_path, *mobile_paths.values()]:
         sources[path] = {'sha256': hashlib.sha256((ROOT / path).read_bytes()).hexdigest()}
     for src, dest in [('docs/thesis/CHAPTERS_5_6.md', 'chapters-5-6.md'), ('docs/thesis/Pascua-Leones_Thesis_Current.md', 'thesis.md')]:
         shutil.copyfile(ROOT / src, ASSETS / 'sources' / dest)
