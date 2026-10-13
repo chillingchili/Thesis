@@ -168,14 +168,40 @@ class PaddleStream private constructor(
 
     /**
      * Benchmark two-pass: run detection for an explicit usable-frame index
-     * without touching wrist-speed bookkeeping. The caller computes contact
-     * first (see contactFrame), then replays only contact +/- WINDOW frames.
-     * Coaching uses the same window median as the live path, so results match
-     * a full pass while YOLO runs on ~6 frames instead of ~150.
+     * without touching wrist-speed bookkeeping. Returns per-frame diagnostics
+     * (detection count, pick/crop outcome) for the benchmark export.
      */
-    fun addWindow(index: Int, wristX: Float, wristY: Float, bitmap: Bitmap) {
+    fun addWindow(index: Int, wristX: Float, wristY: Float, bitmap: Bitmap): JSONObject {
         val gen = synchronized(lock) { generation }
-        detect(Sample(index, gen, wristX, wristY), bitmap)
+        val diag = JSONObject().put("index", index)
+            .put("bitmap", "${bitmap.width}x${bitmap.height}")
+            .put("wrist_known", !wristX.isNaN() && !wristY.isNaN())
+        val dets = detector.detectAll(bitmap)
+        diag.put("dets", dets.size)
+        val maxPx = PaddleDetector.WRIST_MAX_PX * bitmap.width / PaddleDetector.REF_WIDTH_PX
+        val det = PaddleDetector.pick(dets, wristX * bitmap.width, wristY * bitmap.height, maxPx)
+        if (det == null) {
+            diag.put("outcome", "no_pick")
+            return diag
+        }
+        val rect = PaddleGeometry.expandBox(det.box, bitmap.width, bitmap.height)
+        diag.put("rect", "${rect.width}x${rect.height}")
+        if (rect.width < MIN_CROP || rect.height < MIN_CROP) {
+            diag.put("outcome", "crop_too_small")
+            return diag
+        }
+        val gray = cropGray(bitmap, rect)
+        val res = try { PaddleGeometry.cropAngle(gray) } finally { gray.release() }
+        diag.put("angle_status", res.status).put("angle", res.angle?.toString() ?: "null")
+        if (res.status == "ok" && res.angle != null) {
+            synchronized(lock) {
+                if (gen == generation) angles.add(index to res.angle)
+            }
+            diag.put("outcome", "accepted")
+        } else {
+            diag.put("outcome", "bad_angle")
+        }
+        return diag
     }
 
     /** Ordered, cheap bookkeeping runs on the pose thread. */

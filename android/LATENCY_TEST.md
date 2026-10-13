@@ -8,10 +8,11 @@ independently relabeled by Coach C for the benchmark.
 ## What this measures
 
 Each trial opens a saved clip, decodes every frame at source dimensions, runs Lite
-pose tracking, accumulates hip and paddle measurements, evaluates the original
-five-fold GRU, and computes feedback. No cached poses or cached predictions are
-used. The paddle detector retains its normal every-second-usable-frame stride.
-The classifier uses Android's last 128 usable frames, without the live motion gate.
+pose tracking at source dimensions, accumulates hip measurements on every usable
+frame and paddle measurements only on the contact window (contact +/- 5 usable
+frames at even stride, decoded as one forward batch so pixels match the main
+pass), evaluates the original five-fold GRU, and computes feedback. No cached poses or cached predictions are
+used. The classifier uses Android's last 128 usable frames, without the live motion gate.
 This is distinct from the first-window desktop Coach C inference.
 
 One full C001 warm-up is recorded but excluded from aggregate results. Three rounds
@@ -81,17 +82,17 @@ Paddle preprocessing optimization is installed and verified on the Xiaomi: grays
 [Full optimized Android rerun](../evaluation/phone_latency/note12_optimized_full_20261010/REPORT.md): 9/9 measured trials passed. Median 68.576 s versus 68.619 s before (0.06% lower), effectively unchanged. This is recorded-video processing, not live-camera latency.
 
 
-## Installed live-path re-audit — 12 October 2026
+## Installed live-path re-audit ï¿½ 12 October 2026
 
 [Fresh replay findings](../evaluation/phone_latency/note12_reaudit_20261012/REPORT.md): 17/17 observed gate-end events updated the UI within 0.786 seconds, but 13 had insufficient frames and four were low-confidence; no substantive coaching was produced. The same original GRU weights are installed. This verifies narrow post-gate responsiveness on three replayed clips, not actual capture-to-display latency or Coach C desktop/phone equivalence.
 
 
-## Pre-roll candidate — 12 October 2026
+## Pre-roll candidate ï¿½ 12 October 2026
 
 [Implementation and phone comparison](../evaluation/phone_latency/note12_preroll_20261012/REPORT.md): timestamped one-second classifier pre-roll, complete active window and final-only original-GRU inference. C001 classification availability increased from 4/9 to 10/10 observed end events, but all candidate outputs remained low-confidence or insufficient-data. All 24 candidate post-gate UI updates occurred within 0.415 s. The replay gaps omit idle camera frames, so this does not validate physical serve-end latency. Model weights, 32-observation minimum and confidence gate remain unchanged.
 
 
-## Five-method follow-up — 12 October 2026
+## Five-method follow-up ï¿½ 12 October 2026
 
 [Full experiment report](../evaluation/mobile_methods_20261012/REPORT.md) covers pose priority, revised end detection, mobile-rate training, GPU pose and GRU distillation. Pose priority is now the default; original weights and 0.60 confidence gate remain. GPU and revised end detection are opt-in research flags; new models remain isolated. All 53 observed gate-end UI updates were below 0.588 s, but one of 54 replays had no end event and source-end timing/quality limits prevent a full live two-second claim.
 
