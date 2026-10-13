@@ -1,14 +1,14 @@
 # Phone latency benchmark
 
-The app has a **Latency Test** button with **Run latency test** and **Export results**.
+The app has a **Latency Test** button with **Run latency test**, **Run GPU variant test** and **Export results**.
 The initial protocol uses C001, C002 and C007, selected before measuring as the
 first available recorded Lob, Topspin and Drive categories. These are not
 independently relabeled by Coach C for the benchmark.
 
 ## What this measures
 
-Each trial opens a saved clip, decodes every frame at source dimensions, runs Lite
-pose tracking at source dimensions, accumulates hip measurements on every usable
+Each trial opens a saved clip, decodes every frame in forward batches of 32 at
+source dimensions, runs Lite pose tracking at source dimensions, accumulates hip measurements on every usable
 frame and paddle measurements only on the contact window (contact +/- 5 usable
 frames at even stride, decoded as one forward batch so pixels match the main
 pass), evaluates the original five-fold GRU, and computes feedback. No cached poses or cached predictions are

@@ -13,6 +13,7 @@ import android.os.PowerManager
 import android.os.SystemClock
 import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.tasks.core.BaseOptions
+import com.google.mediapipe.tasks.core.Delegate
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import org.json.JSONArray
@@ -40,13 +41,14 @@ class CoreLatencyBenchmark(private val context: Context) {
             .put("thermal_status", if (Build.VERSION.SDK_INT >= 29) power.currentThermalStatus else -1)
     }
 
-    fun run(files: List<File>, cancelled: () -> Boolean, progress: (String) -> Unit): File {
+    fun run(files: List<File>, cancelled: () -> Boolean, progress: (String) -> Unit, poseGpu: Boolean = false): File {
         if (Build.VERSION.SDK_INT < 28) throw IllegalArgumentException("Requires Android 9 or newer")
         require(files.size == 3 && files.all { it.isFile }) { "Prepare C001, C002 and C007 in latency_input first" }
         val output = File(context.filesDir, "latency_results").apply { mkdirs() }
         val destination = File(output, "core-${System.currentTimeMillis()}.json")
         val memory = ActivityManager.MemoryInfo().also { context.getSystemService(ActivityManager::class.java).getMemoryInfo(it) }
-        val report = JSONObject().put("benchmark_version", "core-recorded-v5")
+        val report = JSONObject().put("benchmark_version", "core-recorded-v6")
+            .put("pose_backend", if (poseGpu) "GPU" else "CPU")
             .put("metric", "Recorded file open to computed coaching result; no camera or display timing")
             .put("live_two_second_target_verified", false)
             .put("debuggable", context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0)
@@ -89,7 +91,8 @@ class CoreLatencyBenchmark(private val context: Context) {
             val shift = requireNotNull(ShiftDetector.load(context)) { "Hip configuration unavailable" }
             val feedback = FeedbackEngine.fromJson(context.assets.open("feedback_rules.json").bufferedReader().use { it.readText() })
             val options = PoseLandmarker.PoseLandmarkerOptions.builder()
-                .setBaseOptions(BaseOptions.builder().setModelAssetPath("pose_landmarker_lite.task").build())
+                .setBaseOptions(BaseOptions.builder().setModelAssetPath("pose_landmarker_lite.task")
+                    .setDelegate(if (poseGpu) Delegate.GPU else Delegate.CPU).build())
                 .setRunningMode(RunningMode.VIDEO).setNumPoses(1)
                 .setMinPoseDetectionConfidence(.5f).setMinPosePresenceConfidence(.5f).setMinTrackingConfidence(.5f).build()
             report.put("model_load_ms", ms(loadStart))
@@ -98,6 +101,7 @@ class CoreLatencyBenchmark(private val context: Context) {
             for (round in 0..3) for (file in if (round == 0) files.take(1) else files) {
                 check(!cancelled()) { "Cancelled" }
                 val row = JSONObject().put("clip", file.name).put("round", round).put("warmup", round == 0)
+                    .put("pose_backend", if (poseGpu) "GPU" else "CPU")
                     .put("environment_before", environment())
                 val resetStart = now()
                 pose?.close(); pose = PoseLandmarker.createFromOptions(context, options)
@@ -120,11 +124,17 @@ class CoreLatencyBenchmark(private val context: Context) {
                     val duration = requireNotNull(reader.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull())
                     row.put("source_frames", count).put("source_duration_ms", duration)
                     require(count > 1 && duration in 1..12000) { "Expected a complete clip up to 12 seconds" }
-                    for (i in 0 until count) {
+                    // Batched forward decode: same pixels as per-index seeks,
+                    // fewer seek round-trips (see ServeClipReplay).
+                    val frameParams = MediaMetadataRetriever.BitmapParams().apply { preferredConfig = Bitmap.Config.ARGB_8888 }
+                    for (start in 0 until count step 32) {
                         check(!cancelled()) { "Cancelled" }
                         var mark = now()
-                        val bitmap = requireNotNull(reader.getFrameAtIndex(i, MediaMetadataRetriever.BitmapParams().apply { preferredConfig = Bitmap.Config.ARGB_8888 }))
-                        decodeMs += ms(mark); decoded++
+                        val frames = reader.getFramesAtIndex(start, minOf(32, count - start), frameParams)
+                        decodeMs += ms(mark)
+                        for ((offset, bitmap) in frames.withIndex()) {
+                            val i = start + offset
+                            decoded++
                         var image: com.google.mediapipe.framework.image.MPImage? = null
                         try {
                             if (i == 0) row.put("decoded_width", bitmap.width).put("decoded_height", bitmap.height)
@@ -149,6 +159,7 @@ class CoreLatencyBenchmark(private val context: Context) {
                             equipment.prepare(points[16].x, points[16].y, false)
                         } finally { image?.close(); if (!bitmap.isRecycled) bitmap.recycle() }
                         if (i % 30 == 0) progress("${if(round==0) "Warm-up" else "Run ${completed+1}/9"}: ${file.name}, frame ${i+1}/$count")
+                        }
                     }
                     require(buffer.validFrames() >= 32) { "Too few usable pose frames: $usable" }
                     // Pass 2: contact from wrist speeds (same math as live-path
