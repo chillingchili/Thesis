@@ -46,7 +46,7 @@ class CoreLatencyBenchmark(private val context: Context) {
         val output = File(context.filesDir, "latency_results").apply { mkdirs() }
         val destination = File(output, "core-${System.currentTimeMillis()}.json")
         val memory = ActivityManager.MemoryInfo().also { context.getSystemService(ActivityManager::class.java).getMemoryInfo(it) }
-        val report = JSONObject().put("benchmark_version", "core-recorded-v1")
+        val report = JSONObject().put("benchmark_version", "core-recorded-v2")
             .put("metric", "Recorded file open to computed coaching result; no camera or display timing")
             .put("live_two_second_target_verified", false)
             .put("debuggable", context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0)
@@ -55,7 +55,7 @@ class CoreLatencyBenchmark(private val context: Context) {
             .put("android", Build.VERSION.RELEASE).put("ram_bytes", memory.totalMem)
             .put("start_environment", environment())
             .put("classifier", "original GRU five-fold ensemble; no kNN")
-            .put("window", "Android last 128 usable frames; full clip for hip/paddle; no motion gate")
+            .put("window", "Android last 128 usable frames; full clip for hip/pose; paddle YOLO only on contact +/- 5 usable frames (even stride, same samples as full pass)")
             .put("pose_mode", "Lite VIDEO; one pose; CPU default; 0.5 tracking/detection/presence")
             .put("pose_timestamps", "Uniform frame-index timestamps derived from clip duration; not live camera timestamps")
             .put("landing_enabled", false)
@@ -108,6 +108,11 @@ class CoreLatencyBenchmark(private val context: Context) {
                 val reader = MediaMetadataRetriever()
                 var decodeMs = 0.0; var poseMs = 0.0; var hipMs = 0.0; var paddleMs = 0.0
                 var decoded = 0; var usable = 0
+                // Two-pass paddle: pass 1 records wrist positions per usable frame
+                // (no YOLO); pass 2 runs detection only on the contact window.
+                val wristXs = ArrayList<Float>()
+                val wristYs = ArrayList<Float>()
+                val usableSources = ArrayList<Int>()
                 val start = now()
                 try {
                     reader.setDataSource(file.absolutePath)
@@ -135,11 +140,36 @@ class CoreLatencyBenchmark(private val context: Context) {
                             mark = now()
                             shift.add((points[23].x + points[24].x) / 2f, kotlin.math.abs(points[0].y - (points[27].y + points[28].y) / 2f))
                             hipMs += ms(mark)
-                            mark = now(); equipment.add(points[16].x, points[16].y, bitmap); paddleMs += ms(mark)
+                            // Pass 1: record wrist only; YOLO runs in pass 2 on the contact window.
+                            wristXs.add(points[16].x); wristYs.add(points[16].y); usableSources.add(i)
                         } finally { image?.close(); if (!bitmap.isRecycled) bitmap.recycle() }
                         if (i % 30 == 0) progress("${if(round==0) "Warm-up" else "Run ${completed+1}/9"}: ${file.name}, frame ${i+1}/$count")
                     }
                     require(buffer.validFrames() >= 32) { "Too few usable pose frames: $usable" }
+                    // Pass 2: contact from wrist speeds (same math as live-path
+                    // bookkeeping: no entry for frame 0, 0 when wrist unknown),
+                    // then YOLO only on contact +/- 5 usable frames at even
+                    // stride — the exact frames the live path samples, so the
+                    // window median and all outputs are unchanged.
+                    val speeds = ArrayList<Double>(wristXs.size)
+                    for (k in 1 until wristXs.size) {
+                        speeds.add(if (wristXs[k].isNaN() || wristYs[k].isNaN() ||
+                            wristXs[k - 1].isNaN() || wristYs[k - 1].isNaN()) 0.0 else {
+                            val dx = wristXs[k] - wristXs[k - 1]; val dy = wristYs[k] - wristYs[k - 1]
+                            kotlin.math.sqrt((dx * dx + dy * dy).toDouble())
+                        })
+                    }
+                    val contact = PaddleStream.contactFrame(speeds, wristXs.size)
+                    val windowParams = MediaMetadataRetriever.BitmapParams().apply { preferredConfig = Bitmap.Config.ARGB_8888 }
+                    for (u in (contact - 5)..(contact + 5)) {
+                        if (u < 0 || u >= wristXs.size || u % 2 != 0) continue
+                        val windowFrame = reader.getFrameAtIndex(usableSources[u], windowParams) ?: continue
+                        try {
+                            val paddleStart = now()
+                            equipment.addWindow(u, wristXs[u], wristYs[u], windowFrame)
+                            paddleMs += ms(paddleStart)
+                        } finally { if (!windowFrame.isRecycled) windowFrame.recycle() }
+                    }
                     var mark = now()
                     val probabilities = classifier.infer(buffer.toInputTensor(), buffer.validFrames())
                     row.put("gru_ms", ms(mark))

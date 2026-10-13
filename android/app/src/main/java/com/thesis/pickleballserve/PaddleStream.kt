@@ -166,6 +166,18 @@ class PaddleStream private constructor(
         if (bitmap != null && sample != null) detect(sample, bitmap)
     }
 
+    /**
+     * Benchmark two-pass: run detection for an explicit usable-frame index
+     * without touching wrist-speed bookkeeping. The caller computes contact
+     * first (see contactFrame), then replays only contact +/- WINDOW frames.
+     * Coaching uses the same window median as the live path, so results match
+     * a full pass while YOLO runs on ~6 frames instead of ~150.
+     */
+    fun addWindow(index: Int, wristX: Float, wristY: Float, bitmap: Bitmap) {
+        val gen = synchronized(lock) { generation }
+        detect(Sample(index, gen, wristX, wristY), bitmap)
+    }
+
     /** Ordered, cheap bookkeeping runs on the pose thread. */
     internal fun prepare(wristX: Float, wristY: Float, hasBitmap: Boolean): Sample? {
         var idx = 0
