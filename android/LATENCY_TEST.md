@@ -34,9 +34,13 @@ Build and install the debug APK and Android test APK. Keep the phone idle and
 record the actual charging, power-save and thermal conditions; do not silently
 discard slow runs. The benchmark records those conditions in its JSON.
 
-Prepare the three clips in the app's private `files/latency_input` folder. With a
-debuggable build, copy each source video to `/data/local/tmp/`, then use
-`adb shell run-as com.thesis.pickleballserve cp` to copy it into that folder.
+Prepare the three clips in the app's private `files/latency_input` folder. Two ways:
+
+- **No cable/ADB (recommended):** copy `C001.mp4`, `C002.mp4`, `C007.mp4` to the
+  phone with plain USB file transfer, then in the app open the Latency screen
+  and tap **Load clips from phone storage**. No developer options needed.
+- **With a debuggable build:** copy each source video to `/data/local/tmp/`, then use
+  `adb shell run-as com.thesis.pickleballserve cp` to copy it into that folder.
 On this Xiaomi, direct copies to shared Android/data storage were not readable by
 the app. No runtime timing was collected from that unsuccessful setup attempt.
 

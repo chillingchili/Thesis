@@ -27,6 +27,27 @@ class LatencyBenchmarkActivity : AppCompatActivity() {
     private val export = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         if (uri != null) resultFile?.let { file -> contentResolver.openOutputStream(uri)?.use { stream -> file.inputStream().use { it.copyTo(stream) } } }
     }
+    private val pickClips = registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
+        if (uris.isEmpty()) return@registerForActivityResult
+        val dir = File(filesDir, "latency_input").apply { mkdirs() }
+        var copied = 0
+        for (uri in uris) {
+            val name = contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                val idx = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                if (idx >= 0 && cursor.moveToFirst()) cursor.getString(idx) else null
+            } ?: continue
+            try {
+                contentResolver.openInputStream(uri)?.use { input ->
+                    File(dir, File(name).name).outputStream().use { input.copyTo(it) }
+                }
+                copied++
+            } catch (e: Exception) { status.text = "Could not copy $name: ${e.message}" }
+        }
+        val have = listOf("C001.mp4", "C002.mp4", "C007.mp4").filter { File(dir, it).isFile }
+        val missing = listOf("C001.mp4", "C002.mp4", "C007.mp4").filter { !File(dir, it).isFile }
+        status.text = "Copied $copied file(s). Ready: ${have.joinToString(", ").ifEmpty { "none" }}." +
+            (if (missing.isEmpty()) " All 3 benchmark clips present." else " Still missing: ${missing.joinToString(", ")}.")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = getString(R.string.latency_tool)
@@ -36,8 +57,9 @@ class LatencyBenchmarkActivity : AppCompatActivity() {
         status=TextView(this).apply { text="Recorded-clip latency test: 3 prepared clips, 3 rounds, one warm-up. Includes decode, pose, hip, paddle, GRU and feedback. This does not measure live capture-to-display delay."; textSize=17f }
         run=Button(this).apply { text="Run latency test"; setOnClickListener { start(poseGpu=false) } }
         runGpu=Button(this).apply { text="Run GPU variant test"; setOnClickListener { start(poseGpu=true) } }
+        val load=Button(this).apply { text="Load clips from phone storage"; setOnClickListener { pickClips.launch(arrayOf("video/*")) } }
         save=Button(this).apply { text="Export results"; isEnabled=false; setOnClickListener { export.launch(resultFile?.name ?: "latency.json") } }
-        layout.addView(back); layout.addView(run); layout.addView(runGpu); layout.addView(save); layout.addView(status)
+        layout.addView(back); layout.addView(load); layout.addView(run); layout.addView(runGpu); layout.addView(save); layout.addView(status)
         setContentView(ScrollView(this).apply { addView(layout) })
         if (intent.getBooleanExtra("autostart", false)) start()
     }
