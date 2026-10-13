@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -94,6 +95,7 @@ class LandingActivity : AppCompatActivity() {
         binding.loadVideoButton.isEnabled = false
         binding.landingStatus.text = "Loading analysis models…"
         binding.loadVideoButton.setOnClickListener { pickVideo.launch(arrayOf("video/*")) }
+        binding.shareButton.setOnClickListener { shareLanding() }
         binding.backButton.setOnClickListener { finish() }
         binding.landingHelpButton.setOnClickListener {
             MaterialAlertDialogBuilder(this)
@@ -137,6 +139,40 @@ class LandingActivity : AppCompatActivity() {
     private fun modelLoadFailed(e: Throwable) {
         Log.e(TAG, "model load failed", e)
         postUi { binding.landingStatus.text = "MODEL ERR: ${e.message}" }
+    }
+
+    /**
+     * Dual-phone handoff: render the bounce result as an offline QR code for
+     * the serve phone to scan. Text fallback in the dialog covers sunlight
+     * washout (receiver uses manual zone entry instead).
+     */
+    private fun shareLanding() {
+        val zone = hitZone
+        if (zone == null) {
+            Toast.makeText(this, getString(R.string.landing_qr_none), Toast.LENGTH_LONG).show()
+            return
+        }
+        val current = hit
+        val payload = LandingResult(zone, current?.xFt, current?.yFt).encode()
+        val bitmap = try {
+            QrCode.encodeBitmap(payload, 512)
+        } catch (e: Exception) {
+            Log.e(TAG, "QR encode failed", e)
+            Toast.makeText(this, "Could not render the share code.", Toast.LENGTH_LONG).show()
+            return
+        }
+        val coords = if (current == null) "" else " (%.1f, %.1f ft)".format(current.xFt, current.yFt)
+        val image = ImageView(this).apply {
+            setImageBitmap(bitmap)
+            setPadding(32, 16, 32, 16)
+            contentDescription = getString(R.string.landing_qr_title)
+        }
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.landing_qr_title))
+            .setMessage("$zone$coords\n\n${getString(R.string.landing_qr_hint)}")
+            .setView(image)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 
     private fun resetTracking(sourceFps: Double, replay: Boolean) {

@@ -42,7 +42,7 @@
     <string name="gpu_pose_note">GPU pose attempt %1$s. Applies now; falls back to CPU automatically if unsupported. Actual backend is logged.</string>
     <string name="change_model">Change comparison model</string>
     <string name="about_tool">About this thesis build</string>
-    <string name="about_body">Original five-fold GRU is the default classifier. The mobile development policy can provide guarded general-mechanics cues when subtype confidence is below 60%. These newer cues were not independently rated by Coach C.\n\nAutomatic motion capture can miss serves. Consistent two-second delivery is not established. Ball landing is a separate review tool.\n\nAll normal analysis stays on this phone. Research exports occur only when explicitly requested.</string>
+    <string name="about_body">Original five-fold GRU is the default classifier. The mobile development policy can provide guarded general-mechanics cues when subtype confidence is below 60%. These newer cues were not independently rated by Coach C.\n\nAutomatic motion capture can miss serves. Consistent two-second delivery is not established. Ball landing is a separate review tool; its Share QR attaches the zone to a serve on a second phone, fully offline.\n\nAll normal analysis stays on this phone. Research exports occur only when explicitly requested.</string>
     <string name="camera_permission_title">Allow camera access</string>
     <string name="camera_permission_note">Camera access is needed for live serve analysis. You can still use the research tools.</string>
     <string name="allow_camera">Allow camera</string>
@@ -66,4 +66,17 @@
     <string name="landing_zones_body">Landing zones: Deep-Left, Deep-Right, Short-Left, Short-Right. Faults: Fault-Long, Fault-Wide, Fault-Short. These are model estimates, not validated line calls — occlusion and small or blurred balls can still cause missed tracks.</string>
     <string name="analyzing">Analyzing…</string>
     <string name="back_to_live">Back to live analysis</string>
+    <string name="share_landing">Share</string>
+    <string name="landing_qr_title">Scan with the serve phone</string>
+    <string name="landing_qr_none">No landing yet — track a serve first, then share.</string>
+    <string name="landing_qr_hint">Hold this QR in view of the serve phone (Menu → Scan landing). If scanning fails in sunlight, use Manual entry on the serve phone and pick this zone.</string>
+    <string name="scan_landing">Scan landing QR</string>
+    <string name="scan_title">Scan the landing QR</string>
+    <string name="scan_hint">Point at the landing phone\'s QR code. Sunlight washout? Use Manual entry below.</string>
+    <string name="scan_manual">Manual entry</string>
+    <string name="scan_bad_code">Not a landing code — keep the QR in view.</string>
+    <string name="scan_invalid">That code is not a valid landing result.</string>
+    <string name="landing_attached">Landing %1$s attached to serve %2$d.</string>
+    <string name="landing_saved_next">Landing %1$s saved — attaches to your next completed serve.</string>
+    <string name="landing_expired">Saved landing expired — scan again after your next serve.</string>
 </resources>

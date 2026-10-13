@@ -12,6 +12,7 @@
     <item android:id="@+id/action_probabilities" android:title="@string/probabilities" />
     <item android:id="@+id/action_compare" android:title="@string/compare_models" />
     <item android:id="@+id/action_landing" android:title="@string/landing_tool" />
+    <item android:id="@+id/action_scan_landing" android:title="@string/scan_landing" />
     <item android:id="@+id/action_latency" android:title="@string/latency_tool" />
     <item android:id="@+id/action_gpu_pose" android:title="@string/gpu_pose" android:checkable="true" android:checked="true" />
     <item android:id="@+id/action_change_model" android:title="@string/change_model" />

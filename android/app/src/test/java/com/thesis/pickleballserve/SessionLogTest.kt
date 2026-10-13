@@ -16,4 +16,15 @@ class SessionLogTest {
         assertEquals(1, SessionStore.nextNumber())
         SessionStore.clear()
     }
+
+    @Test fun landingAmendmentKeepsOtherFields() {
+        SessionStore.clear()
+        SessionStore.add(ServeRecord(1, "20:00", "Drive", .8f, "hip", "paddle", "FEEDBACK", "cue"))
+        assertTrue(SessionStore.update(1) { it.copy(landing = "Deep-Right", feedback = "cue\nBall landing: Deep-Right.") })
+        val amended = SessionStore.snapshot().single()
+        assertEquals("Deep-Right", amended.landing)
+        assertEquals("Drive", amended.serveType)
+        assertFalse(SessionStore.update(99) { it })
+        SessionStore.clear()
+    }
 }

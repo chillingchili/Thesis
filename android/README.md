@@ -115,6 +115,25 @@ and Kotlin feature/kNN parity is checked against real clip fixtures by
 `HybridPredictionTest`. See `../analysis/HYBRID_CLASSIFIER_AUDIT.md` for recorded
 clip accuracy and the distinction from Android's motion-gated live window.
 
+### Dual-phone landing handoff (offline QR)
+
+Thesis auxiliary ball module across two phones, no network involved:
+
+1. **Landing phone** (court view): open landing review, track the serve, tap
+   **Share** → shows a QR code with the bounce zone.
+2. **Serve phone** (side view): Menu → **Scan landing QR** → point at the code.
+   - Scanned within 2 min of a completed serve: that serve's feedback is
+     re-evaluated with the zone and the session log is amended (spoken too).
+   - Otherwise the zone is saved and attaches to the next completed serve
+     (expires after 2 min; **New attempt** discards it).
+3. Sunlight washout fallback: read the zone off the landing dialog, tap
+   **Manual entry** in the scanner, pick the zone.
+
+Without a scan each phone behaves exactly as before (serve phone reports
+without landing; `placementActive=false`). Payload is `LandingResult`
+(`landing/LandingResult.kt`, ~100-char JSON); encode/decode is ZXing core
+only (`landing/QrCode.kt`), covered by `LandingResultTest`/`QrCodeTest`.
+
 ### Landing pipeline
 
 The landing screen targets 30 fps playback with concurrent ball/court analysis on the Redmi Note 12

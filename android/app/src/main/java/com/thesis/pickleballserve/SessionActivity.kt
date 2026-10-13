@@ -33,8 +33,9 @@ class SessionActivity : AppCompatActivity() {
             for (record in records.reversed()) {
                 list.addView(TextView(this).apply {
                     val conf = record.confidence?.let { " · ${(it * 100).toInt()}%" } ?: ""
+                    val landing = record.landing?.let { "\nLanding: $it (second phone)" } ?: ""
                     text = ("Serve ${record.number} · ${record.time}\n" +
-                        "${record.serveType}$conf\n" +
+                        "${record.serveType}$conf$landing\n" +
                         "Hip: ${record.hip}\nPaddle: ${record.paddle}\n" +
                         "${record.feedbackTitle}: ${record.feedback}")
                     textSize = 15f

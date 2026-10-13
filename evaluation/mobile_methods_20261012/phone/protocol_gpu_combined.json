@@ -1,0 +1,19 @@
+{
+  "variants": [
+    [
+      "gpu_both",
+      true,
+      true
+    ]
+  ],
+  "clips": [
+    "C001",
+    "C002",
+    "C007"
+  ],
+  "source_replays_per_case": 3,
+  "order": "rotate variant order by clip index",
+  "idle": "1500ms prefix +3000ms tail; duplicate idle frames excluded from classifier/hip/paddle counts",
+  "timing": "UI-update after app gate end; source_end logged separately; not independently marked physical completion",
+  "apk_sha256": "9baf32a79c1b586c396c7f9af6d4f52e2a7cea62498e004267df1d186f96bf45"
+}

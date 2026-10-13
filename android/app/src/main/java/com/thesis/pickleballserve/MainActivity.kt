@@ -36,6 +36,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.thesis.pickleballserve.databinding.ActivityMainBinding
 import com.thesis.pickleballserve.landing.LandingActivity
+import com.thesis.pickleballserve.landing.LandingResult
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -151,6 +152,25 @@ class MainActivity : AppCompatActivity() {
     private var lastServeEndMs = 0L
     private var paddleDropped = 0L
 
+    // --- Dual-phone landing handoff (offline QR, no network). ---
+    // Phone B shares its bounce zone as a QR code; a scan either amends the
+    // just-completed serve (snapshot still fresh) or waits as pending for the
+    // next completed serve. The freshness bound keeps stale zones from
+    // attaching to unrelated serves.
+    private data class LastServe(
+        val serveType: String?,
+        val confidence: Float?,
+        val shift: Boolean?,
+        val paddle: FeedbackEngine.PaddleState?,
+        val independentMechanics: Boolean,
+        val recordNumber: Int,
+        val completedMs: Long,
+    )
+    @Volatile private var lastServe: LastServe? = null
+    @Volatile private var pendingLanding: Pair<LandingResult, Long>? = null
+    @Volatile private var landingRefreshRecord: Int? = null
+    private val landingFreshMs = 120_000L
+
     private val emaAlpha = 0.35f
     private var emaProbs: FloatArray? = null
 
@@ -160,6 +180,20 @@ class MainActivity : AppCompatActivity() {
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) startInput() else showPermissionRequired()
+        }
+
+    private val scanLanding =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+            if (destroyed) return@registerForActivityResult
+            if (res.resultCode != RESULT_OK) return@registerForActivityResult
+            val payload = res.data?.getStringExtra(ScanLandingActivity.EXTRA_LANDING)
+                ?: return@registerForActivityResult
+            val parsed = LandingResult.parse(payload)
+            if (parsed == null) {
+                Toast.makeText(this, getString(R.string.scan_invalid), Toast.LENGTH_LONG).show()
+                return@registerForActivityResult
+            }
+            onLandingScanned(parsed)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -293,6 +327,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_reset -> {
                     sessionEpoch.invalidate()
+                    pendingLanding = null
+                    landingRefreshRecord = null
                     clearCards()
                     analysisExecutor.execute { resetAnalysis() }
                     setStatus(getString(R.string.ready_title), getString(R.string.camera_hint))
@@ -344,6 +380,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.action_landing -> {
                     startActivity(Intent(this, LandingActivity::class.java)); true
                 }
+                R.id.action_scan_landing -> {
+                    scanLanding.launch(Intent(this, ScanLandingActivity::class.java)); true
+                }
                 R.id.action_latency -> {
                     startActivity(Intent(this, LatencyBenchmarkActivity::class.java)); true
                 }
@@ -394,6 +433,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
         sessionEpoch.invalidate()
+        pendingLanding = null
+        landingRefreshRecord = null
         analysisExecutor.execute { resetAnalysis() }
         clearCards()
         setStatus(getString(R.string.ready_title), getString(R.string.camera_switch_note))
@@ -406,8 +447,18 @@ class MainActivity : AppCompatActivity() {
         if (!speakResults) return
         val engine = tts ?: return
         val conf = record.confidence?.let { "(${(it * 100).toInt()} percent). " } ?: ""
-        engine.speak("Serve ${record.number}. ${record.serveType}. $conf${record.feedback}",
+        val landing = record.landing?.let { " Landing $it." } ?: ""
+        engine.speak("Serve ${record.number}. ${record.serveType}. $conf${record.feedback}$landing",
             TextToSpeech.QUEUE_FLUSH, null, "serve-${record.number}")
+    }
+
+    /** Short landing-only utterance so the player hears a late-attached zone on court. */
+    private fun speakLanding(record: ServeRecord) {
+        if (!speakResults) return
+        val engine = tts ?: return
+        val zone = record.landing ?: return
+        engine.speak("Serve ${record.number}. Landing $zone.",
+            TextToSpeech.QUEUE_ADD, null, "landing-${record.number}")
     }
 
     private fun changeMode() {
@@ -764,25 +815,24 @@ class MainActivity : AppCompatActivity() {
         val stream = paddleStream.takeUnless { paddleFailed }
         val angle = stream?.computeForFeedback()
         val paddle = stream?.let { FeedbackEngine.paddleState(angle, it.low, it.high, it.directionValidated) }
+        val independentMechanics = intent.getBooleanExtra("research_motion_rate", true) &&
+            serveWindow.size >= finalMinFrames && serveWindow.durationMs >= 1500L
+        // A landing scanned while this serve was being analyzed attaches now;
+        // anything older already expired inside consumePendingLanding.
+        val landed = consumePendingLanding(SystemClock.uptimeMillis())
         val result = feedbackEngine?.evaluate(FeedbackEngine.Input(
             serveType = prediction?.first, gruConfidence = prediction?.second,
             shiftSufficient = hipPassed, paddle = paddle,
-            independentMechanics = intent.getBooleanExtra("research_motion_rate", true) &&
-                serveWindow.size >= finalMinFrames && serveWindow.durationMs >= 1500L,
-            placementActive = false,
+            independentMechanics = independentMechanics,
+            placementActive = landed != null, placementZone = landed?.zone,
         ))
         val endMs = lastServeEndMs
         val peakMs = lastMotionPeakMs
         val startMs = serveStartMs
-        Log.i("Feedback", "version=${result?.version} status=${result?.status} rules=${result?.ruleIds} paddle=${paddle ?: "UNAVAILABLE"}")
+        Log.i("Feedback", "version=${result?.version} status=${result?.status} rules=${result?.ruleIds} paddle=${paddle ?: "UNAVAILABLE"} landing=${landed?.zone}")
         val hipText = ServePresentation.hip(hipValue, hipPassed)
         val paddleText = ServePresentation.paddle(angle, paddle)
-        val titleText = when {
-            result == null -> "COACHING UNAVAILABLE"
-            result.status == FeedbackEngine.Status.CORRECTIVE && (prediction?.second ?: 0f) < FeedbackEngine.MIN_CONFIDENCE -> "GENERAL MECHANICS · NEXT ATTEMPT"
-            result.status == FeedbackEngine.Status.LOW_CONFIDENCE -> "MORE EVIDENCE NEEDED"
-            else -> getString(R.string.coaching_title)
-        }
+        val titleText = feedbackTitleFor(result, prediction?.second)
         val bodyText = result?.text ?: "Coaching rules could not be loaded. Your available measurements are shown above."
         val record = ServeRecord(
             number = SessionStore.nextNumber(),
@@ -793,8 +843,11 @@ class MainActivity : AppCompatActivity() {
             paddle = paddleText,
             feedbackTitle = titleText,
             feedback = bodyText,
+            landing = landed?.zone,
         )
         SessionStore.add(record)
+        lastServe = LastServe(prediction?.first, prediction?.second, hipPassed, paddle,
+            independentMechanics, record.number, SystemClock.uptimeMillis())
         speak(record)
         postUi(generation) {
             binding.shiftLabel.text = hipText
@@ -807,6 +860,76 @@ class MainActivity : AppCompatActivity() {
             val shown = SystemClock.uptimeMillis()
             if (endMs != 0L) Log.i(LATENCY_TAG, "feedback_shown shown=$shown end_to_shown=${shown-endMs}ms peak_to_shown=${shown-peakMs}ms serve_total=${shown-startMs}ms")
         }
+    }
+
+    /** Coaching header for a feedback result; shared by the live and late-landing paths. */
+    private fun feedbackTitleFor(result: FeedbackEngine.Result?, confidence: Float?): String = when {
+        result == null -> "COACHING UNAVAILABLE"
+        result.status == FeedbackEngine.Status.CORRECTIVE && (confidence ?: 0f) < FeedbackEngine.MIN_CONFIDENCE -> "GENERAL MECHANICS · NEXT ATTEMPT"
+        result.status == FeedbackEngine.Status.LOW_CONFIDENCE -> "MORE EVIDENCE NEEDED"
+        else -> getString(R.string.coaching_title)
+    }
+
+    /** Take the saved landing when the scan is still fresh; drop it and warn when expired. */
+    private fun consumePendingLanding(now: Long): LandingResult? {
+        val saved = pendingLanding ?: return null
+        pendingLanding = null
+        if (now - saved.second > landingFreshMs) {
+            postUi { Toast.makeText(this, getString(R.string.landing_expired), Toast.LENGTH_LONG).show() }
+            return null
+        }
+        return saved.first
+    }
+
+    /**
+     * Dual-phone handoff arrival (UI thread). A fresh snapshot means the scan
+     * belongs to the just-completed serve: re-evaluate with the landing zone
+     * and amend the logged record. Otherwise the zone waits for the next serve.
+     */
+    private fun onLandingScanned(result: LandingResult) {
+        val now = SystemClock.uptimeMillis()
+        val snap = lastServe
+        if (snap != null && now - snap.completedMs <= landingFreshMs) {
+            Toast.makeText(this, getString(R.string.landing_attached, result.zone, snap.recordNumber),
+                Toast.LENGTH_LONG).show()
+            analysisExecutor.execute { attachLanding(snap, result) }
+        } else {
+            pendingLanding = result to now
+            Toast.makeText(this, getString(R.string.landing_saved_next, result.zone),
+                Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /** Re-run the logged serve's fusion with the scanned zone; never touches live state. */
+    private fun attachLanding(snap: LastServe, result: LandingResult) {
+        val engine = feedbackEngine ?: return
+        val re = engine.evaluate(FeedbackEngine.Input(
+            serveType = snap.serveType, gruConfidence = snap.confidence,
+            shiftSufficient = snap.shift, paddle = snap.paddle,
+            independentMechanics = snap.independentMechanics,
+            placementActive = true, placementZone = result.zone,
+        ))
+        val title = feedbackTitleFor(re, snap.confidence)
+        if (!SessionStore.update(snap.recordNumber) {
+            it.copy(landing = result.zone, feedbackTitle = title, feedback = re.text)
+        }) return
+        Log.i("Feedback", "landing_attached serve=${snap.recordNumber} zone=${result.zone} status=${re.status}")
+        landingRefreshRecord = snap.recordNumber
+        runOnUiThread { renderLandingRefresh() }
+    }
+
+    /** Refresh the feedback cards after a late landing; deferred to onResume when backgrounded. */
+    private fun renderLandingRefresh() {
+        val number = landingRefreshRecord ?: return
+        if (destroyed || !foreground) return
+        if (lastServe?.recordNumber != number) { landingRefreshRecord = null; return }
+        val record = SessionStore.snapshot().find { it.number == number }
+            ?: run { landingRefreshRecord = null; return }
+        landingRefreshRecord = null
+        binding.feedbackTitle.text = record.feedbackTitle
+        binding.feedbackLabel.text = record.feedback
+        setStatus("Analysis complete", "Landing ${record.landing} attached · ${getString(R.string.results_note)}")
+        speakLanding(record)
     }
 
     /**
@@ -976,6 +1099,8 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         foreground = true
         if (modelsReady) startInput()
+        // A landing scanned while the scanner covered this screen amends here.
+        renderLandingRefresh()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

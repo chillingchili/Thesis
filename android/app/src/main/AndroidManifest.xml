@@ -53,5 +53,11 @@
             android:exported="true"
             android:screenOrientation="landscape"
             android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ScanLandingActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 </manifest>

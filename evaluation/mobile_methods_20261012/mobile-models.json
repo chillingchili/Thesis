@@ -1,0 +1,625 @@
+{
+  "runs": [
+    {
+      "model": "mobile32",
+      "warmup": true,
+      "ms": 24.597344,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 18.433542,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.534218,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.612188,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.172135,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.281354,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.270156,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 18.98198,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.280625,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 17.527135,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 18.688697,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 17.136407,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.702656,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.752761,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.488229,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.219687,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.574584,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.643125,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.551354,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.612969,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.708073,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.385365,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.896562,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 17.292813,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.662396,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.578802,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.229063,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.227708,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.752656,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.451198,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "mobile32",
+      "warmup": false,
+      "ms": 16.812917,
+      "probabilities": [
+        0.94857806,
+        0.049635917,
+        0.0017859972
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": true,
+      "ms": 19.087344,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.528541,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.188021,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.159583,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.079479,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.507448,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.724375,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.649115,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.03651,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.159219,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.867396,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.227865,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.756563,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.114739,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 17.147291,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 17.049531,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.424427,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.186302,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.435365,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 23,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 23.015156,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 21.023386,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.475104,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.840937,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.212448,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.625938,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.199531,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.397604,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.746562,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 15.836979,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    },
+    {
+      "model": "distilled16",
+      "warmup": false,
+      "ms": 16.06724,
+      "probabilities": [
+        0.7516199,
+        0.24308352,
+        0.0052965735
+      ]
+    }
+  ],
+  "complete": true
+}
