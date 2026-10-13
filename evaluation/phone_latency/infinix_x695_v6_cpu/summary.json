@@ -1,0 +1,25 @@
+{
+  "metric": "Recorded file open to computed coaching result; no camera or display timing",
+  "source_sha256": "870131c8362428670cb494bd3998604c26d6eed32ac861e3b2c41a58c8a3b05e",
+  "device": "Infinix X695",
+  "soc": "mt6785",
+  "android": "11",
+  "completed": true,
+  "measured_attempts": 9,
+  "successful": 9,
+  "failed": 0,
+  "warmups": 1,
+  "median_ms": 53011.819465,
+  "p95_nearest_rank_ms": 74882.089235,
+  "max_ms": 74882.089235,
+  "within_2s": 0,
+  "within_2s_pct_of_attempts": 0.0,
+  "live_two_second_target_verified": false,
+  "notes": [
+    "Median/p95/max describe successful runs only; failed attempts remain in the count and within-2s denominator.",
+    "Nine measured runs across three fixed clips are an initial device benchmark, not a population-wide performance estimate.",
+    "Fresh VIDEO pose tracker per clip; no live camera, motion gate, UI display timing or concurrent live inference.",
+    "Initial GRU/paddle loading and per-run pose loading recorded separately; total_processing_ms excludes these.",
+    "USB/charging, power and thermal conditions are retained in raw.json; no battery-state normalization was applied."
+  ]
+}
