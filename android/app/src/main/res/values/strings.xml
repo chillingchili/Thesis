@@ -38,6 +38,8 @@
     <string name="compare_models">Compare recorded serve models</string>
     <string name="landing_tool">Optional ball landing review</string>
     <string name="latency_tool">Run recorded-file latency test</string>
+    <string name="gpu_pose">GPU pose (experimental)</string>
+    <string name="gpu_pose_note">GPU pose attempt %1$s. Applies now; falls back to CPU automatically if unsupported. Actual backend is logged.</string>
     <string name="change_model">Change comparison model</string>
     <string name="about_tool">About this thesis build</string>
     <string name="about_body">Original five-fold GRU is the default classifier. The mobile development policy can provide guarded general-mechanics cues when subtype confidence is below 60%. These newer cues were not independently rated by Coach C.\n\nAutomatic motion capture can miss serves. Consistent two-second delivery is not established. Ball landing is a separate review tool.\n\nAll normal analysis stays on this phone. Research exports occur only when explicitly requested.</string>

@@ -37,6 +37,8 @@ class PosePipeline(
     }
 
     private var activeGpu = useGpu
+    /** Backend actually in use after start() (false when GPU init fell back to CPU). */
+    val usingGpu: Boolean get() = activeGpu
     private var landmarker: PoseLandmarker? = null
     @Volatile private var running = false
     private var lastTimestampMs = 0L

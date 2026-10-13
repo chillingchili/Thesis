@@ -113,7 +113,10 @@ class MainActivity : AppCompatActivity() {
 
     /** Fullscreen hides the result row so the shot can be framed on the tripod. */
     private var fullscreen = false
-
+    // GPU pose attempt for the live path (MediaPipe delegate with CPU fallback
+    // inside PosePipeline). Default true preserves current behavior. The recorded
+    // benchmark stays CPU-only as the stable reference.
+    private var poseGpu = true
     /** Spoken results keep the player on the court; same strings as on screen. */
     private var speakResults = true
     private var tts: TextToSpeech? = null
@@ -274,6 +277,7 @@ class MainActivity : AppCompatActivity() {
         popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
         popup.menu.findItem(R.id.action_fullscreen).isChecked = fullscreen
         popup.menu.findItem(R.id.action_speak).isChecked = speakResults
+        popup.menu.findItem(R.id.action_gpu_pose).isChecked = poseGpu
         popup.menu.findItem(R.id.action_session).title =
             getString(R.string.session_serves) + " (${SessionStore.size()})"
         popup.menu.findItem(
@@ -306,6 +310,17 @@ class MainActivity : AppCompatActivity() {
                     speakResults = !speakResults
                     item.isChecked = speakResults
                     if (!speakResults) tts?.stop()
+                    true
+                }
+                R.id.action_gpu_pose -> {
+                    poseGpu = !poseGpu
+                    item.isChecked = poseGpu
+                    // Pipeline reads the flag at creation; restart input so it applies now.
+                    if (foreground && !destroyed && modelsReady) {
+                        stopInput()
+                        startInput()
+                    }
+                    Toast.makeText(this, getString(R.string.gpu_pose_note, if (poseGpu) "on" else "off"), Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.action_camera_back -> {
@@ -456,7 +471,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createPose(epoch: Long): PosePipeline = PosePipeline(
-        context = applicationContext, useGpu = intent.getBooleanExtra("research_pose_gpu", true),
+        context = applicationContext, useGpu = intent.getBooleanExtra("research_pose_gpu", poseGpu),
         onPose = { pts, bmp, timestamp, real ->
             if (foreground && !destroyed && epoch == inputEpoch.get() && poseQueued.compareAndSet(false, true)) {
                 val points = Array(pts.size) { PointF(pts[it].x, pts[it].y) }
