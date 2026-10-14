@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.RejectedExecutionException
 import android.graphics.PointF
+import android.media.MediaMetadataRetriever
 import android.os.Bundle
 import android.os.SystemClock
 import android.speech.tts.TextToSpeech
@@ -386,6 +387,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.action_latency -> {
                     startActivity(Intent(this, LatencyBenchmarkActivity::class.java)); true
                 }
+                R.id.action_showcase -> {
+                    startShowcase(); true
+                }
                 R.id.action_change_model -> { changeMode(); true }
                 R.id.action_about -> {
                     MaterialAlertDialogBuilder(this).setTitle(R.string.about_tool).setMessage(R.string.about_body)
@@ -405,6 +409,10 @@ class MainActivity : AppCompatActivity() {
 
     /** Switch live input cameras without losing the session; research replay keeps its own source. */
     private fun switchCamera(facing: Int) {
+        if (showcaseIndex >= 0) {
+            Toast.makeText(this, "Showcase running — it finishes on its own.", Toast.LENGTH_SHORT).show()
+            return
+        }
         if (intent.getStringExtra(EXTRA_REPLAY_CLIP) != null) {
             cameraFacing = facing
             Toast.makeText(this, R.string.camera_switch_note, Toast.LENGTH_LONG).show()
@@ -554,6 +562,8 @@ class MainActivity : AppCompatActivity() {
     )
 
     private fun onPoseMissing() {
+        if (!inputRunning) return
+        if (fullresPaddleArmed()) showcaseSrcQueue.poll()
         val now = SystemClock.uptimeMillis()
         if (gateActive && lastPoseSeenMs != 0L && now - lastPoseSeenMs >= 1500L) {
             resetAnalysis()
@@ -583,7 +593,13 @@ class MainActivity : AppCompatActivity() {
      * paddle worker, the GRU, feedback and the LiveLatency instrumentation are all
      * unchanged, so what the screen shows is the live path running.
      */
-    private fun startClipReplay(clipName: String, loop: Boolean) {
+    private fun startClipReplay(
+        clipName: String,
+        loop: Boolean,
+        showVideo: Boolean = false,
+        statusLabel: String? = null,
+        onFinished: (() -> Unit)? = null,
+    ) {
         val base = File(filesDir, "latency_input").canonicalFile
         val file = File(base, clipName).canonicalFile
         if (file.parentFile != base || !file.isFile) {
@@ -592,19 +608,124 @@ class MainActivity : AppCompatActivity() {
         val epoch = inputEpoch.get()
         cameraExecutor.execute {
             if (!foreground || epoch != inputEpoch.get()) return@execute
+            runCatching { posePipeline?.stop() }
+            posePipeline = null
             val pipeline = createPose(epoch).also { posePipeline = it }
             if (!pipeline.start(applicationContext)) return@execute
-            postUi { binding.statusState.text = "Recorded live-path replay"
-                setStatus("Preparing recorded serve", "Research replay uses the live analysis path.") }
+            postUi { binding.statusState.text = statusLabel ?: "Recorded live-path replay"
+                setStatus(if (statusLabel != null) "Showcasing $clipName" else "Preparing recorded serve", "Research replay uses the live analysis path.") }
             clipReplay = ServeClipReplay(file = file,
-                onFrame = { bitmap, real ->
+                onFrame = { bitmap, real, srcIndex ->
+                    if (showVideo) runOnUiThread { if (!destroyed) binding.replayView.setImageBitmap(bitmap) }
                     if (foreground && epoch == inputEpoch.get()) runCatching { cameraExecutor.execute {
-                        if (foreground && epoch == inputEpoch.get()) posePipeline?.analyze(bitmap, real)
+                        if (foreground && epoch == inputEpoch.get()) {
+                            if ((showVideo || fullresPaddleArmed()) && real) showcaseSrcQueue.add(srcIndex)
+                            posePipeline?.analyze(bitmap, real)
+                        }
                     } }
                 },
-                onDone = { frames -> Log.i(LATENCY_TAG, "replay_done clip=$clipName frames_sent=$frames") }, loop = loop
+                onDone = { frames ->
+                    Log.i(LATENCY_TAG, "replay_done clip=$clipName frames_sent=$frames")
+                    onFinished?.invoke()
+                }, loop = loop
             ).also { if (foreground && epoch == inputEpoch.get()) it.start() }
         }
+    }
+
+    // --- Showcase demo: recorded serves through the live path, hands-free. ---
+    // One clip per displayable output (corrective, partial, low-confidence), so a
+    // screen recording shows the normal app analyzing and inferring without a player.
+    // Uses the same motion gate, GRU, paddle worker and feedback as the camera.
+    // C002 is the only live-path clip with a measured paddle angle plus substantive
+    // feedback (OPTIMAL in the GPU audit); C005 partial is stable on both backends;
+    // C023 has twice the frames of C014 and stays substantive under both backends
+    // (CPU low-confidence, GPU corrective-uncertain). Live outputs can still vary
+    // slightly run to run with motion-gate timing.
+    private var showcaseQueue: List<String> = emptyList()
+    private var showcaseIndex = -1
+    private val showcaseGapMs = 2500L
+    // Showcase / research paddle config: relaxed spacing (150ms vs 350ms) and an
+    // optional full-res contact-window second pass (same detector/rules, bigger
+    // pixels). Enabled by the showcase demo or explicitly per replay via the
+    // research_relaxed_paddle / research_fullres_paddle intent extras, so the
+    // exact demo configuration stays evaluable on all 30 clips.
+    private fun fullresPaddleArmed() = showcaseIndex >= 0 ||
+        intent.getBooleanExtra("research_fullres_paddle", false)
+    private var showcaseClipFile: File? = null
+    private val showcaseSrcQueue = java.util.concurrent.ConcurrentLinkedQueue<Int>()
+    private val showcaseUsableSrc = ArrayList<Int>()
+    private val showcaseUsableWrist = ArrayList<PointF>()
+
+    private fun startShowcase() {
+        if (showcaseIndex >= 0) {
+            Toast.makeText(this, "Showcase already running.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (!modelsReady) {
+            Toast.makeText(this, "Models still loading — try the showcase again in a moment.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val dir = File(filesDir, "latency_input")
+        val clips = listOf("C002.mp4", "C005.mp4", "C023.mp4").filter { File(dir, it).isFile }
+        if (clips.size < 3) {
+            Toast.makeText(this, "Load C002, C005 and C023 first: Menu → Run recorded-file latency test → Load clips from phone storage.", Toast.LENGTH_LONG).show()
+            return
+        }
+        stopInput()
+        showcaseQueue = clips
+        showcaseIndex = 0
+        inputRunning = true
+        binding.root.keepScreenOn = true
+        clearCards()
+        playShowcaseClip()
+    }
+
+    private fun playShowcaseClip() {
+        if (!foreground) { finishShowcase(); return }
+        val idx = showcaseIndex
+        if (idx < 0 || idx >= showcaseQueue.size) { finishShowcase(); return }
+        val clipName = showcaseQueue[idx]
+        binding.replayView.visibility = View.VISIBLE
+        showcaseClipFile = File(File(filesDir, "latency_input"), clipName)
+        showcaseSrcQueue.clear()
+        synchronized(showcaseUsableSrc) {
+            showcaseUsableSrc.clear()
+            showcaseUsableWrist.clear()
+        }
+        startClipReplay(
+            clipName, loop = false, showVideo = true,
+            statusLabel = "Showcase ${idx + 1}/${showcaseQueue.size} · $clipName",
+            onFinished = {
+                // Keep the finished serve's result on screen briefly for the
+                // recording, then continue hands-free.
+                binding.root.postDelayed({
+                    if (destroyed || !foreground || showcaseIndex < 0) return@postDelayed
+                    analysisExecutor.execute { resetAnalysis() }
+                    showcaseIndex++
+                    if (showcaseIndex < showcaseQueue.size) playShowcaseClip()
+                    else finishShowcase()
+                }, showcaseGapMs)
+            },
+        )
+    }
+
+    private fun finishShowcase() {
+        showcaseIndex = -1
+        showcaseQueue = emptyList()
+        showcaseClipFile = null
+        showcaseSrcQueue.clear()
+        synchronized(showcaseUsableSrc) {
+            showcaseUsableSrc.clear()
+            showcaseUsableWrist.clear()
+        }
+        runOnUiThread {
+            if (destroyed) return@runOnUiThread
+            binding.replayView.setImageDrawable(null)
+            binding.replayView.visibility = View.GONE
+        }
+        Toast.makeText(this, "Showcase complete — live camera resumed.", Toast.LENGTH_SHORT).show()
+        stopInput()
+        if (foreground && modelsReady) startInput()
     }
 
     private fun startCamera() {
@@ -665,6 +786,13 @@ class MainActivity : AppCompatActivity() {
      */
     @Synchronized
     private fun onPoseDetected(landmarks: Array<PointF>, bitmap: Bitmap?, timestampMs: Long, realFrame: Boolean) {
+        // Drop stale frames queued before stopInput (e.g. camera frames still in
+        // flight when a showcase starts): they never entered the submit queue, so
+        // they must not pop tracking entries or feed the gate/paddle bookkeeping.
+        if (!inputRunning) return
+        // Consume this frame's queued source index (every real submit pops exactly
+        // once here or in onPoseMissing, keeping the usable-frame records aligned).
+        val showcaseSrcIdx = if (fullresPaddleArmed() && realFrame) showcaseSrcQueue.poll() else null
         val feats = JointAngles.fromLandmarks(landmarks) ?: return
         val displacement = computeMotion(feats)
         val motion = if (intent.getBooleanExtra("research_motion_rate", true))
@@ -689,10 +817,18 @@ class MainActivity : AppCompatActivity() {
                 emaProbs = null
                 shiftDetector?.clear()
                 paddleStream?.clear()
+                // New usable-frame sequence: reset the full-res pass records with it.
+                if (fullresPaddleArmed()) {
+                    showcaseSrcQueue.clear()
+                    synchronized(showcaseUsableSrc) {
+                        showcaseUsableSrc.clear()
+                        showcaseUsableWrist.clear()
+                    }
+                }
                 shiftDetector?.let { s ->
                     landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
                 }
-                addPaddleSample(landmarks, bitmap)
+                addPaddleSample(landmarks, bitmap, showcaseSrcIdx)
                 postUi {
                     binding.statusState.text = "Pose: OK"
                     clearCards(analyzing = true)
@@ -732,7 +868,7 @@ class MainActivity : AppCompatActivity() {
         // Post-contact frames carry no paddle evidence. Keep the wrist-speed
         // bookkeeping (contactFrame is derived from it) but stop paying for
         // detection on the tail that end detection is waiting out.
-        if (realFrame) addPaddleSample(landmarks, if (lowMotionSinceMs == 0L) bitmap else null)
+        if (realFrame) addPaddleSample(landmarks, if (lowMotionSinceMs == 0L) bitmap else null, showcaseSrcIdx)
 
         val frames = serveWindow.size
 
@@ -743,6 +879,9 @@ class MainActivity : AppCompatActivity() {
             // Paddle runs off-thread; give already-queued detections a bounded
             // chance to land so the verdict still sees the contact window.
             val drainMs = awaitPaddleQuiescence(paddleQuiesceMs)
+            // Showcase-only full-res paddle second pass (same model/rules, bigger
+            // pixels): re-detects the contact window when the live worker missed it.
+            if (showcaseIndex >= 0 || intent.getBooleanExtra("research_fullres_paddle", false)) showcaseFullResPaddle()
             val inferStart = SystemClock.uptimeMillis()
             // Serve ended: one final inference, then reset gate (labels stay visible)
             val finalPrediction = if (frames >= finalMinFrames) runInference(frames, finalResult = true) else null
@@ -940,12 +1079,87 @@ class MainActivity : AppCompatActivity() {
      * bitmap == null keeps wrist-speed bookkeeping only (contactFrame is derived
      * from it) and stays on this thread — it is sub-microsecond.
      */
-    private fun addPaddleSample(landmarks: Array<PointF>, bitmap: Bitmap?) {
+    /**
+     * Showcase-only second paddle pass: when the live worker measured nothing,
+     * re-decode the contact window at source resolution and run the same detector
+     * through PaddleStream.addWindow, so the angles land in the verdict's window.
+     * Mirrors CoreLatencyBenchmark's two-pass (contact +/-5 usable frames, even
+     * stride, one forward batch so pixels match). Runs synchronously on the
+     * analysis worker; trailing replay frames are idle and cannot retrigger.
+     */
+    private fun showcaseFullResPaddle() {
+        val stream = paddleStream ?: return
+        if (paddleFailed) return
+        if (stream.computeForFeedback() != null) return
+        val file = showcaseClipFile?.takeIf { it.isFile }
+            ?: intent.getStringExtra(EXTRA_REPLAY_CLIP)?.let {
+                File(File(filesDir, "latency_input"), File(it).name).canonicalFile
+            }?.takeIf {
+                it.parentFile == File(filesDir, "latency_input").canonicalFile && it.isFile
+            } ?: return
+        // Snapshot under lock: clears run on the UI thread between clips.
+        data class WinFrame(val usable: Int, val src: Int, val wrist: PointF)
+        val frames: List<WinFrame> = synchronized(showcaseUsableSrc) {
+            val n = showcaseUsableSrc.size
+            if (n == 0 || showcaseUsableWrist.size != n) return
+            val contact = try { stream.contactFrame() } catch (_: Exception) { return }
+            if (contact < 0 || contact >= n) return
+            ((contact - 5)..(contact + 5)).filter { it in 0 until n && it % 2 == 0 }
+                .map { WinFrame(it, showcaseUsableSrc[it], showcaseUsableWrist[it]) }
+        }
+        if (frames.isEmpty()) return
+        val start = SystemClock.uptimeMillis()
+        var measured = 0
+        var contact = -1
+        val retriever = MediaMetadataRetriever()
+        try {
+            if (android.os.Build.VERSION.SDK_INT < 28) return
+            retriever.setDataSource(file.absolutePath)
+            contact = try { stream.contactFrame() } catch (_: Exception) { -1 }
+            val srcFirst = frames.first().src
+            val srcLast = frames.last().src
+            if (srcFirst < 0 || srcLast < srcFirst) return
+            val params = MediaMetadataRetriever.BitmapParams().apply {
+                preferredConfig = Bitmap.Config.ARGB_8888
+            }
+            val batch = retriever.getFramesAtIndex(srcFirst, srcLast - srcFirst + 1, params)
+            try {
+                for (f in frames) {
+                    val bmp = batch.getOrNull(f.src - srcFirst) ?: continue
+                    stream.addWindow(f.usable, f.wrist.x, f.wrist.y, bmp)
+                }
+            } finally {
+                for (b in batch) runCatching { if (!b.isRecycled) b.recycle() }
+            }
+            measured = if (stream.computeForFeedback() != null) 1 else 0
+        } catch (e: Exception) {
+            Log.w("MainActivity", "Showcase full-res paddle pass failed; keeping live result", e)
+        } finally {
+            runCatching { retriever.release() }
+        }
+        Log.i(LATENCY_TAG, "showcase_paddle_pass2 contact=$contact window=${frames.size} measured=$measured ms=${SystemClock.uptimeMillis() - start}")
+    }
+
+    private fun addPaddleSample(landmarks: Array<PointF>, bitmap: Bitmap?, showcaseSrcIdx: Int? = null) {
         if (paddleFailed) return
         val stream = paddleStream ?: return
+        // Record usable-frame source evidence for the showcase full-res pass.
+        // This runs exactly once per PaddleStream usable frame, so the records
+        // stay parallel to its internal usable-frame sequence.
+        if (fullresPaddleArmed() && showcaseSrcIdx != null) {
+            synchronized(showcaseUsableSrc) {
+                showcaseUsableSrc.add(showcaseSrcIdx)
+                showcaseUsableWrist.add(PointF(landmarks[RIGHT_WRIST].x, landmarks[RIGHT_WRIST].y))
+            }
+        }
         val now = SystemClock.uptimeMillis()
+        // Paddle submit spacing. The 150ms showcase experiment recovered no extra
+        // paddle over the full-res pass but cost availability (27 -> 18 outputs on
+        // the full set; 9/10 recovered at 350ms), so both showcase and normal live
+        // use 350ms. research_relaxed_paddle keeps the 150ms arm reproducible.
+        val spacingMs = if (intent.getBooleanExtra("research_relaxed_paddle", false)) 150L else 350L
         val permit = bitmap != null && (!posePriority ||
-            (now-lastPaddleSubmitMs >= 350 && paddleExecutor.activeCount == 0 && !paddleBusy.get()))
+            (now-lastPaddleSubmitMs >= spacingMs && paddleExecutor.activeCount == 0 && !paddleBusy.get()))
         if (bitmap != null && !permit) paddleThrottled++
         val sample = stream.prepare(landmarks[RIGHT_WRIST].x, landmarks[RIGHT_WRIST].y, permit)
         if (sample == null || bitmap == null) return
@@ -1127,6 +1341,16 @@ class MainActivity : AppCompatActivity() {
             binding.feedbackLabel.text = "The attempt was interrupted. Start a new serve when you return."
         }
         stopInput()
+        showcaseIndex = -1
+        showcaseQueue = emptyList()
+        showcaseClipFile = null
+        showcaseSrcQueue.clear()
+        synchronized(showcaseUsableSrc) {
+            showcaseUsableSrc.clear()
+            showcaseUsableWrist.clear()
+        }
+        binding.replayView.setImageDrawable(null)
+        binding.replayView.visibility = View.GONE
         binding.statusState.setText(R.string.paused)
         binding.statusProgress.visibility = View.GONE
         super.onStop()

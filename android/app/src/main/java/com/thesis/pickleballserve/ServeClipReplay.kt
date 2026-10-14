@@ -27,13 +27,17 @@ import kotlin.math.min
  * so the gate's lowHoldMs and maxActiveMs see real elapsed time and falling behind
  * skips frames rather than queueing them, matching ImageAnalysis KEEP_ONLY_LATEST.
  *
+ * The frame callback also reports the source frame index (or -1 for synthetic
+ * idle frames) so callers can map analyzed frames back to the recording, e.g. to
+ * re-decode a window at full resolution for a second measurement pass.
+ *
  * Frames are fitted into the live ImageAnalysis box without distorting aspect,
  * because joint angles are direction-based and a non-uniform scale would silently
  * change them.
  */
 class ServeClipReplay(
     private val file: File,
-    private val onFrame: (Bitmap, Boolean) -> Unit,
+    private val onFrame: (Bitmap, Boolean, Int) -> Unit,
     private val onDone: (framesSent: Int) -> Unit = {},
     private val analysisWidth: Int = 640,
     private val analysisHeight: Int = 480,
@@ -104,7 +108,7 @@ class ServeClipReplay(
             do {
                 idle(frames.first(), 1500L)
                 Log.i(TAG, "replay_start clip=${file.name} round=${++round} time=${SystemClock.uptimeMillis()}")
-                sent += playOnce(frames, durationMs)
+                sent += playOnce(frames, durationMs, step, count)
                 Log.i(TAG, "source_end clip=${file.name} round=$round time=${SystemClock.uptimeMillis()}")
                 idle(frames.last(), gapMs)
             } while (running && loop)
@@ -118,7 +122,7 @@ class ServeClipReplay(
     }
 
     /** One pass at camera pace. Returns the number of frames submitted. */
-    private fun playOnce(frames: List<Bitmap>, durationMs: Long): Int {
+    private fun playOnce(frames: List<Bitmap>, durationMs: Long, step: Int, count: Int): Int {
         val started = SystemClock.uptimeMillis()
         val intervalMs = 1000L / cameraFps
         var next = started
@@ -131,7 +135,7 @@ class ServeClipReplay(
             if (elapsed > durationMs) break
             val index = ((elapsed * frames.size) / durationMs).toInt().coerceIn(0, frames.lastIndex)
             if (index != lastFrame) {
-                onFrame(frames[index], true)
+                onFrame(frames[index], true, (index * step).coerceAtMost(count - 1))
                 sent++
                 lastFrame = index
             }
@@ -144,7 +148,7 @@ class ServeClipReplay(
     private fun idle(bitmap: Bitmap, durationMs: Long) {
         val until = SystemClock.uptimeMillis() + durationMs
         while (running && SystemClock.uptimeMillis() < until) {
-            onFrame(bitmap, false)
+            onFrame(bitmap, false, -1)
             SystemClock.sleep(1000L / cameraFps)
         }
     }

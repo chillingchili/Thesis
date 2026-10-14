@@ -38,6 +38,8 @@
     <string name="compare_models">Compare recorded serve models</string>
     <string name="landing_tool">Optional ball landing review</string>
     <string name="latency_tool">Run recorded-file latency test</string>
+    <string name="showcase_demo">Showcase demo (3 clips)</string>
+    <string name="replay_description">Recorded serve replay video</string>
     <string name="gpu_pose">GPU pose (experimental)</string>
     <string name="gpu_pose_note">GPU pose attempt %1$s. Applies now; falls back to CPU automatically if unsupported. Actual backend is logged.</string>
     <string name="change_model">Change comparison model</string>

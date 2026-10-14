@@ -36,6 +36,18 @@ Thesis proof-of-concept: live camera → BlazePose (MediaPipe) → 5 joint angle
 - **Menu → Change comparison model**: switches single ↔ ensemble ↔ hybrid at runtime.
 - **Menu → New attempt**: clears the 128-frame window and current results (model selection is kept).
 
+## Showcase demo (thesis video)
+- **Menu → Showcase demo (3 clips)**: plays C002 (corrective + measured paddle),
+  C005 (partial) and C023 (low-confidence / corrective-uncertain) from the app's `files/latency_input` through the
+  normal live pipeline on the main screen, with the video visible and inference
+  cards updating, fully hands-free after the tap. Screen-record while it runs.
+  On a fresh phone, load the clips first via Menu → Run recorded-file latency
+  test → Load clips from phone storage. Paddle spacing stays at the normal 350ms;
+  a 150ms experiment cost availability with no extra paddle recall, so the paddle
+  recovery comes from the showcase-only full-res second pass over the contact
+  window (same detector and rules, bigger pixels - mirrors the benchmark two-pass). Positive feedback only occurs in the
+  desktop batch pipeline, so it is not part of the live demo set.
+
 ## Gradle deps (already in app/build.gradle.kts)
 - CameraX 1.3.4
 - MediaPipe `tasks-vision:0.10.14`
