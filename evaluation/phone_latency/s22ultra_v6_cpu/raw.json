@@ -1,0 +1,1072 @@
+{
+  "benchmark_version": "core-recorded-v6",
+  "pose_backend": "CPU",
+  "metric": "Recorded file open to computed coaching result; no camera or display timing",
+  "live_two_second_target_verified": false,
+  "debuggable": true,
+  "manufacturer": "samsung",
+  "model": "SM-S908E",
+  "soc": "SM8450",
+  "android": "16",
+  "ram_bytes": 11749154816,
+  "start_environment": {
+    "battery_percent": 26,
+    "battery_temperature_c": 39.5,
+    "plugged": 0,
+    "power_save": false,
+    "thermal_status": 3
+  },
+  "classifier": "original GRU five-fold ensemble; no kNN",
+  "window": "Android last 128 usable frames; full clip for hip\/pose; paddle YOLO only on contact +\/- 5 usable frames (even stride, one batched decode so pixels match pass 1)",
+  "pose_mode": "Lite VIDEO; one pose; CPU default; 0.5 tracking\/detection\/presence; source dimensions",
+  "pose_timestamps": "Uniform frame-index timestamps derived from clip duration; not live camera timestamps",
+  "landing_enabled": false,
+  "protocol": "One complete C001 warm-up excluded; three rounds of C001,C002,C007, no dropped frames or response filtering",
+  "clips": [
+    {
+      "name": "C001.mp4",
+      "sha256": "be54cb6af30831ed82d9a2cff2d64a55ecdf94f6e69d78da2eb0e5852fa268bb"
+    },
+    {
+      "name": "C002.mp4",
+      "sha256": "114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61"
+    },
+    {
+      "name": "C007.mp4",
+      "sha256": "6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899"
+    }
+  ],
+  "asset_sha256": {
+    "pose_landmarker_lite.task": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7",
+    "paddle_w8a32.tflite": "d084b65ee67ce58985be5fe1ebe70a7907a5e3704d4117e0474686aca53bacef",
+    "gru_fold1.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "gru_fold2.tflite": "9f7a5cefe571ce1d81d099fcc4d2165821159b8c0c4cb6c694510792210f20be",
+    "gru_fold3.tflite": "70555916b6dfeeef2389c3f3604879e8e1182c151e335c7940003de5d63a216a",
+    "gru_fold4.tflite": "f1d83af6a5dd167f77f63b8ff87b85424955098b9299419faa2fa51c7ba867b5",
+    "gru_fold5.tflite": "9b511816d9899b4f7000b524d12afcdc7c15385f9b5083472434c9b81f9d0c96"
+  },
+  "runs": [
+    {
+      "clip": "C001.mp4",
+      "round": 0,
+      "warmup": true,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 344.514479,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 55.526875,
+      "final_measurements_and_feedback_ms": 3.194636,
+      "total_processing_ms": 18170.05192,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.47583786,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 4224.558072,
+      "pose_ms": 10288.939584000002,
+      "hip_accumulation_ms": 3.708802000000002,
+      "paddle_ms": 1309.442082,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 1,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 287.383541,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 51.026562,
+      "final_measurements_and_feedback_ms": 2.447813,
+      "total_processing_ms": 17699.839784,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.47583786,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3878.000102,
+      "pose_ms": 10352.000778000003,
+      "hip_accumulation_ms": 3.0190659999999996,
+      "paddle_ms": 1222.7037999999998,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 1,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 279.514948,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 94,
+          "usable_frames": 149,
+          "wanted": [
+            90,
+            92,
+            94,
+            96,
+            98
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 90,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "238x206",
+          "angle_status": "ok",
+          "angle": "89.5936508178711",
+          "outcome": "accepted"
+        },
+        {
+          "index": 92,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "258x121",
+          "angle_status": "ok",
+          "angle": "4.085616588592529",
+          "outcome": "accepted"
+        },
+        {
+          "index": 94,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "224x154",
+          "angle_status": "ok",
+          "angle": "16.821407318115234",
+          "outcome": "accepted"
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 4,
+          "rect": "107x162",
+          "angle_status": "ok",
+          "angle": "135.0",
+          "outcome": "accepted"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 53.224687,
+      "final_measurements_and_feedback_ms": 1.805781,
+      "total_processing_ms": 11738.386245,
+      "success": true,
+      "predicted_serve": "drive",
+      "confidence": 0.49382526,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 149,
+      "usable_frames": 149,
+      "decode_ms": 2640.455051,
+      "pose_ms": 6913.628536000002,
+      "hip_accumulation_ms": 1.9525540000000008,
+      "paddle_ms": 1217.057445,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 1,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 279.307396,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 100,
+          "usable_frames": 160,
+          "wanted": [
+            96,
+            98,
+            100,
+            102,
+            104
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 100,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 102,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 11,
+          "rect": "195x116",
+          "angle_status": "ok",
+          "angle": "173.70604705810547",
+          "outcome": "accepted"
+        },
+        {
+          "index": 104,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 10,
+          "rect": "193x117",
+          "angle_status": "ok",
+          "angle": "6.137256622314453",
+          "outcome": "accepted"
+        }
+      ],
+      "gru_ms": 53.899427,
+      "final_measurements_and_feedback_ms": 3.02974,
+      "total_processing_ms": 12603.840099,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.7186874,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 160,
+      "usable_frames": 160,
+      "decode_ms": 2867.0591149999996,
+      "pose_ms": 7351.556502999996,
+      "hip_accumulation_ms": 1.5380189999999998,
+      "paddle_ms": 1242.266718,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 2,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 290.378437,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 53.40724,
+      "final_measurements_and_feedback_ms": 2.405,
+      "total_processing_ms": 18424.854316,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.47583786,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3879.9749470000006,
+      "pose_ms": 10982.940363999998,
+      "hip_accumulation_ms": 2.642982,
+      "paddle_ms": 1292.054114,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 2,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 286.044636,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 94,
+          "usable_frames": 149,
+          "wanted": [
+            90,
+            92,
+            94,
+            96,
+            98
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 90,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "238x206",
+          "angle_status": "ok",
+          "angle": "89.5936508178711",
+          "outcome": "accepted"
+        },
+        {
+          "index": 92,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "258x121",
+          "angle_status": "ok",
+          "angle": "4.085616588592529",
+          "outcome": "accepted"
+        },
+        {
+          "index": 94,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "224x154",
+          "angle_status": "ok",
+          "angle": "16.821407318115234",
+          "outcome": "accepted"
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 4,
+          "rect": "107x162",
+          "angle_status": "ok",
+          "angle": "135.0",
+          "outcome": "accepted"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 51.30224,
+      "final_measurements_and_feedback_ms": 1.806302,
+      "total_processing_ms": 11752.078433,
+      "success": true,
+      "predicted_serve": "drive",
+      "confidence": 0.49382526,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 149,
+      "usable_frames": 149,
+      "decode_ms": 2595.731353,
+      "pose_ms": 6898.992389000004,
+      "hip_accumulation_ms": 1.5289029999999997,
+      "paddle_ms": 1325.5116150000001,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 2,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 267.382448,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 100,
+          "usable_frames": 160,
+          "wanted": [
+            96,
+            98,
+            100,
+            102,
+            104
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 100,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 102,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 11,
+          "rect": "195x116",
+          "angle_status": "ok",
+          "angle": "173.70604705810547",
+          "outcome": "accepted"
+        },
+        {
+          "index": 104,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 10,
+          "rect": "193x117",
+          "angle_status": "ok",
+          "angle": "6.137256622314453",
+          "outcome": "accepted"
+        }
+      ],
+      "gru_ms": 56.775677,
+      "final_measurements_and_feedback_ms": 1.941094,
+      "total_processing_ms": 12041.99187,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.7186874,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 160,
+      "usable_frames": 160,
+      "decode_ms": 2760.967289,
+      "pose_ms": 6800.464111,
+      "hip_accumulation_ms": 1.5123399999999996,
+      "paddle_ms": 1245.665052,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 3,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 269.685937,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 51.450261,
+      "final_measurements_and_feedback_ms": 2.504114,
+      "total_processing_ms": 17262.26614,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.47583786,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3875.194998,
+      "pose_ms": 9832.149787999997,
+      "hip_accumulation_ms": 3.117761000000002,
+      "paddle_ms": 1334.900415,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 3,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 291.838907,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 94,
+          "usable_frames": 149,
+          "wanted": [
+            90,
+            92,
+            94,
+            96,
+            98
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 90,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "238x206",
+          "angle_status": "ok",
+          "angle": "89.5936508178711",
+          "outcome": "accepted"
+        },
+        {
+          "index": 92,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "258x121",
+          "angle_status": "ok",
+          "angle": "4.085616588592529",
+          "outcome": "accepted"
+        },
+        {
+          "index": 94,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "224x154",
+          "angle_status": "ok",
+          "angle": "16.821407318115234",
+          "outcome": "accepted"
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 4,
+          "rect": "107x162",
+          "angle_status": "ok",
+          "angle": "135.0",
+          "outcome": "accepted"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 57.355886,
+      "final_measurements_and_feedback_ms": 1.907344,
+      "total_processing_ms": 11280.93484,
+      "success": true,
+      "predicted_serve": "drive",
+      "confidence": 0.49382526,
+      "feedback_status": "LOW_CONFIDENCE",
+      "feedback": "The system could not confidently identify this serve. Record one complete serve, including your setup and follow-through.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 149,
+      "usable_frames": 149,
+      "decode_ms": 2509.1238009999997,
+      "pose_ms": 6618.143379000001,
+      "hip_accumulation_ms": 2.1015669999999993,
+      "paddle_ms": 1216.797082,
+      "environment_after": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 3,
+      "warmup": false,
+      "pose_backend": "CPU",
+      "environment_before": {
+        "battery_percent": 26,
+        "battery_temperature_c": 39.5,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      },
+      "pose_reset_load_ms": 298.603021,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 100,
+          "usable_frames": 160,
+          "wanted": [
+            96,
+            98,
+            100,
+            102,
+            104
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 100,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 102,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 11,
+          "rect": "195x116",
+          "angle_status": "ok",
+          "angle": "173.70604705810547",
+          "outcome": "accepted"
+        },
+        {
+          "index": 104,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 10,
+          "rect": "193x117",
+          "angle_status": "ok",
+          "angle": "6.137256622314453",
+          "outcome": "accepted"
+        }
+      ],
+      "gru_ms": 56.136563,
+      "final_measurements_and_feedback_ms": 1.883021,
+      "total_processing_ms": 13073.26713,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.7186874,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 160,
+      "usable_frames": 160,
+      "decode_ms": 2812.810363,
+      "pose_ms": 7722.771257000003,
+      "hip_accumulation_ms": 2.3057229999999986,
+      "paddle_ms": 1348.515989,
+      "environment_after": {
+        "battery_percent": 25,
+        "battery_temperature_c": 40.1,
+        "plugged": 0,
+        "power_save": false,
+        "thermal_status": 3
+      }
+    }
+  ],
+  "model_load_ms": 22.260833,
+  "paddle_backend": "CPU\/XNNPACK",
+  "completed": true,
+  "end_environment": {
+    "battery_percent": 25,
+    "battery_temperature_c": 40.1,
+    "plugged": 0,
+    "power_save": false,
+    "thermal_status": 3
+  }
+}

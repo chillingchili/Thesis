@@ -1,0 +1,1072 @@
+{
+  "benchmark_version": "core-recorded-v6",
+  "pose_backend": "GPU",
+  "metric": "Recorded file open to computed coaching result; no camera or display timing",
+  "live_two_second_target_verified": false,
+  "debuggable": true,
+  "manufacturer": "samsung",
+  "model": "SM-S908E",
+  "soc": "SM8450",
+  "android": "16",
+  "ram_bytes": 11749154816,
+  "start_environment": {
+    "battery_percent": 28,
+    "battery_temperature_c": 38.7,
+    "plugged": 1,
+    "power_save": false,
+    "thermal_status": 2
+  },
+  "classifier": "original GRU five-fold ensemble; no kNN",
+  "window": "Android last 128 usable frames; full clip for hip\/pose; paddle YOLO only on contact +\/- 5 usable frames (even stride, one batched decode so pixels match pass 1)",
+  "pose_mode": "Lite VIDEO; one pose; CPU default; 0.5 tracking\/detection\/presence; source dimensions",
+  "pose_timestamps": "Uniform frame-index timestamps derived from clip duration; not live camera timestamps",
+  "landing_enabled": false,
+  "protocol": "One complete C001 warm-up excluded; three rounds of C001,C002,C007, no dropped frames or response filtering",
+  "clips": [
+    {
+      "name": "C001.mp4",
+      "sha256": "be54cb6af30831ed82d9a2cff2d64a55ecdf94f6e69d78da2eb0e5852fa268bb"
+    },
+    {
+      "name": "C002.mp4",
+      "sha256": "114f8c5e56ba4c7e3e2d9832123377a44ec47ffef43ea517d174171c7b177e61"
+    },
+    {
+      "name": "C007.mp4",
+      "sha256": "6afca147be5ce99131a80e307ef431eb79ed84bfa7b799994a92e15097a9e899"
+    }
+  ],
+  "asset_sha256": {
+    "pose_landmarker_lite.task": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "manifest.json": "a08fe5749fc2b30decc3a72872f94c30e40fe512f396311ba757c7f98bf236b7",
+    "feedback_rules.json": "3061304a95e16d7d0b6c2b4c3e05226b74be0f8771ec35894862eb803555599e",
+    "shift_config.json": "c6bf2283b2ac04faa12fd8001648765817f8e6df6ff49419f35d72f1d718e996",
+    "paddle_config.json": "db559b8669ae16fa8bbfec678729ff5874d3e62d8db9b1ae80196685f29631e7",
+    "paddle_w8a32.tflite": "d084b65ee67ce58985be5fe1ebe70a7907a5e3704d4117e0474686aca53bacef",
+    "gru_fold1.tflite": "2481e11793770c8bf4ab7e0d93029cca8f81a8485df95af736b2ac63f7bb8373",
+    "gru_fold2.tflite": "9f7a5cefe571ce1d81d099fcc4d2165821159b8c0c4cb6c694510792210f20be",
+    "gru_fold3.tflite": "70555916b6dfeeef2389c3f3604879e8e1182c151e335c7940003de5d63a216a",
+    "gru_fold4.tflite": "f1d83af6a5dd167f77f63b8ff87b85424955098b9299419faa2fa51c7ba867b5",
+    "gru_fold5.tflite": "9b511816d9899b4f7000b524d12afcdc7c15385f9b5083472434c9b81f9d0c96"
+  },
+  "runs": [
+    {
+      "clip": "C001.mp4",
+      "round": 0,
+      "warmup": true,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 6629.351664,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 55.2775,
+      "final_measurements_and_feedback_ms": 2.421979,
+      "total_processing_ms": 14178.518901,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.6082691,
+      "feedback_status": "POSITIVE",
+      "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3723.1298420000003,
+      "pose_ms": 6840.224476,
+      "hip_accumulation_ms": 1.5401139999999998,
+      "paddle_ms": 1264.2728630000001,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 1,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7228.748851,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 53.614948,
+      "final_measurements_and_feedback_ms": 2.392552,
+      "total_processing_ms": 14451.440568,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.6082691,
+      "feedback_status": "POSITIVE",
+      "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3776.719946,
+      "pose_ms": 7072.5632799999985,
+      "hip_accumulation_ms": 1.6606740000000002,
+      "paddle_ms": 1215.973748,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 1,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7296.088799,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 94,
+          "usable_frames": 149,
+          "wanted": [
+            90,
+            92,
+            94,
+            96,
+            98
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 90,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "238x206",
+          "angle_status": "ok",
+          "angle": "89.5936508178711",
+          "outcome": "accepted"
+        },
+        {
+          "index": 92,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "258x121",
+          "angle_status": "ok",
+          "angle": "4.085616588592529",
+          "outcome": "accepted"
+        },
+        {
+          "index": 94,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "224x154",
+          "angle_status": "ok",
+          "angle": "16.821407318115234",
+          "outcome": "accepted"
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 4,
+          "rect": "107x162",
+          "angle_status": "ok",
+          "angle": "135.0",
+          "outcome": "accepted"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 57.715989,
+      "final_measurements_and_feedback_ms": 1.84599,
+      "total_processing_ms": 9330.021767,
+      "success": true,
+      "predicted_serve": "drive",
+      "confidence": 0.68551576,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 149,
+      "usable_frames": 149,
+      "decode_ms": 2555.9329159999998,
+      "pose_ms": 4590.594636,
+      "hip_accumulation_ms": 1.017145,
+      "paddle_ms": 1220.815052,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 1,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7313.888123,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 100,
+          "usable_frames": 160,
+          "wanted": [
+            96,
+            98,
+            100,
+            102,
+            104
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 100,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 102,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 11,
+          "rect": "195x116",
+          "angle_status": "ok",
+          "angle": "173.70604705810547",
+          "outcome": "accepted"
+        },
+        {
+          "index": 104,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 10,
+          "rect": "193x117",
+          "angle_status": "ok",
+          "angle": "6.137256622314453",
+          "outcome": "accepted"
+        }
+      ],
+      "gru_ms": 56.278854,
+      "final_measurements_and_feedback_ms": 1.895781,
+      "total_processing_ms": 10464.331142,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.62191385,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 160,
+      "usable_frames": 160,
+      "decode_ms": 2697.050623,
+      "pose_ms": 5246.666674000002,
+      "hip_accumulation_ms": 1.2502620000000002,
+      "paddle_ms": 1210.836354,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 2,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7321.310153,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 55.443177,
+      "final_measurements_and_feedback_ms": 2.376719,
+      "total_processing_ms": 14617.427442,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.6082691,
+      "feedback_status": "POSITIVE",
+      "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3725.866196,
+      "pose_ms": 7251.511936999999,
+      "hip_accumulation_ms": 1.7075640000000005,
+      "paddle_ms": 1219.498177,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 2,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7296.811143,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 94,
+          "usable_frames": 149,
+          "wanted": [
+            90,
+            92,
+            94,
+            96,
+            98
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 90,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "238x206",
+          "angle_status": "ok",
+          "angle": "89.5936508178711",
+          "outcome": "accepted"
+        },
+        {
+          "index": 92,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "258x121",
+          "angle_status": "ok",
+          "angle": "4.085616588592529",
+          "outcome": "accepted"
+        },
+        {
+          "index": 94,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "224x154",
+          "angle_status": "ok",
+          "angle": "16.821407318115234",
+          "outcome": "accepted"
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 4,
+          "rect": "107x162",
+          "angle_status": "ok",
+          "angle": "135.0",
+          "outcome": "accepted"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 58.626771,
+      "final_measurements_and_feedback_ms": 1.879531,
+      "total_processing_ms": 9632.571403,
+      "success": true,
+      "predicted_serve": "drive",
+      "confidence": 0.68551576,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 149,
+      "usable_frames": 149,
+      "decode_ms": 2502.150104,
+      "pose_ms": 4846.228387999999,
+      "hip_accumulation_ms": 1.1203739999999998,
+      "paddle_ms": 1216.843022,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 2,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7365.395154,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 100,
+          "usable_frames": 160,
+          "wanted": [
+            96,
+            98,
+            100,
+            102,
+            104
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 100,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 102,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 11,
+          "rect": "195x116",
+          "angle_status": "ok",
+          "angle": "173.70604705810547",
+          "outcome": "accepted"
+        },
+        {
+          "index": 104,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 10,
+          "rect": "193x117",
+          "angle_status": "ok",
+          "angle": "6.137256622314453",
+          "outcome": "accepted"
+        }
+      ],
+      "gru_ms": 57.735989,
+      "final_measurements_and_feedback_ms": 1.928646,
+      "total_processing_ms": 10571.23135,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.62191385,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 160,
+      "usable_frames": 160,
+      "decode_ms": 2840.160102,
+      "pose_ms": 5177.279012000002,
+      "hip_accumulation_ms": 1.2697379999999994,
+      "paddle_ms": 1214.1350499999999,
+      "environment_after": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C001.mp4",
+      "round": 3,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 28,
+        "battery_temperature_c": 38.7,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7352.728278,
+      "source_frames": 219,
+      "source_duration_ms": 3670,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 164,
+          "usable_frames": 219,
+          "wanted": [
+            160,
+            162,
+            164,
+            166,
+            168
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 160,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "rect": "379x215",
+          "angle_status": "ok",
+          "angle": "14.275306701660156",
+          "outcome": "accepted"
+        },
+        {
+          "index": 162,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 7,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 164,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 12,
+          "rect": "189x254",
+          "angle_status": "no_contour",
+          "angle": "null",
+          "outcome": "bad_angle"
+        },
+        {
+          "index": 166,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 168,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 57.464167,
+      "final_measurements_and_feedback_ms": 2.371927,
+      "total_processing_ms": 14411.680515,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.6082691,
+      "feedback_status": "POSITIVE",
+      "feedback": "Your measured hip movement and paddle orientation are within the reference ranges. Repeat the motion and focus on consistency.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 219,
+      "usable_frames": 219,
+      "decode_ms": 3831.583018,
+      "pose_ms": 7004.742238,
+      "hip_accumulation_ms": 1.6567770000000006,
+      "paddle_ms": 1213.171563,
+      "environment_after": {
+        "battery_percent": 29,
+        "battery_temperature_c": 39.5,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C002.mp4",
+      "round": 3,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 29,
+        "battery_temperature_c": 39.5,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 7347.636299,
+      "source_frames": 149,
+      "source_duration_ms": 2486,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 94,
+          "usable_frames": 149,
+          "wanted": [
+            90,
+            92,
+            94,
+            96,
+            98
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 90,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "238x206",
+          "angle_status": "ok",
+          "angle": "89.5936508178711",
+          "outcome": "accepted"
+        },
+        {
+          "index": 92,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "258x121",
+          "angle_status": "ok",
+          "angle": "4.085616588592529",
+          "outcome": "accepted"
+        },
+        {
+          "index": 94,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 8,
+          "rect": "224x154",
+          "angle_status": "ok",
+          "angle": "16.821407318115234",
+          "outcome": "accepted"
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 4,
+          "rect": "107x162",
+          "angle_status": "ok",
+          "angle": "135.0",
+          "outcome": "accepted"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        }
+      ],
+      "gru_ms": 55.762187,
+      "final_measurements_and_feedback_ms": 1.844428,
+      "total_processing_ms": 9668.207548,
+      "success": true,
+      "predicted_serve": "drive",
+      "confidence": 0.68551576,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 149,
+      "usable_frames": 149,
+      "decode_ms": 2586.940885,
+      "pose_ms": 4783.375304999998,
+      "hip_accumulation_ms": 1.065161,
+      "paddle_ms": 1263.156405,
+      "environment_after": {
+        "battery_percent": 29,
+        "battery_temperature_c": 39.5,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    },
+    {
+      "clip": "C007.mp4",
+      "round": 3,
+      "warmup": false,
+      "pose_backend": "GPU",
+      "environment_before": {
+        "battery_percent": 29,
+        "battery_temperature_c": 39.5,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      },
+      "pose_reset_load_ms": 6828.401664,
+      "source_frames": 160,
+      "source_duration_ms": 2688,
+      "decoded_width": 1920,
+      "decoded_height": 1080,
+      "paddle_window_debug": [
+        {
+          "contact": 100,
+          "usable_frames": 160,
+          "wanted": [
+            96,
+            98,
+            100,
+            102,
+            104
+          ]
+        },
+        {
+          "batch_requested": 9,
+          "batch_returned": 9
+        },
+        {
+          "index": 96,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 98,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 100,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 0,
+          "outcome": "no_pick"
+        },
+        {
+          "index": 102,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 11,
+          "rect": "195x116",
+          "angle_status": "ok",
+          "angle": "173.70604705810547",
+          "outcome": "accepted"
+        },
+        {
+          "index": 104,
+          "bitmap": "1920x1080",
+          "wrist_known": true,
+          "dets": 10,
+          "rect": "193x117",
+          "angle_status": "ok",
+          "angle": "6.137256622314453",
+          "outcome": "accepted"
+        }
+      ],
+      "gru_ms": 55.285677,
+      "final_measurements_and_feedback_ms": 1.881927,
+      "total_processing_ms": 10066.673955,
+      "success": true,
+      "predicted_serve": "topspin",
+      "confidence": 0.62191385,
+      "feedback_status": "CORRECTIVE",
+      "feedback": "Your hips showed limited movement during the serve. On your next attempt, start with more weight on your back foot, then shift toward your front foot as you swing. Finish balanced.",
+      "paddle_available": true,
+      "hip_available": true,
+      "decoded_frames": 160,
+      "usable_frames": 160,
+      "decode_ms": 2792.3899979999997,
+      "pose_ms": 4791.356099,
+      "hip_accumulation_ms": 0.969272,
+      "paddle_ms": 1215.173176,
+      "environment_after": {
+        "battery_percent": 29,
+        "battery_temperature_c": 39.5,
+        "plugged": 1,
+        "power_save": false,
+        "thermal_status": 2
+      }
+    }
+  ],
+  "model_load_ms": 21.345937,
+  "paddle_backend": "CPU\/XNNPACK",
+  "completed": true,
+  "end_environment": {
+    "battery_percent": 29,
+    "battery_temperature_c": 39.5,
+    "plugged": 1,
+    "power_save": false,
+    "thermal_status": 2
+  }
+}
