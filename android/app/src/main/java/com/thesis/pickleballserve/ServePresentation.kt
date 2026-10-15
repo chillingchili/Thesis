@@ -16,12 +16,13 @@ object ServePresentation {
     }
     fun hip(value: Float?, passed: Boolean?): String {
         if (value == null || !value.isFinite() || value < 0 || passed == null) return "Unavailable"
-        return String.format(Locale.getDefault(), "%.3f · %s", value,
-            if (passed) "Within reference" else "Below reference")
+        return String.format(Locale.getDefault(), "%s · %.3f shift",
+            if (passed) "Within reference" else "Below reference", value)
     }
     fun paddle(angle: Double?, state: FeedbackEngine.PaddleState?): String {
         if (angle == null || !angle.isFinite() || angle !in 0.0..<180.0 || state == null) return "Unavailable"
-        return String.format(Locale.getDefault(), "%.1f° · %s", angle,
-            if (state == FeedbackEngine.PaddleState.OPTIMAL) "Within reference" else "Outside reference")
+        return String.format(Locale.getDefault(), "%s · %.1f°",
+            if (state == FeedbackEngine.PaddleState.OPTIMAL) "Within reference" else "Outside reference",
+            angle)
     }
 }

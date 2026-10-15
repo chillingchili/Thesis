@@ -6,8 +6,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Rect
 import android.net.Uri
 import android.provider.Settings
+import android.view.TouchDelegate
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -239,6 +241,19 @@ class MainActivity : AppCompatActivity() {
         binding.paddleInfoButton.setOnClickListener {
             showInfo(R.string.paddle_info_title, R.string.paddle_info_body)
         }
+        // Keep the 32dp "?" visuals slim while guaranteeing 48dp touch targets.
+        expandHitArea(binding.serveInfoButton)
+        expandHitArea(binding.hipInfoButton)
+        expandHitArea(binding.paddleInfoButton)
+        // First launch: show the side-view setup once so the screen is never
+        // a blank camera with "Waiting for a serve" and no guidance.
+        runCatching {
+            val prefs = getSharedPreferences("pb_serve_prefs", MODE_PRIVATE)
+            if (!prefs.getBoolean("setup_seen", false)) {
+                showInfo(R.string.setup_title, R.string.setup_body)
+                prefs.edit().putBoolean("setup_seen", true).apply()
+            }
+        }
         paddleExecutor.execute {
             paddleStream = PaddleStream.load(applicationContext)
             if (paddleStream == null) Log.e("MainActivity", "Paddle stream unavailable")
@@ -275,6 +290,28 @@ class MainActivity : AppCompatActivity() {
     private fun setStatus(title: String, detail: String, busy: Boolean = false) {
         binding.statusLine.text = if (detail.isBlank()) title else "$title · $detail"
         binding.statusProgress.visibility = if (busy) View.VISIBLE else View.GONE
+        updateStep(busy)
+    }
+
+    /**
+     * Step pill beside the status: 1/3 ready, 2/3 analyzing, 3/3 result, or !
+     * when the recovery action is showing. Display-only; statusLine text and
+     * the analysis pipeline are untouched.
+     */
+    private fun updateStep(busy: Boolean = false) {
+        val attention = binding.recoveryButton.visibility == View.VISIBLE
+        val label = binding.classLabel.text.toString()
+        val complete = !attention && label != getString(R.string.waiting) &&
+            label != getString(R.string.analyzing) && label != "Incomplete capture" &&
+            label != "Unavailable" && label != "UNAVAILABLE"
+        val step = when {
+            attention -> getString(R.string.step_attention) to getString(R.string.step_attention_desc)
+            busy -> getString(R.string.step_analyzing) to getString(R.string.step_analyzing_desc)
+            complete -> getString(R.string.step_result) to getString(R.string.step_result_desc)
+            else -> getString(R.string.step_ready) to getString(R.string.step_ready_desc)
+        }
+        binding.stepLabel.text = step.first
+        binding.stepLabel.contentDescription = step.second
     }
 
     private fun clearCards(analyzing: Boolean = false) {
@@ -290,6 +327,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.probDriveBar.progress = 0; binding.probLobBar.progress = 0; binding.probTopspinBar.progress = 0
         binding.probDrive.text = "Drive —"; binding.probLob.text = "Lob —"; binding.probTopspin.text = "Topspin —"
+        binding.classLabel.contentDescription = text
     }
 
     /** Called only on the analysis worker; UI invalidation happens immediately. */
@@ -405,6 +443,23 @@ class MainActivity : AppCompatActivity() {
     private fun showInfo(titleRes: Int, bodyRes: Int) {
         MaterialAlertDialogBuilder(this).setTitle(titleRes).setMessage(bodyRes)
             .setPositiveButton(R.string.understood, null).show()
+    }
+
+    /** Expands a small control's touch area to minDp without changing its visuals. */
+    private fun expandHitArea(view: View, minDp: Int = 48) {
+        val parent = view.parent as? View ?: return
+        parent.post {
+            val rect = Rect()
+            view.getHitRect(rect)
+            val min = (minDp * resources.displayMetrics.density).toInt()
+            val dx = ((min - rect.width()) / 2).coerceAtLeast(0)
+            val dy = ((min - rect.height()) / 2).coerceAtLeast(0)
+            rect.left -= dx
+            rect.top -= dy
+            rect.right += dx
+            rect.bottom += dy
+            parent.touchDelegate = TouchDelegate(rect, view)
+        }
     }
 
     /** Switch live input cameras without losing the session; research replay keeps its own source. */
@@ -578,11 +633,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateModeLabel() {
-        val mm = if (gru?.momentMatchingEnabled == true) "+MM " else ""
+        val matched = if (gru?.momentMatchingEnabled == true) " · training-matched" else ""
         val label = when (mode) {
-            RunMode.SINGLE -> "MODE: SINGLE ${mm}(fold1)"
-            RunMode.ENSEMBLE -> "MODE: ENS ${mm}(5 folds)"
-            RunMode.HYBRID -> "MODE: HYBRID ${mm}(GRU+kNN5)"
+            RunMode.SINGLE -> "Single model · fastest$matched"
+            RunMode.ENSEMBLE -> "Ensemble · 5 models$matched"
+            RunMode.HYBRID -> "Hybrid · GRU + technique check$matched"
         }
         binding.modeLabel.text = label
     }
@@ -994,6 +1049,8 @@ class MainActivity : AppCompatActivity() {
             binding.feedbackTitle.text = titleText
             binding.feedbackLabel.text = bodyText
             setStatus("Analysis complete", getString(R.string.results_note))
+            binding.root.announceForAccessibility("$titleText. $bodyText")
+            binding.root.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
             if (intent.hasExtra(EXTRA_REPLAY_CLIP)) Log.i("FeedbackOutput", org.json.JSONObject()
                 .put("status", result?.status?.name).put("text", binding.feedbackLabel.text.toString()).toString())
             val shown = SystemClock.uptimeMillis()
@@ -1068,6 +1125,7 @@ class MainActivity : AppCompatActivity() {
         binding.feedbackTitle.text = record.feedbackTitle
         binding.feedbackLabel.text = record.feedback
         setStatus("Analysis complete", "Landing ${record.landing} attached · ${getString(R.string.results_note)}")
+        binding.root.announceForAccessibility("Landing ${record.landing} attached. ${record.feedback}")
         speakLanding(record)
     }
 
@@ -1274,7 +1332,11 @@ class MainActivity : AppCompatActivity() {
 
             postUi {
                 if (generation != resultGeneration) return@postUi
-                binding.classLabel.text = ServePresentation.classification(label, conf)
+                val plain = ServePresentation.classification(label, conf)
+                val verdict = if (conf >= FeedbackEngine.MIN_CONFIDENCE) getString(R.string.verdict_good)
+                    else getString(R.string.verdict_review)
+                binding.classLabel.text = verdict + plain
+                binding.classLabel.contentDescription = plain
                 binding.classLabel.setTextColor(confColor)
                 val finalSource = if (knnProbs != null) "Final hybrid" else "Final GRU"
                 binding.confLabel.text = "${"%.1f".format(conf * 100f)}% confidence · ${if (conf < FeedbackEngine.MIN_CONFIDENCE) "serve type uncertain" else "model prediction"}"

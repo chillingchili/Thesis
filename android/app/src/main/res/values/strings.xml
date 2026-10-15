@@ -32,7 +32,7 @@
     <string name="retry">Retry</string>
     <string name="offline_note">Processed on this phone. No uploads or account required.</string>
     <string name="setup_title">Set up your side view</string>
-    <string name="setup_body">1. Place the phone securely on a tripod on your dominant-hand side. The study used a fixed camera about 2 metres above the ground, angled toward the net.\n\n2. Keep your full body, feet and paddle visible throughout setup and follow-through. Use clear, consistent lighting.\n\n3. Stand ready, then serve normally. Motion starts analysis automatically; results appear after the motion settles.\n\nThis model supports right-handed serves. Hip movement and paddle angle are image-plane estimates, not a complete form or legality assessment. General-mechanics cues can appear when serve type is uncertain.\n\nTip: use Menu → Fullscreen camera to frame the shot. Results are spoken aloud so you can stay on the court, and every serve is kept under Menu → Session serves.</string>
+    <string name="setup_body">1. Place the phone securely on a tripod on your dominant-hand side. The study used a fixed camera about 2 metres above the ground, angled toward the net.\n\n2. Keep your full body, feet and paddle visible throughout setup and follow-through. Use clear, consistent lighting.\n\n3. Stand ready, then serve normally. Motion starts analysis automatically; results appear after the motion settles.\n\nThis model supports right-handed serves. Hip movement and paddle angle are image-plane estimates, not a complete form or legality assessment. General-mechanics cues can appear when serve type is uncertain.\n\nTip: tap the video or use Menu → Fullscreen camera to frame the shot. Results are spoken aloud so you can stay on the court, and every serve is kept under Menu → Session serves.</string>
     <string name="understood">Got it</string>
     <string name="probabilities">Class probabilities</string>
     <string name="compare_models">Compare recorded serve models</string>
@@ -81,4 +81,17 @@
     <string name="landing_attached">Landing %1$s attached to serve %2$d.</string>
     <string name="landing_saved_next">Landing %1$s saved — attaches to your next completed serve.</string>
     <string name="landing_expired">Saved landing expired — scan again after your next serve.</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_low_confidence">Needs review</string>
+    <string name="status_unavailable">Unavailable</string>
+    <string name="step_ready">1/3</string>
+    <string name="step_analyzing">2/3</string>
+    <string name="step_result">3/3</string>
+    <string name="step_attention">!</string>
+    <string name="step_ready_desc">Step 1 of 3: ready for your serve</string>
+    <string name="step_analyzing_desc">Step 2 of 3: analyzing your serve</string>
+    <string name="step_result_desc">Step 3 of 3: result ready</string>
+    <string name="step_attention_desc">Needs attention</string>
+    <string name="verdict_good">✓ </string>
+    <string name="verdict_review">! </string>
 </resources>

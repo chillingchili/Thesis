@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Player actions first; research tooling lives under one submenu. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_setup" android:title="@string/setup" />
     <item android:id="@+id/action_reset" android:title="@string/reset" />
@@ -10,12 +11,16 @@
         <item android:id="@+id/action_camera_front" android:title="@string/camera_front" />
     </group>
     <item android:id="@+id/action_probabilities" android:title="@string/probabilities" />
-    <item android:id="@+id/action_compare" android:title="@string/compare_models" />
     <item android:id="@+id/action_landing" android:title="@string/landing_tool" />
     <item android:id="@+id/action_scan_landing" android:title="@string/scan_landing" />
-    <item android:id="@+id/action_latency" android:title="@string/latency_tool" />
-    <item android:id="@+id/action_showcase" android:title="@string/showcase_demo" />
-    <item android:id="@+id/action_gpu_pose" android:title="@string/gpu_pose" android:checkable="true" android:checked="true" />
-    <item android:id="@+id/action_change_model" android:title="@string/change_model" />
     <item android:id="@+id/action_about" android:title="@string/about_tool" />
+    <item android:id="@+id/action_research" android:title="@string/tools">
+        <menu>
+            <item android:id="@+id/action_compare" android:title="@string/compare_models" />
+            <item android:id="@+id/action_latency" android:title="@string/latency_tool" />
+            <item android:id="@+id/action_showcase" android:title="@string/showcase_demo" />
+            <item android:id="@+id/action_gpu_pose" android:title="@string/gpu_pose" android:checkable="true" android:checked="true" />
+            <item android:id="@+id/action_change_model" android:title="@string/change_model" />
+        </menu>
+    </item>
 </menu>

@@ -3,76 +3,77 @@
 
     <!-- Full-bleed wide camera: no margins, no rounded box, preview fills the
          frame. Only a compact status pill and the Menu float over the feed. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.45" android:background="#000000">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.45" android:background="@drawable/camera_frame" android:clipToOutline="true" android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:layout_marginTop="8dp">
         <androidx.camera.view.PreviewView android:id="@+id/previewView" android:layout_width="match_parent" android:layout_height="match_parent" app:implementationMode="compatible" app:scaleType="fillCenter" android:contentDescription="@string/camera_description"/>
 
         <!-- Showcase replay frames render here, full-bleed where the camera feed
              normally is. Visible only while a showcase demo is playing. -->
         <ImageView android:id="@+id/replayView" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:visibility="gone" android:contentDescription="@string/replay_description"/>
 
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="top|start" android:orientation="horizontal" android:gravity="center_vertical" android:background="@drawable/status_background" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="6dp" android:paddingBottom="6dp" android:layout_margin="8dp" android:maxWidth="420dp">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="top|start" android:orientation="horizontal" android:gravity="center_vertical" android:background="@drawable/status_background" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="8dp" android:paddingBottom="8dp" android:layout_margin="8dp" android:maxWidth="420dp">
+            <TextView android:id="@+id/stepLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/step_ready" android:textSize="11sp" android:textStyle="bold" android:textColor="#FFFFFF" android:layout_marginEnd="8dp" android:maxWidth="48dp" android:singleLine="true"/>
             <TextView android:id="@+id/statusState" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/initializing" android:textSize="12sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
-            <TextView android:id="@+id/statusLine" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:text="@string/initializing_note" android:textSize="11sp" android:textColor="#D5E6DA" android:singleLine="true" android:ellipsize="end" android:maxWidth="300dp"/>
-            <ProgressBar android:id="@+id/statusProgress" style="@android:style/Widget.ProgressBar.Small" android:layout_width="18dp" android:layout_height="18dp" android:layout_marginStart="6dp" android:visibility="gone" android:indeterminateTint="#FFFFFF"/>
+            <TextView android:id="@+id/statusLine" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/initializing_note" android:textSize="11sp" android:textColor="#D5E6DA" android:singleLine="true" android:ellipsize="end" android:maxWidth="240dp"/>
+            <ProgressBar android:id="@+id/statusProgress" style="@android:style/Widget.ProgressBar.Small" android:layout_width="18dp" android:layout_height="18dp" android:layout_marginStart="8dp" android:visibility="gone" android:indeterminateTint="#FFFFFF"/>
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton android:id="@+id/menuButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="52dp" android:minHeight="40dp" android:layout_gravity="top|end" android:layout_margin="8dp" android:background="@drawable/status_background" android:text="@string/menu" android:textSize="13sp" android:textAllCaps="false" android:textColor="#FFFFFF" android:contentDescription="@string/menu" android:insetTop="0dp" android:insetBottom="0dp"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/menuButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="52dp" android:minHeight="48dp" android:layout_gravity="top|end" android:layout_margin="8dp" android:background="@drawable/status_background" android:text="@string/menu" android:textSize="13sp" android:textAllCaps="false" android:textColor="#FFFFFF" android:contentDescription="@string/menu" android:insetTop="0dp" android:insetBottom="0dp"/>
 
-        <com.google.android.material.button.MaterialButton android:id="@+id/recoveryButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="44dp" android:layout_gravity="bottom|center_horizontal" android:layout_margin="8dp" android:visibility="gone" android:text="@string/retry" android:textSize="12sp" android:textAllCaps="false" app:cornerRadius="10dp"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/recoveryButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_gravity="bottom|center_horizontal" android:layout_margin="8dp" android:visibility="gone" android:text="@string/retry" android:textSize="12sp" android:textAllCaps="false" app:cornerRadius="10dp"/>
     </FrameLayout>
 
     <!-- Four result columns (ball landing lives on its own review screen).
          Content is sized to fit without scrolling; each column still scrolls
          as a fallback for very large text sizes. -->
-    <LinearLayout android:id="@+id/resultsScroll" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="6dp" android:paddingBottom="6dp">
+    <LinearLayout android:id="@+id/resultsScroll" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="4dp" android:paddingBottom="8dp">
 
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="5dp" android:fillViewport="true" android:background="@drawable/card_background">
+        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="8dp" android:fillViewport="true" android:background="@drawable/card_background">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/serve_type" android:textSize="10sp" android:textColor="@color/ink" android:textStyle="bold"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/serve_type" android:textSize="11sp" android:textColor="@color/ink" android:textStyle="bold"/>
                     <com.google.android.material.button.MaterialButton android:id="@+id/serveInfoButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="48dp" android:layout_height="32dp" android:minWidth="48dp" android:minHeight="32dp" android:text="?" android:textSize="13sp" android:textAllCaps="false" android:contentDescription="@string/serve_definitions_title" android:insetTop="0dp" android:insetBottom="0dp" android:insetLeft="0dp" android:insetRight="0dp"/>
                 </LinearLayout>
                 <TextView android:id="@+id/classLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="18sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                <TextView android:id="@+id/confLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/confidence_empty" android:textSize="10sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
+                <TextView android:id="@+id/confLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/confidence_empty" android:textSize="12sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
                 <LinearLayout android:id="@+id/probabilityPanel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
-                    <TextView android:id="@+id/modeLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="@color/ink" android:layout_marginTop="2dp"/>
-                    <TextView android:id="@+id/probDrive" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="@color/ink"/>
-                    <ProgressBar android:id="@+id/probDriveBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="3dp" android:max="100" android:progressTint="@color/accent"/>
-                    <TextView android:id="@+id/probLob" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="@color/ink"/>
-                    <ProgressBar android:id="@+id/probLobBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="3dp" android:max="100" android:progressTint="@color/accent"/>
-                    <TextView android:id="@+id/probTopspin" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="@color/ink"/>
-                    <ProgressBar android:id="@+id/probTopspinBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="3dp" android:max="100" android:progressTint="@color/accent"/>
+                    <TextView android:id="@+id/modeLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink" android:layout_marginTop="2dp"/>
+                    <TextView android:id="@+id/probDrive" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink"/>
+                    <ProgressBar android:id="@+id/probDriveBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="100" android:progressTint="@color/accent"/>
+                    <TextView android:id="@+id/probLob" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink"/>
+                    <ProgressBar android:id="@+id/probLobBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="100" android:progressTint="@color/accent"/>
+                    <TextView android:id="@+id/probTopspin" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink"/>
+                    <ProgressBar android:id="@+id/probTopspinBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="100" android:progressTint="@color/accent"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="5dp" android:fillViewport="true" android:background="@drawable/card_background">
+        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="8dp" android:fillViewport="true" android:background="@drawable/card_background">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/hip_title" android:textSize="10sp" android:textColor="@color/ink" android:textStyle="bold"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/hip_title" android:textSize="11sp" android:textColor="@color/ink" android:textStyle="bold"/>
                     <com.google.android.material.button.MaterialButton android:id="@+id/hipInfoButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="48dp" android:layout_height="32dp" android:minWidth="48dp" android:minHeight="32dp" android:text="?" android:textSize="13sp" android:textAllCaps="false" android:contentDescription="@string/hip_info_title" android:insetTop="0dp" android:insetBottom="0dp" android:insetLeft="0dp" android:insetRight="0dp"/>
                 </LinearLayout>
-                <TextView android:id="@+id/shiftLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="13sp" android:textColor="@color/ink"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/hip_note" android:textSize="10sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
+                <TextView android:id="@+id/shiftLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="16sp" android:textColor="@color/ink" android:textStyle="bold"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/hip_note" android:textSize="11sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
             </LinearLayout>
         </ScrollView>
 
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="5dp" android:fillViewport="true" android:background="@drawable/card_background">
+        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="8dp" android:fillViewport="true" android:background="@drawable/card_background">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/paddle_title" android:textSize="10sp" android:textColor="@color/ink" android:textStyle="bold"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/paddle_title" android:textSize="11sp" android:textColor="@color/ink" android:textStyle="bold"/>
                     <com.google.android.material.button.MaterialButton android:id="@+id/paddleInfoButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="48dp" android:layout_height="32dp" android:minWidth="48dp" android:minHeight="32dp" android:text="?" android:textSize="13sp" android:textAllCaps="false" android:contentDescription="@string/paddle_info_title" android:insetTop="0dp" android:insetBottom="0dp" android:insetLeft="0dp" android:insetRight="0dp"/>
                 </LinearLayout>
-                <TextView android:id="@+id/paddleLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="18sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/paddle_note" android:textSize="10sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
+                <TextView android:id="@+id/paddleLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="16sp" android:textColor="@color/ink" android:textStyle="bold"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/paddle_note" android:textSize="11sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
             </LinearLayout>
         </ScrollView>
 
         <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2" android:fillViewport="true" android:background="@drawable/coaching_background">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
-                <TextView android:id="@+id/feedbackTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_title" android:textSize="10sp" android:textColor="@color/accent" android:textStyle="bold"/>
-                <TextView android:id="@+id/feedbackLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_empty" android:textSize="13sp" android:textColor="@color/ink" android:layout_marginTop="2dp"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_scope" android:textSize="9sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
+                <TextView android:id="@+id/feedbackTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_title" android:textSize="11sp" android:textColor="@color/accent" android:textStyle="bold"/>
+                <TextView android:id="@+id/feedbackLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_empty" android:textSize="14sp" android:textColor="@color/ink" android:layout_marginTop="2dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_scope" android:textSize="11sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
