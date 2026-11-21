@@ -10,7 +10,8 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
+import com.thesis.pickleballserve.enterImmersive
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -77,7 +78,7 @@ class LandingActivity : AppCompatActivity() {
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted && !replayStarted && !stopped) startCamera()
-            else if (!granted) Toast.makeText(this, "Camera permission required for live analysis", Toast.LENGTH_LONG).show()
+            else if (!granted) Snackbar.make(binding.root, "Camera permission required for live analysis", Snackbar.LENGTH_LONG).show()
         }
 
     private val pickVideo =
@@ -89,6 +90,7 @@ class LandingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLandingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enterImmersive(binding.root, gutterDp = 0)
         binding.root.keepScreenOn = true
         cameraExecutor = Executors.newSingleThreadExecutor()
         inferenceExecutor = Executors.newSingleThreadExecutor()
@@ -149,7 +151,7 @@ class LandingActivity : AppCompatActivity() {
     private fun shareLanding() {
         val zone = hitZone
         if (zone == null) {
-            Toast.makeText(this, getString(R.string.landing_qr_none), Toast.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.landing_qr_none, Snackbar.LENGTH_LONG).show()
             return
         }
         val current = hit
@@ -158,7 +160,7 @@ class LandingActivity : AppCompatActivity() {
             QrCode.encodeBitmap(payload, 512)
         } catch (e: Exception) {
             Log.e(TAG, "QR encode failed", e)
-            Toast.makeText(this, "Could not render the share code.", Toast.LENGTH_LONG).show()
+            Snackbar.make(binding.root, "Could not render the share code.", Snackbar.LENGTH_LONG).show()
             return
         }
         val coords = if (current == null) "" else " (%.1f, %.1f ft)".format(current.xFt, current.yFt)
