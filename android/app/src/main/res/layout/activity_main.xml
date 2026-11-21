@@ -1,80 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/page">
+<!-- One shell for both modes (thesis Figure 7.2): camera at true 4:3 on the left,
+     one surface panel on the right whose contents switch between SETUP (checks)
+     and LIVE (coaching cue + three metric rows). The camera never moves; the
+     preview is fitCenter, so the picture is the whole frame the model analyzes. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:gravity="center"
+    android:background="@color/body" android:padding="8dp" android:baselineAligned="false">
 
-    <!-- Full-bleed wide camera: no margins, no rounded box, preview fills the
-         frame. Only a compact status pill and the Menu float over the feed. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.45" android:background="@drawable/camera_frame" android:clipToOutline="true" android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:layout_marginTop="8dp">
-        <androidx.camera.view.PreviewView android:id="@+id/previewView" android:layout_width="match_parent" android:layout_height="match_parent" app:implementationMode="compatible" app:scaleType="fillCenter" android:contentDescription="@string/camera_description"/>
+    <com.thesis.pickleballserve.AspectFrameLayout android:id="@+id/cameraFrame"
+        android:layout_width="wrap_content" android:layout_height="match_parent"
+        android:background="@drawable/camera_frame" android:clipToOutline="true">
 
-        <!-- Showcase replay frames render here, full-bleed where the camera feed
-             normally is. Visible only while a showcase demo is playing. -->
-        <ImageView android:id="@+id/replayView" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:visibility="gone" android:contentDescription="@string/replay_description"/>
+        <androidx.camera.view.PreviewView android:id="@+id/previewView"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:background="@color/camera_bg"
+            app:implementationMode="compatible" app:scaleType="fitCenter"
+            android:contentDescription="@string/camera_description"/>
 
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="top|start" android:orientation="horizontal" android:gravity="center_vertical" android:background="@drawable/status_background" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="8dp" android:paddingBottom="8dp" android:layout_margin="8dp" android:maxWidth="420dp">
-            <TextView android:id="@+id/stepLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/step_ready" android:textSize="11sp" android:textStyle="bold" android:textColor="#FFFFFF" android:layout_marginEnd="8dp" android:maxWidth="48dp" android:singleLine="true"/>
-            <TextView android:id="@+id/statusState" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/initializing" android:textSize="12sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
-            <TextView android:id="@+id/statusLine" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/initializing_note" android:textSize="11sp" android:textColor="#D5E6DA" android:singleLine="true" android:ellipsize="end" android:maxWidth="240dp"/>
-            <ProgressBar android:id="@+id/statusProgress" style="@android:style/Widget.ProgressBar.Small" android:layout_width="18dp" android:layout_height="18dp" android:layout_marginStart="8dp" android:visibility="gone" android:indeterminateTint="#FFFFFF"/>
+        <!-- Showcase replay frames render here, where the camera feed normally is. -->
+        <ImageView android:id="@+id/replayView"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:scaleType="fitCenter" android:background="@color/camera_bg"
+            android:visibility="gone" android:contentDescription="@string/replay_description"/>
+
+        <com.thesis.pickleballserve.FramingGuideView android:id="@+id/framingGuide"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:importantForAccessibility="no"/>
+
+        <TextView android:id="@+id/framingHint"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal" android:layout_marginBottom="12dp"
+            android:background="@drawable/hint_chip"
+            android:paddingStart="12dp" android:paddingEnd="12dp" android:paddingTop="5dp" android:paddingBottom="5dp"
+            android:text="@string/stand_in_outline"
+            android:textAppearance="@style/TextAppearance.Serve.Label" android:textColor="@color/on_camera_chip_text"
+            android:accessibilityLiveRegion="polite"/>
+
+        <!-- Status chip: dot (or spinner) + one line; a second line only for problems. -->
+        <LinearLayout android:id="@+id/statusPill"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="top|start" android:layout_margin="10dp"
+            android:orientation="horizontal" android:background="@drawable/status_pill"
+            android:paddingStart="10dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp">
+            <View android:id="@+id/statusDot" android:layout_width="8dp" android:layout_height="8dp"
+                android:layout_marginTop="7dp" android:layout_marginEnd="8dp"
+                android:background="@drawable/circle" android:backgroundTint="@color/dot_ok"/>
+            <com.google.android.material.progressindicator.CircularProgressIndicator android:id="@+id/statusProgress"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="3dp" android:layout_marginEnd="8dp"
+                android:indeterminate="true" android:visibility="gone"
+                app:indicatorSize="14dp" app:trackThickness="2dp" app:indicatorColor="@color/on_camera"
+                app:trackColor="@android:color/transparent"/>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView android:id="@+id/statusLine"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/initializing"
+                    android:textAppearance="@style/TextAppearance.Serve.Label" android:textColor="@color/on_camera"
+                    android:singleLine="true" android:ellipsize="end"
+                    android:maxWidth="360dp" android:accessibilityLiveRegion="polite"/>
+                <TextView android:id="@+id/statusDetail"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:maxWidth="360dp" android:textAppearance="@style/TextAppearance.Serve.Small"
+                    android:textColor="@color/on_camera_secondary" android:visibility="gone"/>
+            </LinearLayout>
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton android:id="@+id/menuButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="52dp" android:minHeight="48dp" android:layout_gravity="top|end" android:layout_margin="8dp" android:background="@drawable/status_background" android:text="@string/menu" android:textSize="13sp" android:textAllCaps="false" android:textColor="#FFFFFF" android:contentDescription="@string/menu" android:insetTop="0dp" android:insetBottom="0dp"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/recoveryButton"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal" android:layout_marginBottom="48dp"
+            android:visibility="gone" android:text="@string/retry"
+            android:backgroundTint="@color/on_camera_chip" android:textColor="@color/on_camera_chip_text"/>
+    </com.thesis.pickleballserve.AspectFrameLayout>
 
-        <com.google.android.material.button.MaterialButton android:id="@+id/recoveryButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_gravity="bottom|center_horizontal" android:layout_margin="8dp" android:visibility="gone" android:text="@string/retry" android:textSize="12sp" android:textAllCaps="false" app:cornerRadius="10dp"/>
-    </FrameLayout>
+    <LinearLayout android:id="@+id/panel"
+        android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+        android:layout_marginStart="8dp" android:orientation="vertical"
+        android:background="@drawable/panel_background"
+        android:paddingStart="14dp" android:paddingEnd="8dp" android:paddingBottom="8dp">
 
-    <!-- Four result columns (ball landing lives on its own review screen).
-         Content is sized to fit without scrolling; each column still scrolls
-         as a fallback for very large text sizes. -->
-    <LinearLayout android:id="@+id/resultsScroll" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="4dp" android:paddingBottom="8dp">
+        <!-- Panel bar: setup title or the way into the serve review; Read aloud; menu. -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/setupTitle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/camera_setup" android:accessibilityHeading="true"
+                android:textAppearance="@style/TextAppearance.Serve.Label"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/allServesButton"
+                style="@style/Widget.Serve.Button.Text"
+                android:layout_width="wrap_content" android:layout_height="48dp"
+                android:layout_marginStart="-12dp" android:paddingStart="12dp" android:paddingEnd="6dp"
+                android:text="@string/no_serves_yet" android:visibility="gone"
+                app:icon="@drawable/ic_chevron_right" app:iconGravity="end" app:iconSize="18dp" app:iconPadding="2dp"/>
+            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/readAloudSwitch"
+                android:layout_width="wrap_content" android:layout_height="48dp"
+                android:text="@string/read_aloud" android:checked="true" android:visibility="gone"
+                android:textAppearance="@style/TextAppearance.Serve.Label" android:textSize="14sp"
+                android:switchPadding="8dp"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/menuButton"
+                style="@style/Widget.Serve.IconButton"
+                android:layout_width="48dp" android:layout_height="48dp"
+                android:contentDescription="@string/menu" app:icon="@drawable/ic_more_vertical"/>
+        </LinearLayout>
 
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="8dp" android:fillViewport="true" android:background="@drawable/card_background">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/serve_type" android:textSize="11sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                    <com.google.android.material.button.MaterialButton android:id="@+id/serveInfoButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="48dp" android:layout_height="32dp" android:minWidth="48dp" android:minHeight="32dp" android:text="?" android:textSize="13sp" android:textAllCaps="false" android:contentDescription="@string/serve_definitions_title" android:insetTop="0dp" android:insetBottom="0dp" android:insetLeft="0dp" android:insetRight="0dp"/>
+        <!-- SETUP: checks the app measures, then fixed tips. Starts by itself. -->
+        <LinearLayout android:id="@+id/setupPanel"
+            android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+            android:orientation="vertical" android:paddingEnd="6dp">
+            <LinearLayout style="@style/Serve.CheckRow">
+                <ImageView android:id="@+id/checkCameraIcon" style="@style/Serve.CheckIcon"/>
+                <TextView android:id="@+id/checkCameraText" style="@style/Serve.CheckText" android:text="@string/check_camera"/>
+            </LinearLayout>
+            <LinearLayout style="@style/Serve.CheckRow">
+                <ImageView android:id="@+id/checkPlayerIcon" style="@style/Serve.CheckIcon"/>
+                <TextView android:id="@+id/checkPlayerText" style="@style/Serve.CheckText" android:text="@string/check_player_missing"/>
+            </LinearLayout>
+            <LinearLayout style="@style/Serve.CheckRow">
+                <ImageView android:id="@+id/checkBodyIcon" style="@style/Serve.CheckIcon"/>
+                <TextView android:id="@+id/checkBodyText" style="@style/Serve.CheckText" android:text="@string/stand_in_outline"/>
+            </LinearLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:layout_marginBottom="2dp"
+                android:text="@string/before_you_serve" android:textAppearance="@style/TextAppearance.Serve.Small"
+                android:fontFamily="@font/figtree_semibold"/>
+            <TextView style="@style/Serve.Tip" android:text="@string/check_side_view"/>
+            <TextView style="@style/Serve.Tip" android:text="@string/check_paddle"/>
+            <TextView style="@style/Serve.Tip" android:text="@string/check_right_handed"/>
+            <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:minHeight="8dp"/>
+            <TextView android:id="@+id/startSessionNote"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp" android:accessibilityLiveRegion="polite"
+                android:text="@string/starts_by_itself" android:textAppearance="@style/TextAppearance.Serve.Body"
+                android:textSize="14sp" android:textColor="@color/text_secondary"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/startSessionButton"
+                style="@style/Widget.Serve.Button.Outlined"
+                android:layout_width="match_parent" android:layout_height="48dp"
+                android:text="@string/setup_waiting_models" android:enabled="false"/>
+        </LinearLayout>
+
+        <!-- LIVE: the cue leads; three metric rows follow directly under it. -->
+        <LinearLayout android:id="@+id/resultsScroll"
+            android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+            android:orientation="vertical" android:paddingEnd="6dp" android:visibility="gone">
+            <TextView android:id="@+id/feedbackLabel"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/waiting_title" android:textAppearance="@style/TextAppearance.Serve.Cue"
+                android:accessibilityLiveRegion="polite" android:accessibilityHeading="true"/>
+            <TextView android:id="@+id/cueBadge"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:background="@drawable/badge_neutral"
+                android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="3dp" android:paddingBottom="3dp"
+                android:text="@string/general_cue_badge" android:textAppearance="@style/TextAppearance.Serve.Badge"
+                android:textColor="@color/text_secondary" android:visibility="gone"/>
+            <TextView android:id="@+id/feedbackNotes"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:textAppearance="@style/TextAppearance.Serve.Small"
+                android:maxLines="2" android:ellipsize="end" android:visibility="gone"/>
+            <TextView android:id="@+id/waitingMsg"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:text="@string/waiting_body"
+                android:textAppearance="@style/TextAppearance.Serve.Body" android:textColor="@color/text_secondary"/>
+
+            <LinearLayout android:id="@+id/metricRows"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:orientation="vertical">
+                <View style="@style/Serve.Divider"/>
+                <LinearLayout style="@style/Serve.MetricRow">
+                    <LinearLayout style="@style/Serve.MetricHead">
+                        <TextView style="@style/Serve.MetricLabel" android:text="@string/serve_type_label"/>
+                        <com.google.android.material.button.MaterialButton android:id="@+id/serveInfoButton"
+                            style="@style/Serve.HelpButton" android:contentDescription="@string/serve_definitions_title"/>
+                        <TextView android:id="@+id/serveRef" style="@style/Serve.MetricRef" android:text="@string/gate_ref"/>
+                    </LinearLayout>
+                    <LinearLayout style="@style/Serve.MetricValueRow">
+                        <TextView android:id="@+id/classLabel" style="@style/Serve.MetricValue" android:text="@string/card_empty"/>
+                        <TextView android:id="@+id/confLabel"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp" android:textAppearance="@style/TextAppearance.Serve.Label"/>
+                        <TextView android:id="@+id/serveChip" style="@style/Serve.Badge" android:visibility="gone"/>
+                    </LinearLayout>
                 </LinearLayout>
-                <TextView android:id="@+id/classLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="18sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                <TextView android:id="@+id/confLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/confidence_empty" android:textSize="12sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
-                <LinearLayout android:id="@+id/probabilityPanel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
-                    <TextView android:id="@+id/modeLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink" android:layout_marginTop="2dp"/>
-                    <TextView android:id="@+id/probDrive" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink"/>
-                    <ProgressBar android:id="@+id/probDriveBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="100" android:progressTint="@color/accent"/>
-                    <TextView android:id="@+id/probLob" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink"/>
-                    <ProgressBar android:id="@+id/probLobBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="100" android:progressTint="@color/accent"/>
-                    <TextView android:id="@+id/probTopspin" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="@color/ink"/>
-                    <ProgressBar android:id="@+id/probTopspinBar" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="100" android:progressTint="@color/accent"/>
+                <View style="@style/Serve.Divider"/>
+                <LinearLayout style="@style/Serve.MetricRow">
+                    <LinearLayout style="@style/Serve.MetricHead">
+                        <TextView style="@style/Serve.MetricLabel" android:text="@string/hip_label"/>
+                        <com.google.android.material.button.MaterialButton android:id="@+id/hipInfoButton"
+                            style="@style/Serve.HelpButton" android:contentDescription="@string/hip_info_title"/>
+                        <TextView android:id="@+id/hipRef" style="@style/Serve.MetricRef"/>
+                    </LinearLayout>
+                    <LinearLayout style="@style/Serve.MetricValueRow">
+                        <TextView android:id="@+id/shiftLabel" style="@style/Serve.MetricValue" android:text="@string/card_empty"/>
+                        <TextView android:id="@+id/hipChip" style="@style/Serve.Badge" android:visibility="gone"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <View style="@style/Serve.Divider"/>
+                <LinearLayout style="@style/Serve.MetricRow">
+                    <LinearLayout style="@style/Serve.MetricHead">
+                        <TextView style="@style/Serve.MetricLabel" android:text="@string/paddle_label"/>
+                        <com.google.android.material.button.MaterialButton android:id="@+id/paddleInfoButton"
+                            style="@style/Serve.HelpButton" android:contentDescription="@string/paddle_info_title"/>
+                        <TextView android:id="@+id/paddleRef" style="@style/Serve.MetricRef"/>
+                    </LinearLayout>
+                    <LinearLayout style="@style/Serve.MetricValueRow">
+                        <TextView android:id="@+id/paddleLabel" style="@style/Serve.MetricValue" android:text="@string/card_empty"/>
+                        <TextView android:id="@+id/paddleChip" style="@style/Serve.Badge" android:visibility="gone"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
 
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="8dp" android:fillViewport="true" android:background="@drawable/card_background">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/hip_title" android:textSize="11sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                    <com.google.android.material.button.MaterialButton android:id="@+id/hipInfoButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="48dp" android:layout_height="32dp" android:minWidth="48dp" android:minHeight="32dp" android:text="?" android:textSize="13sp" android:textAllCaps="false" android:contentDescription="@string/hip_info_title" android:insetTop="0dp" android:insetBottom="0dp" android:insetLeft="0dp" android:insetRight="0dp"/>
-                </LinearLayout>
-                <TextView android:id="@+id/shiftLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="16sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/hip_note" android:textSize="11sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
-            </LinearLayout>
-        </ScrollView>
+            <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
 
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="8dp" android:fillViewport="true" android:background="@drawable/card_background">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/paddle_title" android:textSize="11sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                    <com.google.android.material.button.MaterialButton android:id="@+id/paddleInfoButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="48dp" android:layout_height="32dp" android:minWidth="48dp" android:minHeight="32dp" android:text="?" android:textSize="13sp" android:textAllCaps="false" android:contentDescription="@string/paddle_info_title" android:insetTop="0dp" android:insetBottom="0dp" android:insetLeft="0dp" android:insetRight="0dp"/>
-                </LinearLayout>
-                <TextView android:id="@+id/paddleLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/waiting" android:textSize="16sp" android:textColor="@color/ink" android:textStyle="bold"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/paddle_note" android:textSize="11sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
+            <!-- Only after an incomplete capture. -->
+            <LinearLayout android:id="@+id/feedbackActions"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:visibility="gone">
+                <com.google.android.material.button.MaterialButton android:id="@+id/setupTipsButton"
+                    style="@style/Widget.Serve.Button.Outlined"
+                    android:layout_width="wrap_content" android:layout_height="48dp"
+                    android:layout_marginEnd="8dp" android:text="@string/setup_tips"/>
+                <com.google.android.material.button.MaterialButton android:id="@+id/tryAgainButton"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="@string/try_again" app:icon="@drawable/ic_reset" app:iconGravity="textStart"/>
             </LinearLayout>
-        </ScrollView>
-
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2" android:fillViewport="true" android:background="@drawable/coaching_background">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
-                <TextView android:id="@+id/feedbackTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_title" android:textSize="11sp" android:textColor="@color/accent" android:textStyle="bold"/>
-                <TextView android:id="@+id/feedbackLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_empty" android:textSize="14sp" android:textColor="@color/ink" android:layout_marginTop="2dp"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/coaching_scope" android:textSize="11sp" android:textColor="@color/muted" android:layout_marginTop="2dp"/>
-            </LinearLayout>
-        </ScrollView>
+            <!-- Before the first serve only. -->
+            <com.google.android.material.button.MaterialButton android:id="@+id/backToSetupButton"
+                style="@style/Widget.Serve.Button.Outlined"
+                android:layout_width="wrap_content" android:layout_height="48dp"
+                android:text="@string/setup_short"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

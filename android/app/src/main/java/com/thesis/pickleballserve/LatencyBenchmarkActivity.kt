@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
+import com.thesis.pickleballserve.databinding.ActivityToolBinding
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -52,15 +53,29 @@ class LatencyBenchmarkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         title = getString(R.string.latency_tool)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        val layout = LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(24,24,24,24) }
-        val back = Button(this).apply { text=getString(R.string.back_to_live); setOnClickListener { finish() } }
-        status=TextView(this).apply { text="Recorded-clip latency test: 3 prepared clips, 3 rounds, one warm-up. Includes decode, pose, hip, paddle, GRU and feedback. This does not measure live capture-to-display delay."; textSize=17f }
-        run=Button(this).apply { text="Run latency test"; setOnClickListener { start(poseGpu=false) } }
-        runGpu=Button(this).apply { text="Run GPU variant test"; setOnClickListener { start(poseGpu=true) } }
-        val load=Button(this).apply { text="Load clips from phone storage"; setOnClickListener { pickClips.launch(arrayOf("video/*")) } }
-        save=Button(this).apply { text="Export results"; isEnabled=false; setOnClickListener { export.launch(resultFile?.name ?: "latency.json") } }
-        layout.addView(back); layout.addView(load); layout.addView(run); layout.addView(runGpu); layout.addView(save); layout.addView(status)
-        setContentView(ScrollView(this).apply { addView(layout) })
+        val ui = ActivityToolBinding.inflate(layoutInflater)
+        setContentView(ui.root)
+        enterImmersive(ui.root)
+        ui.toolBack.setOnClickListener { finish() }
+        ui.toolTitle.setText(R.string.latency_tool)
+        ui.toolLead.setText(R.string.latency_lead)
+        ui.toolStatusTitle.setText(R.string.tool_status)
+        ui.toolFoot.setText(R.string.latency_foot)
+        status = ui.toolStatus
+        val dir = File(filesDir, "latency_input")
+        status.text = listOf("C001.mp4", "C002.mp4", "C007.mp4").joinToString("\n") {
+            if (File(dir, it).isFile) "$it · ready" else "$it · missing"
+        }
+        fun add(button: Button) {
+            ui.toolButtons.addView(button, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = (8 * resources.displayMetrics.density).toInt() })
+        }
+        val outlined = com.google.android.material.R.attr.materialButtonOutlinedStyle
+        val load = MaterialButton(this, null, outlined).apply { setText(R.string.latency_load); setOnClickListener { pickClips.launch(arrayOf("video/*")) } }
+        run = MaterialButton(this).apply { setText(R.string.latency_run); setOnClickListener { start(poseGpu=false) } }
+        runGpu = MaterialButton(this, null, outlined).apply { setText(R.string.latency_run_gpu); setOnClickListener { start(poseGpu=true) } }
+        save = MaterialButton(this, null, outlined).apply { setText(R.string.latency_export); isEnabled=false; setOnClickListener { export.launch(resultFile?.name ?: "latency.json") } }
+        add(load); add(run); add(runGpu); add(save)
         if (intent.getBooleanExtra("autostart", false)) start()
     }
     private fun start(poseGpu: Boolean = false) {

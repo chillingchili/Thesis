@@ -1,0 +1,23 @@
+<resources>
+    <!-- Astryx Neutral 0.4.1 tokens (dark). -->
+    <color name="body">#1B1B1B</color>
+    <color name="surface">#262626</color>
+    <color name="text_primary">#FAFAFA</color>
+    <color name="text_secondary">#A3A3A3</color>
+    <color name="text_disabled">#525252</color>
+    <color name="icon_secondary">#A3A3A3</color>
+    <color name="accent">#EBEBEB</color>
+    <color name="on_accent">#171717</color>
+    <color name="accent_muted">#333333</color>
+    <color name="border">#1AFFFFFF</color>
+    <color name="border_em">#525252</color>
+    <color name="ok">#9FE59B</color>
+    <color name="ok_muted">#3D84C980</color>
+    <color name="warn">#FDCF4F</color>
+    <color name="warn_muted">#3DDEB433</color>
+    <color name="err">#FFC6C1</color>
+    <color name="err_muted">#3DFF9E97</color>
+    <color name="select">#6D9CFE</color>
+    <color name="menu_surface">#333333</color>
+    <color name="menu_stroke">@color/border</color>
+</resources>

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-21T00:00:00Z",
+  "title": "Design System: Pickleball Serve Coach",
+  "extensions": {
+    "colorMeta": {
+      "accent": { "role": "primary", "displayName": "Graphite Ink", "canonical": "#262626", "tonalRamp": ["#171717", "#262626", "#333333", "#525252", "#737373", "#A3A3A3", "#D4D4D4", "#F1F1F1"] },
+      "accent-muted": { "role": "primary", "displayName": "Fog Step", "canonical": "#F1F1F1", "tonalRamp": ["#171717", "#262626", "#333333", "#525252", "#A3A3A3", "#D4D4D4", "#EBEBEB", "#F1F1F1"] },
+      "select": { "role": "tertiary", "displayName": "Selection Blue", "canonical": "#0074E2", "tonalRamp": ["#00264D", "#004A91", "#0074E2", "#3A8CF0", "#6D9CFE", "#A3C2FF", "#D1E1FF", "#EEF4FF"] },
+      "ok": { "role": "status", "displayName": "Court Green", "canonical": "#007004", "tonalRamp": ["#0B2E0A", "#005203", "#007004", "#3D9A35", "#64AF4C", "#9FE59B", "#C5E5C0", "#EAF6E8"] },
+      "ok-muted": { "role": "status", "displayName": "Mint Wash", "canonical": "#C5E5C0" },
+      "warn": { "role": "status", "displayName": "Amber Ochre", "canonical": "#745B00", "tonalRamp": ["#3A2E00", "#5A4600", "#745B00", "#A88400", "#FFCE2F", "#FDCF4F", "#F8DA9D", "#FDF3DC"] },
+      "warn-muted": { "role": "status", "displayName": "Straw Wash", "canonical": "#F8DA9D" },
+      "err": { "role": "status", "displayName": "Signal Red", "canonical": "#A50C25", "tonalRamp": ["#4D0511", "#7A0A1C", "#A50C25", "#D9364A", "#FF705D", "#FFC6C1", "#FACECB", "#FDECEB"] },
+      "err-muted": { "role": "status", "displayName": "Blush Wash", "canonical": "#FACECB" },
+      "body": { "role": "neutral", "displayName": "Body Grey", "canonical": "#F1F1F1", "tonalRamp": ["#171717", "#1B1B1B", "#262626", "#333333", "#525252", "#A3A3A3", "#D4D4D4", "#F1F1F1"] },
+      "surface": { "role": "neutral", "displayName": "Paper White", "canonical": "#FFFFFF" },
+      "text-primary": { "role": "neutral", "displayName": "Ink", "canonical": "#171717" },
+      "text-secondary": { "role": "neutral", "displayName": "Graphite", "canonical": "#525252" },
+      "text-disabled": { "role": "neutral", "displayName": "Ash", "canonical": "#A3A3A3" },
+      "icon-secondary": { "role": "neutral", "displayName": "Slate Icon", "canonical": "#737373" },
+      "border": { "role": "neutral", "displayName": "Hairline", "canonical": "#00000014" },
+      "border-emphasis": { "role": "neutral", "displayName": "Rule Grey", "canonical": "#D4D4D4" },
+      "chip-scrim": { "role": "neutral", "displayName": "Chip Scrim", "canonical": "#171717DB" },
+      "on-camera": { "role": "neutral", "displayName": "Camera White", "canonical": "#FAFAFA" },
+      "on-camera-chip": { "role": "neutral", "displayName": "Camera Chip White", "canonical": "#FFFFFF" },
+      "on-camera-chip-text": { "role": "neutral", "displayName": "Camera Chip Ink", "canonical": "#171717" },
+      "framing-ok": { "role": "status", "displayName": "Framing Green", "canonical": "#3DDC84" },
+      "framing-keyline": { "role": "neutral", "displayName": "Framing Keyline", "canonical": "#0000008C" },
+      "menu-surface": { "role": "neutral", "displayName": "Menu Surface", "canonical": "#FFFFFF" },
+      "menu-stroke": { "role": "neutral", "displayName": "Menu Stroke", "canonical": "#D4D4D4" },
+      "dot-ok": { "role": "status", "displayName": "Status Dot Green", "canonical": "#64AF4C" },
+      "dot-warn": { "role": "status", "displayName": "Status Dot Amber", "canonical": "#FFCE2F" },
+      "dot-err": { "role": "status", "displayName": "Status Dot Red", "canonical": "#FF705D" }
+    },
+    "typographyMeta": {
+      "cue": { "displayName": "Cue", "purpose": "First cue only, as a plain sentence, leading the live panel. If it would push a metric row off: hide notes, then step down to a 20sp floor, then drop the leading diagnosis sentence, then clamp to 3 lines." },
+      "value": { "displayName": "Value", "purpose": "Measured result on each metric row; tabular figures." },
+      "label": { "displayName": "Label", "purpose": "Row labels, setup title, check rows, status-chip line." },
+      "reference": { "displayName": "Reference", "purpose": "Reference band at the right end of each row head; tabular figures." },
+      "badge": { "displayName": "Badge", "purpose": "Worded status badges, segments, serve chips." },
+      "small": { "displayName": "Small", "purpose": "Table headers, notes, status-chip detail." }
+    },
+    "units": "Android sp/dp map 1:1 to the px values in the frontmatter.",
+    "shadows": [
+      { "name": "none", "value": "none", "purpose": "Panel, rows, chips, and menu are flat; separation is a 1dp hairline or a tonal step." },
+      { "name": "camera-scrim-bottom", "value": "linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))", "purpose": "Behind replay controls on video." },
+      { "name": "framing-keyline", "value": "4.5dp stroke #0000008C under the 2.5dp outline stroke", "purpose": "Keeps the framing outline legible on any video background." },
+      { "name": "camera-scrim-top", "value": "linear-gradient(to bottom, rgba(0,0,0,0.72), rgba(0,0,0,0))", "purpose": "Behind top overlays on video." }
+    ],
+    "motion": [
+      { "name": "result-dim", "value": "opacity 0.45", "purpose": "The last result stays visible, dimmed, while the next serve is analyzed. No other custom motion; Material components keep platform transitions." }
+    ],
+    "breakpoints": [
+      { "name": "landscape-phone", "value": "camera 4:3 at full height; panel takes remaining width" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Filled Graphite Ink; at most one per state (Try again).",
+      "html": "<button class=\"ds-btn-primary\">Try again</button>",
+      "css": ".ds-btn-primary { background: #262626; color: #FFFFFF; font-family: Figtree, sans-serif; font-weight: 600; font-size: 15px; min-height: 48px; padding: 0 24px; border: none; border-radius: 10px; transition: background 0.15s; } .ds-btn-primary:hover { background: #333333; } .ds-btn-primary:focus-visible { outline: 2px solid #0074E2; outline-offset: 2px; } .ds-btn-primary:active { background: #171717; }"
+    },
+    {
+      "name": "Outlined Button",
+      "kind": "button",
+      "refersTo": "button-outlined",
+      "description": "Surface with Rule Grey stroke; Start now, Setup tips, dialog positive.",
+      "html": "<button class=\"ds-btn-outlined\">Start now</button>",
+      "css": ".ds-btn-outlined { background: #FFFFFF; color: #171717; font-family: Figtree, sans-serif; font-weight: 600; font-size: 15px; min-height: 48px; padding: 0 24px; border: 1px solid #D4D4D4; border-radius: 10px; transition: background 0.15s; } .ds-btn-outlined:hover { background: #F1F1F1; } .ds-btn-outlined:focus-visible { outline: 2px solid #0074E2; outline-offset: 2px; } .ds-btn-outlined:disabled { color: #A3A3A3; }"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Containerless ink label with trailing chevron; the way into the review.",
+      "html": "<button class=\"ds-btn-text\">All serves · 3 <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18l6-6-6-6\"/></svg></button>",
+      "css": ".ds-btn-text { display: inline-flex; align-items: center; gap: 2px; background: transparent; color: #171717; font-family: Figtree, sans-serif; font-weight: 600; font-size: 15px; min-height: 48px; padding: 0 6px 0 12px; border: none; border-radius: 10px; } .ds-btn-text:hover { background: #F1F1F1; } .ds-btn-text:focus-visible { outline: 2px solid #0074E2; outline-offset: 2px; }"
+    },
+    {
+      "name": "Status Badges",
+      "kind": "chip",
+      "refersTo": "badge-good",
+      "description": "Worded verdict in three tones; color never stands alone.",
+      "html": "<span class=\"ds-badge ds-badge-good\">Within reference</span> <span class=\"ds-badge ds-badge-warn\">Low confidence</span> <span class=\"ds-badge ds-badge-neutral\">Not measured</span>",
+      "css": ".ds-badge { display: inline-block; font-family: Figtree, sans-serif; font-weight: 500; font-size: 14px; padding: 3px 8px; border-radius: 6px; } .ds-badge-good { background: #C5E5C0; color: #007004; } .ds-badge-warn { background: #F8DA9D; color: #745B00; } .ds-badge-neutral { background: #F1F1F1; color: #525252; }"
+    },
+    {
+      "name": "Metric Row",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Label + help + reference on top, value + worded badge below, hairline between rows.",
+      "html": "<div class=\"ds-metric\"><div class=\"ds-metric-head\"><span class=\"ds-metric-label\">Hip movement</span><svg class=\"ds-metric-help\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01\"/></svg><span class=\"ds-metric-ref\">0.03 (≥ 0.154)</span></div><div class=\"ds-metric-value-row\"><span class=\"ds-metric-value\">Limited</span><span class=\"ds-metric-badge\">Needs work</span></div></div>",
+      "css": ".ds-metric { border-top: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; font-family: Figtree, sans-serif; background: #FFFFFF; } .ds-metric-head { display: flex; align-items: center; height: 28px; } .ds-metric-label { font-weight: 500; font-size: 15px; color: #525252; } .ds-metric-help { color: #737373; margin: 0 15px; cursor: pointer; } .ds-metric-help:hover { color: #171717; } .ds-metric-ref { flex: 1; text-align: right; font-weight: 500; font-size: 14px; color: #525252; font-variant-numeric: tabular-nums; } .ds-metric-value-row { display: flex; align-items: center; min-height: 28px; } .ds-metric-value { font-weight: 600; font-size: 22px; color: #171717; font-variant-numeric: tabular-nums; } .ds-metric-badge { margin-left: 10px; padding: 3px 8px; border-radius: 6px; background: #F8DA9D; color: #745B00; font-weight: 500; font-size: 14px; }"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "custom",
+      "refersTo": "status-chip",
+      "description": "On-camera status: dot plus one line on an ink scrim; theme-invariant.",
+      "html": "<div class=\"ds-status\"><span class=\"ds-status-dot\"></span>Ready · stand in the outline</div>",
+      "css": ".ds-status { display: inline-flex; align-items: center; gap: 8px; background: rgba(23,23,23,0.86); color: #FAFAFA; font-family: Figtree, sans-serif; font-weight: 500; font-size: 15px; padding: 6px 12px 6px 10px; border-radius: 6px; } .ds-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #64AF4C; }"
+    },
+    {
+      "name": "Overflow Menu",
+      "kind": "nav",
+      "refersTo": "menu",
+      "description": "androidx PopupMenu from the Lucide ellipsis-vertical button; menu surface, 1dp menu stroke, 10dp corners.",
+      "html": "<div class=\"ds-menu\" role=\"menu\"><button class=\"ds-menu-item\" role=\"menuitem\">Back to setup</button><button class=\"ds-menu-item\" role=\"menuitem\">Reset capture</button><button class=\"ds-menu-item\" role=\"menuitem\">Research tools</button><button class=\"ds-menu-item\" role=\"menuitem\">About this thesis build</button></div>",
+      "css": ".ds-menu { display: inline-flex; flex-direction: column; min-width: 200px; padding: 4px 0; background: #FFFFFF; border: 1px solid #D4D4D4; border-radius: 10px; font-family: Figtree, sans-serif; } .ds-menu-item { text-align: left; min-height: 48px; padding: 0 16px; background: transparent; border: none; color: #171717; font-size: 15px; cursor: pointer; } .ds-menu-item:hover { background: #F1F1F1; } .ds-menu-item:focus-visible { outline: 2px solid #0074E2; outline-offset: -2px; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "nav",
+      "refersTo": "segment",
+      "description": "Result | Research in review; checked segment fills Graphite Ink.",
+      "html": "<div class=\"ds-seg\"><button class=\"ds-seg-btn\" aria-pressed=\"true\">Result</button><button class=\"ds-seg-btn\" aria-pressed=\"false\">Research</button></div>",
+      "css": ".ds-seg { display: inline-flex; } .ds-seg-btn { min-height: 44px; padding: 0 14px; font-family: Figtree, sans-serif; font-weight: 600; font-size: 14px; background: transparent; color: #525252; border: 1px solid #D4D4D4; cursor: pointer; } .ds-seg-btn:first-child { border-radius: 10px 0 0 10px; } .ds-seg-btn:last-child { border-radius: 0 10px 10px 0; border-left: none; } .ds-seg-btn[aria-pressed=\"true\"] { background: #262626; color: #FFFFFF; border-color: #262626; } .ds-seg-btn:hover { color: #171717; } .ds-seg-btn:focus-visible { outline: 2px solid #0074E2; outline-offset: 2px; }"
+    },
+    {
+      "name": "Serve Chip",
+      "kind": "chip",
+      "refersTo": "serve-chip",
+      "description": "Past serve in the review strip; selection is a 2dp blue stroke, uncertainty is amber text.",
+      "html": "<button class=\"ds-serve ds-serve-on\">3 Not sure · 1:32</button> <button class=\"ds-serve\">2 Topspin · 1:03</button>",
+      "css": ".ds-serve { min-height: 48px; padding: 0 12px; background: #FFFFFF; color: #171717; font-family: Figtree, sans-serif; font-weight: 600; font-size: 14px; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; cursor: pointer; } .ds-serve:hover { border-color: #D4D4D4; } .ds-serve:focus-visible { outline: 2px solid #0074E2; outline-offset: 2px; } .ds-serve-on { border: 2px solid #0074E2; color: #745B00; }"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The single surface beside the camera; flat, hairline-bordered.",
+      "html": "<div class=\"ds-panel\"><div class=\"ds-panel-cue\">Start with more hip turn on the next serve.</div><span class=\"ds-badge-n\">General cue · serve type uncertain</span></div>",
+      "css": ".ds-panel { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 12px 8px 8px 14px; font-family: Figtree, sans-serif; max-width: 360px; } .ds-panel-cue { font-weight: 600; font-size: 24px; letter-spacing: -0.01em; color: #171717; } .ds-badge-n { display: inline-block; margin-top: 4px; padding: 3px 8px; border-radius: 6px; background: #F1F1F1; border: 1px solid rgba(0,0,0,0.08); color: #525252; font-weight: 500; font-size: 14px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument Beside the Court",
+    "overview": "The app is one quiet, neutral instrument standing next to a live camera. It is built from Meta's Astryx Neutral 0.4.1 tokens applied through stock Material 3 components on Android Views, so every control behaves like the platform and every surface reads as the same grey-and-white paper. Nothing on the panel is decorative: the camera supplies all the imagery, and the panel supplies words, numbers, and the reference each number is judged against.\n\nDensity is set for a glance from two to three metres in landscape. The coaching cue leads at the largest size; three measured rows follow, each with its label, a help button, and its reference on one line, then the value and a worded badge on the next. Color is reserved for status (green, amber, red) and selection (blue); everything else is the neutral ramp from near-black to near-white, in both light and dark themes.\n\nThe system is honest by construction. Status is always a word with a tint, never a tint alone; a result below the model's confidence gate is shown and labeled uncertain rather than hidden or rounded up; and every measured value sits beside the band it is compared with.",
+    "keyCharacteristics": [
+      "Astryx Neutral tokens through native Material 3 roles, light and dark.",
+      "One surface panel beside a true 4:3 camera; the camera never moves.",
+      "Figtree throughout; three sizes carry the live screen (cue 24, value 22, label 15).",
+      "Flat: 1dp hairline borders and tonal steps, no resting shadows.",
+      "Lucide icons at 2dp stroke, tinted by token.",
+      "Worded status badges in three tones; uncertainty always labeled."
+    ],
+    "rules": [
+      { "name": "The Status-Only Hue Rule", "body": "Green, amber, and red appear only to report a measured status, and blue only to mark selection. A neutral control never takes a status hue for emphasis.", "section": "colors" },
+      { "name": "The Words With Color Rule", "body": "Every status tint carries a word: a badge label, a check-row sentence, or a status-chip line. A screen read in greyscale loses no result.", "section": "colors" },
+      { "name": "The Fixed Camera Rule", "body": "Anything drawn on the camera image uses the on-camera tokens, which are identical in light and dark themes, because the video does not change with the theme.", "section": "colors" },
+      { "name": "The Three Sizes Rule", "body": "The live screen is carried by three sizes: cue 24, value 22, label 15. A new live element takes one of them before it takes a new size.", "section": "typography" },
+      { "name": "The Tabular Numbers Rule", "body": "Every number that can change between serves (values, references, probabilities, timecodes) sets tnum, so columns and rows do not jitter.", "section": "typography" },
+      { "name": "The Sentence Case Rule", "body": "Buttons and labels are sentence case with zero letter-spacing; nothing in the system is uppercase.", "section": "typography" },
+      { "name": "The Rows Before Words Rule", "body": "On the live screen the metric rows always stay visible. A long cue gives up its notes, then size (down to 20sp, never lower), then its opening diagnosis, then lines (3 maximum), never a row.", "section": "typography" },
+      { "name": "The Reference On Every Row Rule", "body": "A measured value never appears without the reference it is judged against on the same row. Live rows read \"needs ≥ 60%\", \"0.03 (≥ 0.154)\" and \"band 13.4–165.7°\"; the research table has a Reference column. Thresholds read the same everywhere (≥ 0.60, ≥ 0.154, 13.4–165.7°). A new metric ships with its reference or does not ship.", "section": "layout" },
+      { "name": "The Flat Panel Rule", "body": "The panel and everything on it are flat. Separation is a hairline or a tonal step, never a shadow.", "section": "elevation" },
+      { "name": "The Dim Not Hide Rule", "body": "While the next serve is analyzed, the last result stays on screen at 45% opacity rather than disappearing.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do put the reference on every row that shows a measured value, in Reference type at the row's right end.",
+      "Do pair every status color with a word: badge text, a check sentence, or a status-chip line.",
+      "Do show uncertain results and label them: \"Not sure\" in Amber Ochre with \"Low confidence\", or \"General cue · serve type uncertain\" under the cue.",
+      "Do map new colors to Astryx tokens through Material roles in colors.xml and values-night, so light and dark stay paired.",
+      "Do use on-camera tokens for anything drawn over video, unchanged across themes, and give thin strokes on video a keyline.",
+      "Do show only the first cue live, and keep the full list behind \"Show all cues (N)\" in review.",
+      "Do keep touch targets at 48dp and numbers in tabular figures.",
+      "Do draw new icons from Lucide at 2dp stroke and tint them by token."
+    ],
+    "donts": [
+      "Don't convey a result by color alone, or use green, amber, or red as decoration.",
+      "Don't hide or round up a result below the 0.60 confidence gate.",
+      "Don't add resting shadows to the panel, rows, chips, or menu; separate with a hairline or a tonal step.",
+      "Don't split the live panel into equal cards or add decorative sports chrome; one surface carries the cue and the rows.",
+      "Don't add a second typeface, uppercase labels, or letter-spaced labels.",
+      "Don't hard-code hex values in layouts or views where a token exists."
+    ]
+  }
+}

@@ -32,13 +32,22 @@ class ThesisUiTest {
             awaitReady(scenario)
             scenario.onActivity {
                 assertEquals(android.content.res.Configuration.ORIENTATION_LANDSCAPE, it.resources.configuration.orientation)
+                // Launch opens on the camera setup check (Figure 7.2a).
+                assertTrue(it.findViewById<View>(R.id.setupPanel).isShown)
+                assertFalse(it.findViewById<View>(R.id.resultsScroll).isShown)
+                assertTrue(it.findViewById<View>(R.id.startSessionButton).performClick())
+            }
+            instrumentation.waitForIdleSync()
+            scenario.onActivity {
+                assertFalse(it.findViewById<View>(R.id.setupPanel).isShown)
                 assertTrue(it.findViewById<View>(R.id.menuButton).isShown)
-                assertTrue(it.findViewById<View>(R.id.serveInfoButton).isShown)
-                assertTrue(it.findViewById<View>(R.id.hipInfoButton).isShown)
-                assertTrue(it.findViewById<View>(R.id.paddleInfoButton).isShown)
-                assertEquals("Waiting for a serve", it.findViewById<TextView>(R.id.classLabel).text.toString())
-                assertEquals("Waiting for a serve", it.findViewById<TextView>(R.id.shiftLabel).text.toString())
-                assertEquals(0, it.findViewById<android.widget.ProgressBar>(R.id.probDriveBar).progress)
+                assertTrue(it.findViewById<View>(R.id.readAloudSwitch).isShown)
+                assertTrue(it.findViewById<View>(R.id.allServesButton).isShown)
+                // Before the first serve: one message, no empty metric rows.
+                assertTrue(it.findViewById<View>(R.id.waitingMsg).isShown)
+                assertFalse(it.findViewById<View>(R.id.metricRows).isShown)
+                assertEquals("—", it.findViewById<TextView>(R.id.classLabel).text.toString())
+                assertEquals("—", it.findViewById<TextView>(R.id.shiftLabel).text.toString())
                 // Menu must open without crashing; dismiss it again.
                 it.findViewById<View>(R.id.menuButton).performClick()
             }

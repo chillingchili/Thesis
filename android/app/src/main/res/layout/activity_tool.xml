@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Research tool shell (compare models, latency test): app bar, actions on the
+     left, status and results on the right, honesty note as the footer. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolRoot"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/body" android:padding="8dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp"
+        android:orientation="horizontal" android:gravity="center_vertical">
+        <com.google.android.material.button.MaterialButton android:id="@+id/toolBack"
+            style="@style/Widget.Serve.IconButton"
+            android:layout_width="48dp" android:layout_height="48dp"
+            android:contentDescription="@string/back_to_live" app:icon="@drawable/ic_arrow_left"/>
+        <TextView android:id="@+id/toolTitle"
+            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:layout_marginStart="6dp" android:accessibilityHeading="true"
+            android:textAppearance="@style/TextAppearance.Serve.DialogTitle" android:textSize="19sp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:orientation="horizontal" android:baselineAligned="false">
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8"
+            android:orientation="vertical" android:background="@drawable/panel_background"
+            android:padding="16dp">
+            <TextView android:id="@+id/toolLead"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Serve.Body" android:lineSpacingExtra="2dp"/>
+            <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+            <LinearLayout android:id="@+id/toolButtons"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginStart="8dp" android:orientation="vertical"
+            android:background="@drawable/panel_background" android:padding="16dp">
+            <TextView android:id="@+id/toolStatusTitle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Serve.Small" android:fontFamily="@font/figtree_semibold"/>
+            <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:layout_marginTop="6dp" android:fadeScrollbars="false">
+                <TextView android:id="@+id/toolStatus"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Serve.Body" android:fontFeatureSettings="tnum"
+                    android:lineSpacingExtra="3dp" android:textIsSelectable="true"
+                    android:accessibilityLiveRegion="polite"/>
+            </ScrollView>
+            <TextView android:id="@+id/toolFoot"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:textAppearance="@style/TextAppearance.Serve.Small"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

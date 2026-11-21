@@ -1,10 +1,51 @@
 <resources>
-    <color name="page">#F3F5F1</color>
-    <color name="ink">#172C25</color>
-    <color name="muted">#53655C</color>
-    <color name="accent">#17694D</color>
-    <color name="accent_soft">#E3EFE7</color>
-    <color name="line">#DAE2DA</color>
-    <color name="camera_bg">#14231D</color>
-    <color name="warning">#8A4B0A</color>
+    <!-- Astryx Neutral 0.4.1 tokens (light), applied through Material 3 roles. -->
+    <color name="body">#F1F1F1</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_primary">#171717</color>
+    <color name="text_secondary">#525252</color>
+    <color name="text_disabled">#A3A3A3</color>
+    <color name="icon_secondary">#737373</color>
+    <color name="accent">#262626</color>
+    <color name="on_accent">#FFFFFF</color>
+    <color name="accent_muted">#F1F1F1</color>
+    <color name="border">#14000000</color>
+    <color name="border_em">#D4D4D4</color>
+    <color name="ok">#007004</color>
+    <color name="ok_muted">#C5E5C0</color>
+    <color name="warn">#745B00</color>
+    <color name="warn_muted">#F8DA9D</color>
+    <color name="err">#A50C25</color>
+    <color name="err_muted">#FACECB</color>
+    <color name="select">#0074E2</color>
+
+    <!-- Fixed in both themes: these sit on the camera image. -->
+    <color name="camera_bg">#000000</color>
+    <color name="chip_scrim">#DB171717</color>
+    <color name="on_camera">#FAFAFA</color>
+    <color name="on_camera_secondary">#A3A3A3</color>
+    <color name="on_camera_chip">#FFFFFF</color>
+    <color name="on_camera_chip_text">#171717</color>
+    <color name="framing_ok">#3DDC84</color>
+    <color name="framing_keyline">#8C000000</color>
+    <color name="dot_ok">#64AF4C</color>
+    <color name="dot_warn">#FFCE2F</color>
+    <color name="dot_err">#FF705D</color>
+
+    <!-- Legacy names still used by the secondary screens (restyled in a later pass). -->
+    <color name="page">@color/body</color>
+    <color name="ink">@color/text_primary</color>
+    <color name="muted">@color/text_secondary</color>
+    <color name="line">@color/border_em</color>
+    <color name="accent_soft">@color/ok_muted</color>
+    <color name="warning">@color/warn</color>
+    <color name="warning_soft">@color/warn_muted</color>
+    <color name="info_soft">@color/accent_muted</color>
+    <color name="warn_card">@color/warn_muted</color>
+    <color name="warn_line">@color/warn</color>
+    <color name="dot_good">@color/dot_ok</color>
+    <color name="dot_busy">@color/dot_warn</color>
+    <color name="dot_alert">@color/dot_err</color>
+    <color name="menu_surface">#FFFFFF</color>
+    <color name="menu_stroke">@color/border_em</color>
 </resources>

@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Player actions first; research tooling lives under one submenu. -->
+<!-- Player actions first; research tooling behind one submenu. All serves, Read
+     aloud and model details live on the screen; Camera only is a tap on the camera. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_setup" android:title="@string/setup" />
-    <item android:id="@+id/action_reset" android:title="@string/reset" />
-    <item android:id="@+id/action_fullscreen" android:title="@string/fullscreen" android:checkable="true" />
-    <item android:id="@+id/action_session" android:title="@string/session_serves" />
-    <item android:id="@+id/action_speak" android:title="@string/speak_results" android:checkable="true" android:checked="true" />
-    <group android:id="@+id/group_camera" android:checkableBehavior="single">
-        <item android:id="@+id/action_camera_back" android:title="@string/camera_back" />
-        <item android:id="@+id/action_camera_front" android:title="@string/camera_front" />
+    <group android:id="@+id/group_player">
+        <item android:id="@+id/action_setup" android:title="@string/back_to_setup" android:icon="@drawable/ic_camera" />
+        <item android:id="@+id/action_reset" android:title="@string/reset" android:icon="@drawable/ic_reset" />
+        <item android:id="@+id/action_camera" android:title="@string/camera_menu" android:icon="@drawable/ic_video">
+            <menu>
+                <group android:id="@+id/group_camera" android:checkableBehavior="single">
+                    <item android:id="@+id/action_camera_back" android:title="@string/camera_back" />
+                    <item android:id="@+id/action_camera_front" android:title="@string/camera_front" />
+                </group>
+            </menu>
+        </item>
     </group>
-    <item android:id="@+id/action_probabilities" android:title="@string/probabilities" />
-    <item android:id="@+id/action_landing" android:title="@string/landing_tool" />
-    <item android:id="@+id/action_scan_landing" android:title="@string/scan_landing" />
-    <item android:id="@+id/action_about" android:title="@string/about_tool" />
-    <item android:id="@+id/action_research" android:title="@string/tools">
-        <menu>
-            <item android:id="@+id/action_compare" android:title="@string/compare_models" />
-            <item android:id="@+id/action_latency" android:title="@string/latency_tool" />
-            <item android:id="@+id/action_showcase" android:title="@string/showcase_demo" />
-            <item android:id="@+id/action_gpu_pose" android:title="@string/gpu_pose" android:checkable="true" android:checked="true" />
-            <item android:id="@+id/action_change_model" android:title="@string/change_model" />
-        </menu>
-    </item>
+    <group android:id="@+id/group_display">
+        <item android:id="@+id/action_theme" android:title="@string/theme_menu" android:icon="@drawable/ic_contrast">
+            <menu>
+                <group android:id="@+id/group_theme" android:checkableBehavior="single">
+                    <item android:id="@+id/action_theme_system" android:title="@string/theme_system" />
+                    <item android:id="@+id/action_theme_light" android:title="@string/theme_light" />
+                    <item android:id="@+id/action_theme_dark" android:title="@string/theme_dark" />
+                </group>
+            </menu>
+        </item>
+    </group>
+    <group android:id="@+id/group_landing">
+        <item android:id="@+id/action_landing" android:title="@string/landing_screen_title" android:icon="@drawable/ic_target" />
+        <item android:id="@+id/action_scan_landing" android:title="@string/scan_landing" android:icon="@drawable/ic_qr" />
+    </group>
+    <group android:id="@+id/group_more">
+        <item android:id="@+id/action_research" android:title="@string/tools" android:icon="@drawable/ic_chart">
+            <menu>
+                <item android:id="@+id/action_compare" android:title="@string/compare_models" />
+                <item android:id="@+id/action_latency" android:title="@string/latency_tool" />
+                <item android:id="@+id/action_showcase" android:title="@string/showcase_demo" />
+                <item android:id="@+id/action_change_model" android:title="@string/change_model" />
+                <item android:id="@+id/action_gpu_pose" android:title="@string/gpu_pose" android:checkable="true" android:checked="true" />
+            </menu>
+        </item>
+        <item android:id="@+id/action_about" android:title="@string/about_tool" android:icon="@drawable/ic_info_outline" />
+    </group>
 </menu>

@@ -46,6 +46,7 @@ class ScanLandingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityScanLandingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enterImmersive(binding.root, gutterDp = 0)
         binding.root.keepScreenOn = true
         cameraExecutor = Executors.newSingleThreadExecutor()
         binding.cancelButton.setOnClickListener { finish() }

@@ -3,20 +3,29 @@ package com.thesis.pickleballserve
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
-import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
-import android.view.TouchDelegate
+import android.util.TypedValue
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.PopupMenu
+import android.widget.ImageView
+import androidx.appcompat.widget.PopupMenu
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.camera.core.AspectRatio
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.doOnNextLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.thesis.pickleballserve.databinding.DialogFactsBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.RejectedExecutionException
@@ -27,7 +36,6 @@ import android.os.SystemClock
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.util.Size
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -77,6 +85,48 @@ class MainActivity : AppCompatActivity() {
 
     private enum class RunMode { SINGLE, ENSEMBLE, HYBRID }
 
+    /** SETUP = camera setup check (no serve capture); LIVE = capture + result cards. */
+    private enum class Screen { SETUP, LIVE }
+    /** Status pill dot: green ready/result, amber busy/partial, red needs attention. */
+    private enum class Pill { GOOD, BUSY, PARTIAL, ALERT }
+    private enum class Check { OK, WARN, PENDING }
+
+    private var screen = Screen.SETUP
+    /** Screen to reopen after a recreation (Theme change); null on a fresh launch. */
+    private var restoredScreen: Screen? = null
+    /** Read on the analysis worker: the motion gate only arms during a live session. */
+    @Volatile private var sessionLive = false
+    /** True while the pill shows "Player not visible", so the next pose restores it. */
+    @Volatile private var trackingLostShown = false
+    @Volatile private var lastFramingMs = 0L
+    @Volatile private var lastFraming: FramingCheck.Result? = null
+    @Volatile private var frameAspect = 0f
+    /** Last final class probabilities (analysis worker), rendered with the result. */
+    private var lastProbs: FloatArray? = null
+    private var lastInferenceFailed = false
+    @Volatile private var lastRecord: ServeRecord? = null
+    /** Classifier label shown on the Research tools menu row. */
+    private var modeLabelText = ""
+    /** A finished result is on the panel (kept, dimmed, while the next serve is analyzed). */
+    private var resultShown = false
+    /** Last measured values, for the help dialogs' "This serve" row. */
+    private var lastHipValue: Float? = null
+    private var lastHipPassed: Boolean? = null
+    private var lastPaddleAngle: Double? = null
+    private var lastPaddleState: FeedbackEngine.PaddleState? = null
+
+    // --- Hands-free start: hold still in the outline, then a spoken countdown. ---
+    private var framingOkSinceMs = 0L
+    private var countdownEndMs = 0L
+    private val autoStartHoldMs = 1000L
+    private val autoStartCountdownMs = 3000L
+    private val autoStartTick = Runnable { tickAutoStart() }
+    private val autoStartGraceMs = 400L
+    private var framingBadSinceMs = 0L
+    private var lastSpokenCount = -1
+    /** Set by a manual return to setup; cleared once the player has left the outline. */
+    private var autoStartBlocked = false
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var paddleExecutor: ThreadPoolExecutor
@@ -109,6 +159,10 @@ class MainActivity : AppCompatActivity() {
     private var paddleThrottled = 0L
     private val paddleBusy = java.util.concurrent.atomic.AtomicBoolean(false)
     private val serveWindow = ServeWindow(preRollMs = 1000L)
+    /** Review clips (memory only). Off for research replays so latency runs stay unchanged. */
+    private val clipRecorder = ClipRecorder()
+    private val clipsEnabled get() = intent.getStringExtra(EXTRA_REPLAY_CLIP) == null
+    @Volatile private var pendingClip: ServeClip? = null
 
     private var mode = RunMode.ENSEMBLE  // Original GRU selected before Coach C Session 2 release.
 
@@ -193,7 +247,7 @@ class MainActivity : AppCompatActivity() {
                 ?: return@registerForActivityResult
             val parsed = LandingResult.parse(payload)
             if (parsed == null) {
-                Toast.makeText(this, getString(R.string.scan_invalid), Toast.LENGTH_LONG).show()
+                notify(R.string.scan_invalid)
                 return@registerForActivityResult
             }
             onLandingScanned(parsed)
@@ -202,14 +256,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionRequested = savedInstanceState?.getBoolean("permissionRequested") ?: false
+        // A Theme change recreates this screen: keep the user's session settings across it.
+        savedInstanceState?.let { s ->
+            mode = runCatching { RunMode.valueOf(s.getString("mode") ?: mode.name) }.getOrDefault(mode)
+            cameraFacing = s.getInt("cameraFacing", cameraFacing)
+            poseGpu = s.getBoolean("poseGpu", poseGpu)
+            speakResults = s.getBoolean("speakResults", speakResults)
+            restoredScreen = runCatching { Screen.valueOf(s.getString("screen") ?: "") }.getOrNull()
+        }
         posePriority = intent.getBooleanExtra("research_pose_priority", true)
         revisedEnd = intent.getBooleanExtra("research_end_v2", false)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        WindowCompat.getInsetsController(window, binding.root).isAppearanceLightNavigationBars = true
+        // Camera screen runs immersive: system bars hide and return on a swipe.
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.getInsetsController(window, binding.root).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.systemBars())
+        }
+        val gutter = dp(8)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
-            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            val cut = insets.getInsets(WindowInsetsCompat.Type.displayCutout())
+            view.setPadding(gutter + cut.left, gutter + cut.top, gutter + cut.right, gutter + cut.bottom)
             insets
         }
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -217,11 +285,28 @@ class MainActivity : AppCompatActivity() {
         paddleExecutor = ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, LinkedBlockingQueue(6))
         binding.menuButton.setOnClickListener { showMenu() }
         binding.previewView.setOnClickListener {
-            setFullscreen(binding.resultsScroll.visibility == View.VISIBLE)
+            if (screen == Screen.LIVE) setFullscreen(!fullscreen)
+        }
+        // "Start now" is the fallback for when someone is at the phone; the
+        // session normally starts by itself (see tickAutoStart).
+        binding.startSessionButton.setOnClickListener { if (modelsReady) applyMode(Screen.LIVE) }
+        binding.tryAgainButton.setOnClickListener { newAttempt() }
+        binding.setupTipsButton.setOnClickListener { applyMode(Screen.SETUP) }
+        binding.backToSetupButton.setOnClickListener { applyMode(Screen.SETUP) }
+        binding.allServesButton.setOnClickListener { startActivity(Intent(this, SessionActivity::class.java)) }
+        binding.readAloudSwitch.isChecked = speakResults
+        binding.readAloudSwitch.setOnCheckedChangeListener { _, on ->
+            speakResults = on
+            if (!on) tts?.stop()
         }
         onBackPressedDispatcher.addCallback(this) {
-            if (fullscreen) setFullscreen(false)
-            else { isEnabled = false; onBackPressedDispatcher.onBackPressed() }
+            when {
+                fullscreen -> setFullscreen(false)
+                // Live -> setup first, so a stray Back on stage never closes the app.
+                screen == Screen.LIVE && showcaseIndex < 0 && intent.getStringExtra(EXTRA_REPLAY_CLIP) == null ->
+                    applyMode(Screen.SETUP)
+                else -> { isEnabled = false; onBackPressedDispatcher.onBackPressed() }
+            }
         }
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -235,32 +320,19 @@ class MainActivity : AppCompatActivity() {
         binding.serveInfoButton.setOnClickListener {
             showInfo(R.string.serve_definitions_title, R.string.serve_definitions_body)
         }
-        binding.hipInfoButton.setOnClickListener {
-            showInfo(R.string.hip_info_title, R.string.hip_info_body)
-        }
-        binding.paddleInfoButton.setOnClickListener {
-            showInfo(R.string.paddle_info_title, R.string.paddle_info_body)
-        }
-        // Keep the 32dp "?" visuals slim while guaranteeing 48dp touch targets.
-        expandHitArea(binding.serveInfoButton)
-        expandHitArea(binding.hipInfoButton)
-        expandHitArea(binding.paddleInfoButton)
-        // First launch: show the side-view setup once so the screen is never
-        // a blank camera with "Waiting for a serve" and no guidance.
-        runCatching {
-            val prefs = getSharedPreferences("pb_serve_prefs", MODE_PRIVATE)
-            if (!prefs.getBoolean("setup_seen", false)) {
-                showInfo(R.string.setup_title, R.string.setup_body)
-                prefs.edit().putBoolean("setup_seen", true).apply()
-            }
-        }
+        binding.hipInfoButton.setOnClickListener { showHipHelp() }
+        binding.paddleInfoButton.setOnClickListener { showPaddleHelp() }
+        // Every launch opens on the camera setup check (Figure 7.2a); research
+        // replays skip it and run the live path directly.
+        clearCards()
+        applyMode(if (intent.getStringExtra(EXTRA_REPLAY_CLIP) != null) Screen.LIVE else restoredScreen ?: Screen.SETUP)
         paddleExecutor.execute {
             paddleStream = PaddleStream.load(applicationContext)
             if (paddleStream == null) Log.e("MainActivity", "Paddle stream unavailable")
         }
         analysisExecutor.execute {
             try {
-                gru = GruClassifier.load(applicationContext, ensemble = true)
+                gru = GruClassifier.load(applicationContext, ensemble = mode != RunMode.SINGLE)
                 knn = runCatching { KnnClassifier.load(applicationContext) }.getOrNull()
                 shiftDetector = ShiftDetector.load(applicationContext)
                 feedbackEngine = runCatching {
@@ -270,6 +342,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (!destroyed) {
                         updateModeLabel()
+                        renderSetupChecks()
                         if (foreground) startInput()
                     }
                 }
@@ -287,47 +360,342 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread { if (!destroyed && foreground && sessionEpoch.accepts(generation)) block() }
     }
 
-    private fun setStatus(title: String, detail: String, busy: Boolean = false) {
-        binding.statusLine.text = if (detail.isBlank()) title else "$title · $detail"
+    /**
+     * One status pill: dot + one line. The detail line shows only for problems
+     * (ALERT); otherwise it is spoken via the content description.
+     */
+    private fun setStatus(title: String, detail: String, busy: Boolean = false, pill: Pill? = null) {
+        val tone = pill ?: when {
+            busy -> Pill.BUSY
+            binding.recoveryButton.visibility == View.VISIBLE -> Pill.ALERT
+            else -> Pill.GOOD
+        }
+        trackingLostShown = false
+        binding.statusLine.text = title
+        binding.statusDetail.text = detail
+        binding.statusDetail.visibility = if (detail.isNotBlank() && tone == Pill.ALERT) View.VISIBLE else View.GONE
         binding.statusProgress.visibility = if (busy) View.VISIBLE else View.GONE
-        updateStep(busy)
+        binding.statusDot.visibility = if (busy) View.GONE else View.VISIBLE
+        binding.statusDot.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, when (tone) {
+            Pill.GOOD -> R.color.dot_good
+            Pill.BUSY, Pill.PARTIAL -> R.color.dot_busy
+            Pill.ALERT -> R.color.dot_alert
+        }))
+        binding.statusPill.contentDescription = if (detail.isBlank()) title else "$title. $detail"
+    }
+
+    /** Idle status for the current screen. */
+    private fun readyStatus() {
+        if (screen == Screen.SETUP) setStatus(getString(R.string.setup_check), "")
+        else setStatus(getString(R.string.status_ready), getString(R.string.camera_hint))
     }
 
     /**
-     * Step pill beside the status: 1/3 ready, 2/3 analyzing, 3/3 result, or !
-     * when the recovery action is showing. Display-only; statusLine text and
-     * the analysis pipeline are untouched.
+     * One shell for both modes: the camera never moves; the panel swaps its
+     * contents. SETUP shows the checks and starts by itself; LIVE arms the
+     * motion gate and shows the cue and three metric rows.
      */
-    private fun updateStep(busy: Boolean = false) {
-        val attention = binding.recoveryButton.visibility == View.VISIBLE
-        val label = binding.classLabel.text.toString()
-        val complete = !attention && label != getString(R.string.waiting) &&
-            label != getString(R.string.analyzing) && label != "Incomplete capture" &&
-            label != "Unavailable" && label != "UNAVAILABLE"
-        val step = when {
-            attention -> getString(R.string.step_attention) to getString(R.string.step_attention_desc)
-            busy -> getString(R.string.step_analyzing) to getString(R.string.step_analyzing_desc)
-            complete -> getString(R.string.step_result) to getString(R.string.step_result_desc)
-            else -> getString(R.string.step_ready) to getString(R.string.step_ready_desc)
+    private fun applyMode(next: Screen) {
+        val wasLive = sessionLive
+        screen = next
+        sessionLive = next == Screen.LIVE
+        if (fullscreen) setFullscreen(false)
+        cancelAutoStart()
+        val setup = next == Screen.SETUP
+        // Back to setup from a session: do not jump straight back to LIVE while the player is in frame.
+        if (setup && wasLive) autoStartBlocked = true
+        if (!setup) SessionStore.markStart(SystemClock.elapsedRealtime())
+        binding.setupPanel.visibility = if (setup) View.VISIBLE else View.GONE
+        binding.resultsScroll.visibility = if (setup) View.GONE else View.VISIBLE
+        binding.setupTitle.visibility = if (setup) View.VISIBLE else View.GONE
+        binding.allServesButton.visibility = if (setup) View.GONE else View.VISIBLE
+        binding.readAloudSwitch.visibility = if (setup) View.GONE else View.VISIBLE
+        binding.framingHint.visibility = if (setup) View.VISIBLE else View.GONE
+        updateServesButton()
+        if (wasLive != sessionLive) {
+            // Leaving or entering a session never carries a half-captured serve across.
+            sessionEpoch.invalidate()
+            if (::analysisExecutor.isInitialized) analysisExecutor.execute { resetAnalysis() }
+            binding.statusProgress.visibility = View.GONE
+            if (!resultShown) clearCards()
+            else setResultDimmed(false)
         }
-        binding.stepLabel.text = step.first
-        binding.stepLabel.contentDescription = step.second
+        renderSetupChecks()
+        if (binding.recoveryButton.visibility != View.VISIBLE &&
+            (modelsReady || binding.statusProgress.visibility != View.VISIBLE)) readyStatus()
     }
 
-    private fun clearCards(analyzing: Boolean = false) {
-        val text = if (analyzing) getString(R.string.analyzing) else getString(R.string.waiting)
-        binding.classLabel.text = text
-        binding.confLabel.setText(R.string.confidence_empty)
-        binding.shiftLabel.text = text
-        binding.paddleLabel.text = text
-        binding.feedbackTitle.setText(R.string.coaching_title)
-        binding.feedbackLabel.text = if (analyzing) "Checking the measurements from this serve…" else getString(R.string.coaching_empty)
-        listOf(binding.classLabel, binding.confLabel, binding.shiftLabel, binding.paddleLabel).forEach {
-            it.setTextColor(ContextCompat.getColor(this, R.color.ink))
+    private fun updateServesButton() {
+        val n = SessionStore.size()
+        binding.allServesButton.text = if (n == 0) getString(R.string.no_serves_yet) else getString(R.string.all_serves, n)
+    }
+
+    /** Setup checks: only what the app can actually measure. Drives hands-free start. */
+    private fun renderSetupChecks(framing: FramingCheck.Result? = lastFraming) {
+        val rear = cameraFacing == CameraSelector.LENS_FACING_BACK
+        setCheck(binding.checkCameraIcon, binding.checkCameraText, if (rear) Check.OK else Check.WARN,
+            getString(if (rear) R.string.check_camera else R.string.check_camera_front))
+        val seen = framing != null && framing != FramingCheck.Result.NO_PLAYER
+        setCheck(binding.checkPlayerIcon, binding.checkPlayerText,
+            when { framing == null -> Check.PENDING; seen -> Check.OK; else -> Check.WARN },
+            getString(if (seen) R.string.check_player else R.string.check_player_missing))
+        setCheck(binding.checkBodyIcon, binding.checkBodyText,
+            when { !seen -> Check.PENDING; framing!!.ok -> Check.OK; else -> Check.WARN },
+            if (seen) framing!!.message else getString(R.string.stand_in_outline))
+        binding.framingGuide.ok = framing?.ok == true
+        binding.framingHint.text = if (framing?.ok == true) framing.message
+            else framing?.takeIf { seen }?.message ?: getString(R.string.stand_in_outline)
+        binding.startSessionButton.isEnabled = modelsReady
+        binding.startSessionButton.setText(if (modelsReady) R.string.start_now else R.string.setup_waiting_models)
+        // A manual return to setup stays put until the player has left the outline once.
+        if (framing != null && !framing.ok) autoStartBlocked = false
+        if (framing?.ok == true) maybeStartAutoStart() else if (framingOkSinceMs == 0L) cancelAutoStart()
+    }
+
+    private fun autoStartAllowed() = screen == Screen.SETUP && !autoStartBlocked && modelsReady && inputRunning && foreground &&
+        !destroyed && showcaseIndex < 0 && intent.getStringExtra(EXTRA_REPLAY_CLIP) == null
+
+    private fun maybeStartAutoStart() {
+        if (!autoStartAllowed() || framingOkSinceMs != 0L) return
+        framingOkSinceMs = SystemClock.uptimeMillis()
+        binding.root.removeCallbacks(autoStartTick)
+        binding.root.postDelayed(autoStartTick, 200)
+    }
+
+    /** Hold still ~1 s inside the outline, then a 3 s countdown; leaving the outline cancels. */
+    private fun tickAutoStart() {
+        binding.root.removeCallbacks(autoStartTick)
+        if (!autoStartAllowed()) { cancelAutoStart(); return }
+        val now = SystemClock.uptimeMillis()
+        // Grace period: one jittery frame at the outline edge must not reset the countdown.
+        if (lastFraming?.ok != true) {
+            if (framingBadSinceMs == 0L) framingBadSinceMs = now
+            if (now - framingBadSinceMs > autoStartGraceMs) { cancelAutoStart(); return }
+        } else framingBadSinceMs = 0L
+        if (now - framingOkSinceMs < autoStartHoldMs) { binding.root.postDelayed(autoStartTick, 200); return }
+        if (countdownEndMs == 0L) countdownEndMs = now + autoStartCountdownMs
+        val left = ((countdownEndMs - now + 999) / 1000).toInt()
+        if (left <= 0) {
+            cancelAutoStart()
+            applyMode(Screen.LIVE)
+            speakText(getString(R.string.spoken_ready), force = true)
+            return
         }
-        binding.probDriveBar.progress = 0; binding.probLobBar.progress = 0; binding.probTopspinBar.progress = 0
-        binding.probDrive.text = "Drive —"; binding.probLob.text = "Lob —"; binding.probTopspin.text = "Topspin —"
-        binding.classLabel.contentDescription = text
+        if (left != lastSpokenCount) { lastSpokenCount = left; speakText(left.toString(), force = true) }
+        setStatus(getString(R.string.hold_still, left), "", busy = true)
+        binding.startSessionNote.text = getString(R.string.starting_in, left)
+        binding.root.postDelayed(autoStartTick, 200)
+    }
+
+    private fun cancelAutoStart() {
+        binding.root.removeCallbacks(autoStartTick)
+        val wasCounting = countdownEndMs != 0L
+        framingOkSinceMs = 0L
+        framingBadSinceMs = 0L
+        countdownEndMs = 0L
+        lastSpokenCount = -1
+        binding.startSessionNote.setText(if (autoStartBlocked) R.string.starts_after_step_out else R.string.starts_by_itself)
+        if (wasCounting && screen == Screen.SETUP && binding.recoveryButton.visibility != View.VISIBLE) readyStatus()
+    }
+
+    private fun setCheck(icon: ImageView, text: TextView, state: Check, label: String) {
+        val (res, tint) = when (state) {
+            Check.OK -> R.drawable.ic_check_circle to R.color.ok
+            Check.WARN -> R.drawable.ic_info_outline to R.color.warn
+            Check.PENDING -> R.drawable.ic_circle to R.color.icon_secondary
+        }
+        icon.setImageResource(res)
+        icon.imageTintList = ColorStateList.valueOf(color(tint))
+        text.text = label
+        text.contentDescription = when (state) {
+            Check.OK -> "Done: $label"; Check.WARN -> "Needs attention: $label"; Check.PENDING -> label
+        }
+    }
+
+    /** Throttled framing check from the analysis worker (also drives the outline color). */
+    private fun postFraming(result: FramingCheck.Result, force: Boolean = false) {
+        val now = SystemClock.uptimeMillis()
+        if (!force && now - lastFramingMs < 250L && result == lastFraming) return
+        lastFramingMs = now
+        if (result == lastFraming) return
+        lastFraming = result
+        runOnUiThread { if (!destroyed) renderSetupChecks(result) }
+    }
+
+    /** "Try again": clear the shown serve and wait for the next one. */
+    private fun newAttempt() {
+        sessionEpoch.invalidate()
+        pendingLanding = null
+        landingRefreshRecord = null
+        clearCards()
+        analysisExecutor.execute { resetAnalysis() }
+        readyStatus()
+    }
+
+    private fun color(id: Int) = ContextCompat.getColor(this, id)
+    private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+
+    /** The last result stays readable, dimmed, while the next serve is analyzed. */
+    private fun setResultDimmed(dim: Boolean) {
+        val a = if (dim) 0.45f else 1f
+        binding.feedbackLabel.alpha = a; binding.cueBadge.alpha = a
+        binding.feedbackNotes.alpha = a; binding.metricRows.alpha = a
+    }
+
+    /**
+     * Empty or analyzing panel. With a result already on screen, analyzing only
+     * dims it; otherwise one message replaces the metric rows.
+     */
+    private fun clearCards(analyzing: Boolean = false) {
+        serveAnalyzing = analyzing
+        binding.feedbackActions.visibility = View.GONE
+        if (analyzing && resultShown) { setResultDimmed(true); return }
+        resultShown = false
+        setResultDimmed(false)
+        setCue(getString(if (analyzing) R.string.status_analyzing else R.string.waiting_title))
+        binding.cueBadge.visibility = View.GONE
+        binding.feedbackNotes.visibility = View.GONE
+        binding.waitingMsg.visibility = if (analyzing) View.GONE else View.VISIBLE
+        binding.metricRows.visibility = View.GONE
+        binding.backToSetupButton.visibility = if (analyzing) View.GONE else View.VISIBLE
+        listOf(binding.classLabel, binding.shiftLabel, binding.paddleLabel).forEach {
+            it.setText(R.string.card_empty); it.setTextColor(color(R.color.text_primary))
+        }
+        binding.confLabel.text = ""
+        listOf(binding.serveChip, binding.hipChip, binding.paddleChip).forEach { it.visibility = View.GONE }
+    }
+
+    /** Incomplete capture: the only state that offers Try again. */
+    private fun showIncomplete() {
+        clearCards()
+        setCue(getString(R.string.incomplete_capture_note))
+        binding.waitingMsg.visibility = View.GONE
+        binding.backToSetupButton.visibility = View.GONE
+        binding.feedbackActions.visibility = View.VISIBLE
+    }
+
+    /** A serve is between its start and its result; a Theme change would drop it. */
+    private var serveAnalyzing = false
+
+    /** Big cue at 24sp; long cues shrink after layout until the metric rows fit (fitCue). */
+    private fun setCue(text: String) {
+        // Live shows the first cue only, as a sentence; Read aloud and the review keep every cue.
+        val first = text.lines().firstOrNull { it.isNotBlank() }?.removePrefix("• ")?.trim() ?: ""
+        cueSentences = first.split(Regex("(?<=[.!?])\\s+")).filter { it.isNotBlank() }
+        binding.feedbackLabel.contentDescription = text.replace("• ", "")
+        binding.feedbackLabel.maxLines = Int.MAX_VALUE
+        binding.feedbackLabel.ellipsize = null
+        binding.feedbackLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+        binding.feedbackLabel.text = first
+        binding.resultsScroll.doOnNextLayout { fitCue(0) }
+    }
+
+    /** Sentences of the live cue; a long cue drops its opening diagnosis before anything is clipped. */
+    private var cueSentences: List<String> = emptyList()
+
+    /**
+     * Keeps every metric row visible while the cue stays readable at 2–3 m: first
+     * drops the engine note line, then steps the cue down to a 20sp floor, then
+     * clamps it to three lines. Read aloud and the review screen keep the full text.
+     */
+    private fun fitCue(step: Int) {
+        if (destroyed || step > 8) return
+        val panel = binding.resultsScroll
+        val rows = binding.metricRows
+        if (panel.height == 0 || rows.visibility != View.VISIBLE) return
+        // The parent squeezes rows into what is left, so compare their natural height.
+        rows.measure(View.MeasureSpec.makeMeasureSpec(rows.width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+        val overflow = rows.top + rows.measuredHeight > panel.height - panel.paddingBottom
+        if (!overflow) return
+        val sp = binding.feedbackLabel.textSize / resources.displayMetrics.scaledDensity
+        // Changes go out of the layout pass (post), then re-check after the relayout.
+        panel.post {
+            val label = binding.feedbackLabel
+            when {
+                binding.feedbackNotes.visibility == View.VISIBLE -> binding.feedbackNotes.visibility = View.GONE
+                sp > 20.5f -> label.setTextSize(TypedValue.COMPLEX_UNIT_SP, (sp - 2f).coerceAtLeast(20f))
+                // Keep the instruction: drop the leading diagnosis sentence(s) first.
+                cueSentences.size > 1 -> {
+                    cueSentences = cueSentences.drop(1)
+                    label.text = cueSentences.joinToString(" ")
+                }
+                label.maxLines > 3 -> { label.maxLines = 3; label.ellipsize = android.text.TextUtils.TruncateAt.END }
+                label.maxLines > 2 -> label.maxLines = 2
+                else -> return@post
+            }
+            panel.doOnNextLayout { fitCue(step + 1) }
+            panel.requestLayout()
+        }
+    }
+
+    private fun showChip(chip: TextView, label: String?, tone: ServePresentation.Tone) {
+        if (label == null) { chip.visibility = View.GONE; return }
+        chip.text = label
+        chip.visibility = View.VISIBLE
+        val (bg, fg) = when (tone) {
+            ServePresentation.Tone.GOOD -> R.color.ok_muted to R.color.ok
+            ServePresentation.Tone.WARN -> R.color.warn_muted to R.color.warn
+            ServePresentation.Tone.NEUTRAL -> R.color.accent_muted to R.color.text_secondary
+        }
+        chip.backgroundTintList = ColorStateList.valueOf(color(bg))
+        chip.setTextColor(color(fg))
+    }
+
+    /** Badge wording on the live rows (status in words, never color alone). */
+    private fun badgeLabel(chip: String?): String? = when (chip) {
+        null -> null
+        "Within range" -> getString(R.string.badge_in_range)
+        else -> chip
+    }
+
+    /** Render one finished serve: cue, then the three rows with their reference bands (UI thread). */
+    private fun renderResult(
+        serve: ServePresentation.ServeType, confidence: Float?,
+        hip: ServePresentation.Metric, paddle: ServePresentation.Metric,
+        cues: String, generalCue: Boolean, notes: List<String>,
+        hipValue: Float?, hipThreshold: Float?, paddleLow: Double?, paddleHigh: Double?,
+    ) {
+        resultShown = true
+        setResultDimmed(false)
+        serveAnalyzing = false
+        setCue(cues)
+        binding.cueBadge.visibility = if (generalCue) View.VISIBLE else View.GONE
+        val noteText = notes.filter { it.isNotBlank() }.joinToString("\n")
+        binding.feedbackNotes.text = noteText
+        binding.feedbackNotes.visibility = if (noteText.isBlank()) View.GONE else View.VISIBLE
+        binding.waitingMsg.visibility = View.GONE
+        binding.backToSetupButton.visibility = View.GONE
+        binding.feedbackActions.visibility = View.GONE
+        binding.metricRows.visibility = View.VISIBLE
+
+        binding.classLabel.text = serve.value
+        binding.classLabel.contentDescription = "Serve type ${serve.value}. ${serve.detail}"
+        binding.classLabel.setTextColor(color(if (serve.reliable) R.color.text_primary else R.color.warn))
+        binding.confLabel.text = if (serve.reliable && confidence != null)
+            "${ServePresentation.pct(confidence)}%" else ""
+        showChip(binding.serveChip, when {
+            serve.reliable -> null
+            serve.value == "Not measured" -> getString(R.string.badge_partial)
+            else -> getString(R.string.badge_low_confidence)
+        }, ServePresentation.Tone.WARN)
+
+        binding.shiftLabel.setTextColor(color(R.color.text_primary))
+        binding.shiftLabel.text = hip.value
+        showChip(binding.hipChip, badgeLabel(hip.chip), hip.tone)
+        binding.hipRef.text = when {
+            hipValue != null && hipValue.isFinite() && hipThreshold != null ->
+                getString(R.string.hip_ref, hipValue, hipThreshold)
+            hipThreshold != null -> String.format(Locale.getDefault(), "≥ %.3f", hipThreshold)
+            else -> ""
+        }
+        binding.paddleLabel.setTextColor(color(R.color.text_primary))
+        binding.paddleLabel.text = paddle.value
+        showChip(binding.paddleChip, badgeLabel(paddle.chip) ?: getString(R.string.badge_partial),
+            if (paddle.chip == null) ServePresentation.Tone.WARN else paddle.tone)
+        binding.paddleRef.text = if (paddleLow != null && paddleHigh != null)
+            getString(R.string.paddle_ref, paddleLow, paddleHigh) else ""
+        updateServesButton()
     }
 
     /** Called only on the analysis worker; UI invalidation happens immediately. */
@@ -337,56 +705,43 @@ class MainActivity : AppCompatActivity() {
         motionRing.fill(0f); motionRingIdx = 0; motionRingCount = 0
         idleMean = 0f; idleDev = .02f; lastPoseSeenMs = 0L
         shiftDetector?.clear(); paddleStream?.clear()
+        clipRecorder.reset()
     }
 
-    /** Fullscreen framing for tripod setup; Back leaves it before leaving. */
+    /** Camera only (tap the camera): the panel hides for framing; Back or a tap restores it. */
     private fun setFullscreen(on: Boolean) {
+        if (screen != Screen.LIVE && on) return
         fullscreen = on
-        binding.resultsScroll.visibility = if (on) View.GONE else View.VISIBLE
+        binding.panel.visibility = if (on) View.GONE else View.VISIBLE
+        binding.framingHint.visibility = if (on || screen == Screen.SETUP) View.VISIBLE else View.GONE
     }
 
     private fun showMenu() {
-        val popup = PopupMenu(this, binding.menuButton)
+        val popup = PopupMenu(this, binding.menuButton, android.view.Gravity.END)
         popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
-        popup.menu.findItem(R.id.action_fullscreen).isChecked = fullscreen
-        popup.menu.findItem(R.id.action_speak).isChecked = speakResults
+        popup.setForceShowIcon(true)
+        if (screen == Screen.SETUP) popup.menu.findItem(R.id.action_setup).setTitle(R.string.setup_tips)
         popup.menu.findItem(R.id.action_gpu_pose).isChecked = poseGpu
-        popup.menu.findItem(R.id.action_session).title =
-            getString(R.string.session_serves) + " (${SessionStore.size()})"
+        popup.menu.findItem(R.id.action_change_model).title = getString(R.string.classifier_row, modeLabelText)
+        popup.menu.findItem(R.id.action_camera).title = getString(R.string.camera_menu) + " · " +
+            getString(if (cameraFacing == CameraSelector.LENS_FACING_FRONT) R.string.camera_front_short else R.string.camera_back_short)
         popup.menu.findItem(
             if (cameraFacing == CameraSelector.LENS_FACING_FRONT) R.id.action_camera_front
             else R.id.action_camera_back
         ).isChecked = true
+        popup.menu.findItem(when (savedNightMode()) {
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO -> R.id.action_theme_light
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES -> R.id.action_theme_dark
+            else -> R.id.action_theme_system
+        }).isChecked = true
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_setup -> {
-                    MaterialAlertDialogBuilder(this).setTitle(R.string.setup_title).setMessage(R.string.setup_body)
-                        .setPositiveButton(R.string.understood, null).show()
+                    if (screen == Screen.SETUP || showcaseIndex >= 0) showInfo(R.string.setup_title, R.string.setup_body)
+                    else applyMode(Screen.SETUP)
                     true
                 }
-                R.id.action_reset -> {
-                    sessionEpoch.invalidate()
-                    pendingLanding = null
-                    landingRefreshRecord = null
-                    clearCards()
-                    analysisExecutor.execute { resetAnalysis() }
-                    setStatus(getString(R.string.ready_title), getString(R.string.camera_hint))
-                    true
-                }
-                R.id.action_fullscreen -> {
-                    setFullscreen(!fullscreen)
-                    item.isChecked = fullscreen
-                    true
-                }
-                R.id.action_session -> {
-                    startActivity(Intent(this, SessionActivity::class.java)); true
-                }
-                R.id.action_speak -> {
-                    speakResults = !speakResults
-                    item.isChecked = speakResults
-                    if (!speakResults) tts?.stop()
-                    true
-                }
+                R.id.action_reset -> { newAttempt(); true }
                 R.id.action_gpu_pose -> {
                     poseGpu = !poseGpu
                     item.isChecked = poseGpu
@@ -395,7 +750,7 @@ class MainActivity : AppCompatActivity() {
                         stopInput()
                         startInput()
                     }
-                    Toast.makeText(this, getString(R.string.gpu_pose_note, if (poseGpu) "on" else "off"), Toast.LENGTH_LONG).show()
+                    notify(getString(R.string.gpu_pose_note, if (poseGpu) "on" else "off"))
                     true
                 }
                 R.id.action_camera_back -> {
@@ -406,11 +761,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.action_camera_front -> {
                     item.isChecked = true
                     if (cameraFacing != CameraSelector.LENS_FACING_FRONT) switchCamera(CameraSelector.LENS_FACING_FRONT)
-                    true
-                }
-                R.id.action_probabilities -> {
-                    binding.probabilityPanel.visibility =
-                        if (binding.probabilityPanel.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                     true
                 }
                 R.id.action_compare -> {
@@ -429,60 +779,132 @@ class MainActivity : AppCompatActivity() {
                     startShowcase(); true
                 }
                 R.id.action_change_model -> { changeMode(); true }
-                R.id.action_about -> {
-                    MaterialAlertDialogBuilder(this).setTitle(R.string.about_tool).setMessage(R.string.about_body)
-                        .setPositiveButton(R.string.understood, null).show()
-                    true
-                }
+                R.id.action_about -> { showAbout(); true }
+                R.id.action_theme_system -> { applyNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM); true }
+                R.id.action_theme_light -> { applyNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO); true }
+                R.id.action_theme_dark -> { applyNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES); true }
                 else -> false
             }
         }
         popup.show()
     }
 
-    private fun showInfo(titleRes: Int, bodyRes: Int) {
-        MaterialAlertDialogBuilder(this).setTitle(titleRes).setMessage(bodyRes)
-            .setPositiveButton(R.string.understood, null).show()
+    private fun savedNightMode(): Int = getSharedPreferences(ServeApp.PREFS, MODE_PRIVATE)
+        .getInt(ServeApp.KEY_NIGHT_MODE, androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+    /** Theme menu: remember the choice and apply it; open screens recreate in the new theme. */
+    private fun applyNightMode(mode: Int) {
+        if (mode == savedNightMode()) return
+        // Recreating mid-analysis would drop the serve being analyzed.
+        if (serveAnalyzing) { notify(R.string.theme_busy); return }
+        getSharedPreferences(ServeApp.PREFS, MODE_PRIVATE).edit().putInt(ServeApp.KEY_NIGHT_MODE, mode).apply()
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(mode)
     }
 
-    /** Expands a small control's touch area to minDp without changing its visuals. */
-    private fun expandHitArea(view: View, minDp: Int = 48) {
-        val parent = view.parent as? View ?: return
-        parent.post {
-            val rect = Rect()
-            view.getHitRect(rect)
-            val min = (minDp * resources.displayMetrics.density).toInt()
-            val dx = ((min - rect.width()) / 2).coerceAtLeast(0)
-            val dy = ((min - rect.height()) / 2).coerceAtLeast(0)
-            rect.left -= dx
-            rect.top -= dy
-            rect.right += dx
-            rect.bottom += dy
-            parent.touchDelegate = TouchDelegate(rect, view)
+    private fun showInfo(titleRes: Int, bodyRes: Int) {
+        MaterialAlertDialogBuilder(this).setTitle(titleRes).setMessage(bodyRes)
+            .setPositiveButton(R.string.got_it, null).show()
+    }
+
+    /** Help/About dialog: one paragraph, a fact table, one footnote. Method details live here. */
+    private fun showFacts(@StringRes title: Int, body: String?, facts: List<Pair<String, String>>,
+                          note: String?, @StringRes button: Int = R.string.got_it) {
+        val v = DialogFactsBinding.inflate(layoutInflater)
+        v.factsBody.text = body ?: ""
+        v.factsBody.visibility = if (body.isNullOrBlank()) View.GONE else View.VISIBLE
+        for ((k, value) in facts) {
+            val row = TableRow(this)
+            row.addView(TextView(this).apply {
+                text = k
+                setTextAppearance(R.style.TextAppearance_Serve_Body)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                setTextColor(color(R.color.text_secondary))
+                setPadding(0, dp(2), dp(16), dp(2))
+            })
+            row.addView(TextView(this).apply {
+                text = value
+                setTextAppearance(R.style.TextAppearance_Serve_Title)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                setPadding(0, dp(2), 0, dp(2))
+            })
+            v.factsTable.addView(row)
         }
+        v.factsNote.text = note ?: ""
+        v.factsNote.visibility = if (note.isNullOrBlank()) View.GONE else View.VISIBLE
+        MaterialAlertDialogBuilder(this).setTitle(title).setView(v.root)
+            .setPositiveButton(button, null).show()
+    }
+
+    private fun showHipHelp() {
+        val thr = shiftDetector?.thr
+        val value = lastHipValue
+        val now = if (value != null && value.isFinite()) String.format(Locale.getDefault(), "%.2f · %s", value,
+            if (lastHipPassed == true) "Good" else "Limited") else getString(R.string.not_measured_yet)
+        showFacts(R.string.hip_info_title, getString(R.string.hip_help_body), listOf(
+            getString(R.string.fact_this_serve) to now,
+            getString(R.string.fact_threshold) to (thr?.let { String.format(Locale.getDefault(), "≥ %.3f", it) } ?: "—"),
+            getString(R.string.fact_source) to getString(R.string.hip_help_source),
+        ), getString(R.string.hip_help_note))
+    }
+
+    private fun showPaddleHelp() {
+        val stream = paddleStream
+        val angle = lastPaddleAngle
+        val now = if (angle != null && angle.isFinite()) String.format(Locale.getDefault(), "%.1f° · %s", angle,
+            if (lastPaddleState == FeedbackEngine.PaddleState.OPTIMAL) "Within band" else "Outside band")
+            else getString(R.string.not_measured_yet)
+        val band = stream?.let { String.format(Locale.getDefault(), "%.1f–%.1f°", it.low, it.high) } ?: "—"
+        showFacts(R.string.paddle_info_title, getString(R.string.paddle_help_body), listOf(
+            getString(R.string.fact_this_serve) to now,
+            getString(R.string.fact_band) to band,
+            getString(R.string.fact_source) to getString(R.string.paddle_help_source),
+        ), getString(R.string.paddle_help_note))
+    }
+
+    private fun showAbout() {
+        showFacts(R.string.about_tool, null, listOf(
+            getString(R.string.about_classifier) to getString(R.string.about_classifier_value),
+            getString(R.string.about_input) to getString(R.string.about_input_value),
+            getString(R.string.about_gate) to getString(R.string.about_gate_value),
+            getString(R.string.about_general) to getString(R.string.about_general_value),
+            getString(R.string.about_processing) to getString(R.string.about_processing_value),
+        ), getString(R.string.about_note), R.string.close)
+    }
+
+    /** Transient feedback as a Material snackbar over the panel. */
+    private fun notify(message: String, long: Boolean = true) {
+        if (destroyed) return
+        Snackbar.make(binding.root, message, if (long) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT).show()
+    }
+    private fun notify(@StringRes res: Int, long: Boolean = true) = notify(getString(res), long)
+
+    /** Status speech; force = always spoken (session start cues the player hears from the baseline). */
+    private fun speakText(text: String, force: Boolean = false) {
+        if (!speakResults && !force) return
+        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "status")
     }
 
     /** Switch live input cameras without losing the session; research replay keeps its own source. */
     private fun switchCamera(facing: Int) {
         if (showcaseIndex >= 0) {
-            Toast.makeText(this, "Showcase running — it finishes on its own.", Toast.LENGTH_SHORT).show()
+            notify("Showcase running — it finishes on its own.", long = false)
             return
         }
         if (intent.getStringExtra(EXTRA_REPLAY_CLIP) != null) {
             cameraFacing = facing
-            Toast.makeText(this, R.string.camera_switch_note, Toast.LENGTH_LONG).show()
+            notify(R.string.camera_switch_note)
             return
         }
         cameraFacing = facing
         val provider = cameraProvider
         if (!inputRunning || provider == null || destroyed || !foreground) {
-            Toast.makeText(this, R.string.camera_switch_note, Toast.LENGTH_SHORT).show()
+            notify(R.string.camera_switch_note, long = false)
             return
         }
         try {
             provider.unbind(*cameraUseCases)
             val epoch = inputEpoch.get()
-            val preview = Preview.Builder().build().also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+            val preview = previewUseCase()
             val analysis = ImageAnalysis.Builder().setTargetResolution(Size(640, 480))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build()
             analysis.setAnalyzer(cameraExecutor) { image ->
@@ -500,14 +922,24 @@ class MainActivity : AppCompatActivity() {
         landingRefreshRecord = null
         analysisExecutor.execute { resetAnalysis() }
         clearCards()
-        setStatus(getString(R.string.ready_title), getString(R.string.camera_switch_note))
+        lastFraming = null
+        renderSetupChecks()
+        readyStatus()
     }
 
     private fun cameraSelector() = CameraSelector.Builder().requireLensFacing(cameraFacing).build()
 
+    /**
+     * 4:3 preview to match the 640x480 analysis stream: with fitCenter the screen
+     * shows the same field of view the pose model analyzes (no hidden crop).
+     */
+    @Suppress("DEPRECATION")
+    private fun previewUseCase(): Preview = Preview.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3).build()
+        .also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+
     /** Reads the same strings shown on screen, so the player can stay on court. */
-    private fun speak(record: ServeRecord) {
-        if (!speakResults) return
+    private fun speak(record: ServeRecord, force: Boolean = false) {
+        if (!speakResults && !force) return
         val engine = tts ?: return
         val conf = record.confidence?.let { "(${(it * 100).toInt()} percent). " } ?: ""
         val landing = record.landing?.let { " Landing $it." } ?: ""
@@ -539,7 +971,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val replacement = GruClassifier.load(applicationContext, ensemble = next != RunMode.SINGLE)
                 gru?.close(); gru = replacement; mode = next
-                postUi { updateModeLabel(); binding.probabilityPanel.visibility = View.VISIBLE
+                postUi { updateModeLabel()
                     setStatus("Comparison model ready", "${mode.name.lowercase()} selected. Reset does not change the model.") }
             } catch (e: Exception) {
                 postUi { setStatus("Model unchanged", "Could not load the comparison model. Your previous model remains active.") }
@@ -549,9 +981,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun showPermissionRequired() {
         inputRunning = false
-        binding.statusState.setText(R.string.camera_permission_title)
-        setStatus(getString(R.string.camera_permission_title), getString(R.string.camera_permission_note))
         binding.recoveryButton.visibility = View.VISIBLE
+        setStatus(getString(R.string.camera_permission_title), getString(R.string.camera_permission_note), pill = Pill.ALERT)
         val settings = permissionRequested && !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
         binding.recoveryButton.setText(if (settings) R.string.open_settings else R.string.allow_camera)
         binding.recoveryButton.setOnClickListener {
@@ -564,9 +995,8 @@ class MainActivity : AppCompatActivity() {
         if (destroyed) return
         stopInput()
         clearCards()
-        binding.statusState.text = title
-        setStatus(title, detail)
         binding.recoveryButton.visibility = View.VISIBLE
+        setStatus(title, detail, pill = Pill.ALERT)
         binding.recoveryButton.setText(R.string.retry)
         binding.recoveryButton.setOnClickListener { recreate() }
     }
@@ -580,6 +1010,9 @@ class MainActivity : AppCompatActivity() {
         inputRunning = true
         binding.root.keepScreenOn = true
         binding.recoveryButton.visibility = View.GONE
+        // A new input source starts unchecked; never keep a green outline from before.
+        lastFraming = null
+        renderSetupChecks()
         setStatus(getString(R.string.initializing), "Starting the camera and pose tracker…", true)
         if (replay != null) startClipReplay(replay, intent.getBooleanExtra(EXTRA_REPLAY_LOOP, false)) else startCamera()
     }
@@ -620,15 +1053,20 @@ class MainActivity : AppCompatActivity() {
         if (!inputRunning) return
         if (fullresPaddleArmed()) showcaseSrcQueue.poll()
         val now = SystemClock.uptimeMillis()
+        postFraming(FramingCheck.Result.NO_PLAYER)
         if (gateActive && lastPoseSeenMs != 0L && now - lastPoseSeenMs >= 1500L) {
             resetAnalysis()
-            postUi { clearCards(); binding.classLabel.text = "Incomplete capture"
-                binding.feedbackLabel.text = "The player left view before analysis completed. Keep your full body visible and try another serve."
-                setStatus("Capture interrupted", getString(R.string.tracking_lost_note)) }
+            postUi { showIncomplete()
+                setStatus("Capture interrupted", getString(R.string.tracking_lost_note), pill = Pill.ALERT) }
         }
-        if (now - lastStatusMs >= 500L) {
+        if (sessionLive && !trackingLostShown && now - lastStatusMs >= 500L) {
             lastStatusMs = now
-            postUi { binding.statusState.setText(R.string.tracking_lost) }
+            postUi {
+                if (binding.recoveryButton.visibility != View.VISIBLE) {
+                    setStatus(getString(R.string.tracking_lost), getString(R.string.tracking_lost_note), pill = Pill.ALERT)
+                    trackingLostShown = true
+                }
+            }
         }
     }
 
@@ -639,7 +1077,7 @@ class MainActivity : AppCompatActivity() {
             RunMode.ENSEMBLE -> "Ensemble · 5 models$matched"
             RunMode.HYBRID -> "Hybrid · GRU + technique check$matched"
         }
-        binding.modeLabel.text = label
+        modeLabelText = label
     }
 
     /**
@@ -667,8 +1105,7 @@ class MainActivity : AppCompatActivity() {
             posePipeline = null
             val pipeline = createPose(epoch).also { posePipeline = it }
             if (!pipeline.start(applicationContext)) return@execute
-            postUi { binding.statusState.text = statusLabel ?: "Recorded live-path replay"
-                setStatus(if (statusLabel != null) "Showcasing $clipName" else "Preparing recorded serve", "Research replay uses the live analysis path.") }
+            postUi { setStatus(statusLabel ?: "Recorded serve replay", "") }
             clipReplay = ServeClipReplay(file = file,
                 onFrame = { bitmap, real, srcIndex ->
                     if (showVideo) runOnUiThread { if (!destroyed) binding.replayView.setImageBitmap(bitmap) }
@@ -699,6 +1136,7 @@ class MainActivity : AppCompatActivity() {
     private var showcaseQueue: List<String> = emptyList()
     private var showcaseIndex = -1
     private val showcaseGapMs = 2500L
+    private var showcaseVerdictShown = false
     // Showcase / research paddle config: relaxed spacing (150ms vs 350ms) and an
     // optional full-res contact-window second pass (same detector/rules, bigger
     // pixels). Enabled by the showcase demo or explicitly per replay via the
@@ -713,19 +1151,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun startShowcase() {
         if (showcaseIndex >= 0) {
-            Toast.makeText(this, "Showcase already running.", Toast.LENGTH_SHORT).show()
+            notify("Showcase already running.", long = false)
             return
         }
         if (!modelsReady) {
-            Toast.makeText(this, "Models still loading — try the showcase again in a moment.", Toast.LENGTH_SHORT).show()
+            notify("Models still loading. Try the showcase again in a moment.", long = false)
             return
         }
         val dir = File(filesDir, "latency_input")
         val clips = listOf("C002.mp4", "C005.mp4", "C023.mp4").filter { File(dir, it).isFile }
         if (clips.size < 3) {
-            Toast.makeText(this, "Load C002, C005 and C023 first: Menu → Run recorded-file latency test → Load clips from phone storage.", Toast.LENGTH_LONG).show()
+            notify("Load C002, C005 and C023 first: Menu › Research tools › Recorded-file latency test › Load clips from phone storage.")
             return
         }
+        applyMode(Screen.LIVE)
         stopInput()
         showcaseQueue = clips
         showcaseIndex = 0
@@ -741,6 +1180,7 @@ class MainActivity : AppCompatActivity() {
         if (idx < 0 || idx >= showcaseQueue.size) { finishShowcase(); return }
         val clipName = showcaseQueue[idx]
         binding.replayView.visibility = View.VISIBLE
+        showcaseVerdictShown = false
         showcaseClipFile = File(File(filesDir, "latency_input"), clipName)
         showcaseSrcQueue.clear()
         synchronized(showcaseUsableSrc) {
@@ -751,15 +1191,22 @@ class MainActivity : AppCompatActivity() {
             clipName, loop = false, showVideo = true,
             statusLabel = "Showcase ${idx + 1}/${showcaseQueue.size} · $clipName",
             onFinished = {
-                // Keep the finished serve's result on screen briefly for the
-                // recording, then continue hands-free.
-                binding.root.postDelayed({
-                    if (destroyed || !foreground || showcaseIndex < 0) return@postDelayed
-                    analysisExecutor.execute { resetAnalysis() }
-                    showcaseIndex++
-                    if (showcaseIndex < showcaseQueue.size) playShowcaseClip()
-                    else finishShowcase()
-                }, showcaseGapMs)
+                // Advance on verdict, not on replay end: the full-res pass and
+                // inference land seconds after the replay finishes. Keep the shown
+                // result on screen briefly for the recording, then continue
+                // hands-free. A serve that never completes still advances on timeout.
+                val doneAt = SystemClock.uptimeMillis()
+                fun step() {
+                    if (destroyed || !foreground || showcaseIndex < 0 || showcaseIndex != idx) return
+                    val elapsed = SystemClock.uptimeMillis() - doneAt
+                    if ((showcaseVerdictShown && elapsed >= showcaseGapMs) || elapsed >= 15000) {
+                        analysisExecutor.execute { resetAnalysis() }
+                        showcaseIndex++
+                        if (showcaseIndex < showcaseQueue.size) playShowcaseClip()
+                        else finishShowcase()
+                    } else binding.root.postDelayed({ step() }, 500)
+                }
+                step()
             },
         )
     }
@@ -767,6 +1214,7 @@ class MainActivity : AppCompatActivity() {
     private fun finishShowcase() {
         showcaseIndex = -1
         showcaseQueue = emptyList()
+        showcaseVerdictShown = false
         showcaseClipFile = null
         showcaseSrcQueue.clear()
         synchronized(showcaseUsableSrc) {
@@ -778,7 +1226,7 @@ class MainActivity : AppCompatActivity() {
             binding.replayView.setImageDrawable(null)
             binding.replayView.visibility = View.GONE
         }
-        Toast.makeText(this, "Showcase complete — live camera resumed.", Toast.LENGTH_SHORT).show()
+        notify("Showcase complete. Live camera resumed.", long = false)
         stopInput()
         if (foreground && modelsReady) startInput()
     }
@@ -790,15 +1238,14 @@ class MainActivity : AppCompatActivity() {
             if (!foreground || destroyed || epoch != inputEpoch.get()) return@addListener
             try {
                 val provider = future.get().also { cameraProvider = it }
-                val preview = Preview.Builder().build().also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+                val preview = previewUseCase()
                 val analysis = ImageAnalysis.Builder().setTargetResolution(Size(640, 480))
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build()
                 cameraExecutor.execute {
                     if (!foreground || epoch != inputEpoch.get()) return@execute
                     val pipeline = createPose(epoch).also { posePipeline = it }
                     if (!pipeline.start(applicationContext)) return@execute
-                    postUi { binding.statusState.text = "Live camera · side view"
-                        setStatus(getString(R.string.ready_title), getString(R.string.camera_hint)) }
+                    postUi { readyStatus() }
                 }
                 analysis.setAnalyzer(cameraExecutor) { image ->
                     if (foreground && epoch == inputEpoch.get()) analyzeFrame(image) else image.close()
@@ -853,6 +1300,25 @@ class MainActivity : AppCompatActivity() {
         val motion = if (intent.getBooleanExtra("research_motion_rate", true))
             motionRate.update(displacement, timestampMs) else smoothMotion(displacement)
         val now = SystemClock.uptimeMillis()
+        if (realFrame) {
+            bitmap?.let { b ->
+                val aspect = b.width.toFloat() / b.height
+                if (aspect != frameAspect) { frameAspect = aspect
+                    runOnUiThread { if (!destroyed) binding.framingGuide.sourceAspect = aspect } }
+            }
+            postFraming(FramingCheck.evaluate(landmarks))
+        }
+        if (trackingLostShown) postUi {
+            if (trackingLostShown) { if (gateActive) setStatus(getString(R.string.status_analyzing), "", true) else readyStatus() }
+        }
+        // Setup check: pose drives the framing guide only. Idle stats still adapt so
+        // the first live serve triggers against this person's standing noise.
+        if (!sessionLive) {
+            idleMean += 0.1f * (motion - idleMean)
+            idleDev += 0.1f * (abs(motion - idleMean) - idleDev)
+            return
+        }
+        if (realFrame && clipsEnabled && bitmap != null) clipRecorder.offer(bitmap, landmarks, timestampMs)
         // Keep only fresh, real poses; the trigger sample is appended exactly once.
         if (realFrame && (gateActive || now >= refractoryUntilMs)) serveWindow.add(timestampMs, feats)
 
@@ -869,6 +1335,7 @@ class MainActivity : AppCompatActivity() {
                 paddleThrottled = 0L
                 paddleFailed = false
                 serveWindow.begin()
+                clipRecorder.begin()
                 emaProbs = null
                 shiftDetector?.clear()
                 paddleStream?.clear()
@@ -880,24 +1347,21 @@ class MainActivity : AppCompatActivity() {
                         showcaseUsableWrist.clear()
                     }
                 }
+                if (showcaseIndex >= 0) Log.i(LATENCY_TAG, "serve_started clip=${showcaseQueue.getOrNull(showcaseIndex)} time=$now")
                 shiftDetector?.let { s ->
                     landmarkSample(landmarks)?.let { (hx, bh) -> s.add(hx, bh) }
                 }
                 addPaddleSample(landmarks, bitmap, showcaseSrcIdx)
                 postUi {
-                    binding.statusState.text = "Pose: OK"
                     clearCards(analyzing = true)
-                    setStatus("Analyzing your serve…", "Keep the setup and follow-through in view.", true)
+                    setStatus(getString(R.string.status_analyzing), "", true)
                 }
             } else {
                 // absorb standing noise (and any recovery swing during refractory)
                 // BEFORE comparing — the triggering frame itself never updates stats
                 idleMean += 0.1f * (motion - idleMean)
                 idleDev += 0.1f * (abs(motion - idleMean) - idleDev)
-                postUi {
-                    binding.statusState.text = "Pose: OK"
-                    if (!inRefractory) binding.statusLine.setText(R.string.ready_title)
-                }
+                // The last result's status stays up until the next serve starts.
             }
             return
         }
@@ -949,17 +1413,8 @@ class MainActivity : AppCompatActivity() {
                 "paddle_drain=${drainMs}ms paddle_dropped=$paddleDropped paddle_throttled=$paddleThrottled " +
                 "final_infer=${inferDone - inferStart}ms " +
                 "pred=${finalPrediction?.first} conf=${finalPrediction?.second}")
+            pendingClip = if (clipsEnabled) clipRecorder.finish(lastMotionPeakMs) else null
             updateFeedback(finalPrediction)
-            if (finalPrediction == null) postUi {
-                binding.classLabel.text = "UNAVAILABLE"
-                binding.confLabel.text = "Insufficient serve classification data"
-                binding.probDriveBar.progress = 0
-                binding.probLobBar.progress = 0
-                binding.probTopspinBar.progress = 0
-                binding.probDrive.text = "Drive   --%"
-                binding.probLob.text = "Lob     --%"
-                binding.probTopspin.text = "Topspin --%"
-            }
             gateActive = false
             lowMotionSinceMs = 0L
             refractoryUntilMs = now + refractoryMs
@@ -968,17 +1423,9 @@ class MainActivity : AppCompatActivity() {
             emaProbs = null
             shiftDetector?.clear()
             paddleStream?.clear()
-            postUi {
-                binding.statusState.text = "Pose: OK"
-                binding.statusProgress.visibility = View.GONE
-            }
             return
         }
 
-        postUi {
-            binding.statusState.text = "Pose: OK"
-            binding.statusLine.text = "Analyzing your serve…"
-        }
         // Run the unchanged ensemble only at serve end; intermediate inference
         // competes with pose acquisition and changes no final feedback decision.
     }
@@ -1028,6 +1475,21 @@ class MainActivity : AppCompatActivity() {
         val paddleText = ServePresentation.paddle(angle, paddle)
         val titleText = feedbackTitleFor(result, prediction?.second)
         val bodyText = result?.text ?: "Coaching rules could not be loaded. Your available measurements are shown above."
+        // Card view of the same values (display wording only).
+        val probs = lastProbs.takeIf { prediction != null }
+        val serveCard = ServePresentation.serveTypeCard(prediction?.first, prediction?.second, probs)
+        val hipCard = ServePresentation.hipCard(hipValue, hipPassed)
+        val paddleCard = ServePresentation.paddleCard(angle, paddle, stream?.low, stream?.high)
+        val partial = ServePresentation.isPartial(serveCard, hipCard, paddleCard)
+        val cues = result?.let { ServePresentation.coachingText(it.messages) } ?: bodyText
+        // Same condition as the "GENERAL MECHANICS" title: subtype coaching withheld below the gate.
+        val generalCue = result?.status == FeedbackEngine.Status.CORRECTIVE &&
+            (prediction?.second ?: 0f) < FeedbackEngine.MIN_CONFIDENCE
+        val hipThreshold = shiftDetector?.thr
+        val paddleLow = stream?.low
+        val paddleHigh = stream?.high
+        val notes = (result?.notifications ?: emptyList()) +
+            listOfNotNull(getString(R.string.analysis_error).takeIf { lastInferenceFailed })
         val record = ServeRecord(
             number = SessionStore.nextNumber(),
             time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()),
@@ -1038,21 +1500,34 @@ class MainActivity : AppCompatActivity() {
             feedbackTitle = titleText,
             feedback = bodyText,
             landing = landed?.zone,
+            elapsed = SessionStore.elapsedLabel(SystemClock.elapsedRealtime()),
+            label = prediction?.first,
+            probs = probs?.takeIf { it.size == 3 }?.toList(),
+            hipValue = hipValue, hipPassed = hipPassed, hipThreshold = hipThreshold,
+            paddleAngle = angle, paddleState = paddle, paddleLow = paddleLow, paddleHigh = paddleHigh,
+            generalCue = generalCue,
+            analysisMs = if (endMs != 0L) SystemClock.uptimeMillis() - endMs else null,
         )
         SessionStore.add(record)
+        pendingClip?.let { SessionStore.putClip(record.number, it) }
+        pendingClip = null
         lastServe = LastServe(prediction?.first, prediction?.second, hipPassed, paddle,
             independentMechanics, record.number, SystemClock.uptimeMillis())
+        lastRecord = record
         speak(record)
         postUi(generation) {
-            binding.shiftLabel.text = hipText
-            binding.paddleLabel.text = paddleText
-            binding.feedbackTitle.text = titleText
-            binding.feedbackLabel.text = bodyText
-            setStatus("Analysis complete", getString(R.string.results_note))
+            if (showcaseIndex >= 0) showcaseVerdictShown = true
+            lastHipValue = hipValue; lastHipPassed = hipPassed
+            lastPaddleAngle = angle; lastPaddleState = paddle
+            renderResult(serveCard, prediction?.second, hipCard, paddleCard, cues, generalCue, notes,
+                hipValue, hipThreshold, paddleLow, paddleHigh)
+            val analysisMs = if (endMs != 0L) SystemClock.uptimeMillis() - endMs else null
+            setStatus(ServePresentation.resultStatus(record.number, partial, analysisMs), "",
+                pill = if (partial) Pill.PARTIAL else Pill.GOOD)
             binding.root.announceForAccessibility("$titleText. $bodyText")
             binding.root.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
             if (intent.hasExtra(EXTRA_REPLAY_CLIP)) Log.i("FeedbackOutput", org.json.JSONObject()
-                .put("status", result?.status?.name).put("text", binding.feedbackLabel.text.toString()).toString())
+                .put("status", result?.status?.name).put("text", bodyText).toString())
             val shown = SystemClock.uptimeMillis()
             if (endMs != 0L) Log.i(LATENCY_TAG, "feedback_shown shown=$shown end_to_shown=${shown-endMs}ms peak_to_shown=${shown-peakMs}ms serve_total=${shown-startMs}ms")
         }
@@ -1061,6 +1536,7 @@ class MainActivity : AppCompatActivity() {
     /** Coaching header for a feedback result; shared by the live and late-landing paths. */
     private fun feedbackTitleFor(result: FeedbackEngine.Result?, confidence: Float?): String = when {
         result == null -> "COACHING UNAVAILABLE"
+        result.status == FeedbackEngine.Status.INSUFFICIENT_DATA -> "MORE EVIDENCE NEEDED"
         result.status == FeedbackEngine.Status.CORRECTIVE && (confidence ?: 0f) < FeedbackEngine.MIN_CONFIDENCE -> "GENERAL MECHANICS · NEXT ATTEMPT"
         result.status == FeedbackEngine.Status.LOW_CONFIDENCE -> "MORE EVIDENCE NEEDED"
         else -> getString(R.string.coaching_title)
@@ -1071,7 +1547,7 @@ class MainActivity : AppCompatActivity() {
         val saved = pendingLanding ?: return null
         pendingLanding = null
         if (now - saved.second > landingFreshMs) {
-            postUi { Toast.makeText(this, getString(R.string.landing_expired), Toast.LENGTH_LONG).show() }
+            postUi { notify(R.string.landing_expired) }
             return null
         }
         return saved.first
@@ -1086,13 +1562,11 @@ class MainActivity : AppCompatActivity() {
         val now = SystemClock.uptimeMillis()
         val snap = lastServe
         if (snap != null && now - snap.completedMs <= landingFreshMs) {
-            Toast.makeText(this, getString(R.string.landing_attached, result.zone, snap.recordNumber),
-                Toast.LENGTH_LONG).show()
+            notify(getString(R.string.landing_attached, result.zone, snap.recordNumber))
             analysisExecutor.execute { attachLanding(snap, result) }
         } else {
             pendingLanding = result to now
-            Toast.makeText(this, getString(R.string.landing_saved_next, result.zone),
-                Toast.LENGTH_LONG).show()
+            notify(getString(R.string.landing_saved_next, result.zone))
         }
     }
 
@@ -1106,13 +1580,20 @@ class MainActivity : AppCompatActivity() {
             placementActive = true, placementZone = result.zone,
         ))
         val title = feedbackTitleFor(re, snap.confidence)
+        val general = re.status == FeedbackEngine.Status.CORRECTIVE &&
+            (snap.confidence ?: 0f) < FeedbackEngine.MIN_CONFIDENCE
         if (!SessionStore.update(snap.recordNumber) {
-            it.copy(landing = result.zone, feedbackTitle = title, feedback = re.text)
+            it.copy(landing = result.zone, feedbackTitle = title, feedback = re.text, generalCue = general)
         }) return
         Log.i("Feedback", "landing_attached serve=${snap.recordNumber} zone=${result.zone} status=${re.status}")
+        // Same split as a fresh result: messages are the cue, notifications the note line.
+        landingRefresh = LandingRefresh(ServePresentation.coachingText(re.messages), re.notifications, general)
         landingRefreshRecord = snap.recordNumber
         runOnUiThread { renderLandingRefresh() }
     }
+
+    private class LandingRefresh(val cue: String, val notes: List<String>, val generalCue: Boolean)
+    @Volatile private var landingRefresh: LandingRefresh? = null
 
     /** Refresh the feedback cards after a late landing; deferred to onResume when backgrounded. */
     private fun renderLandingRefresh() {
@@ -1122,9 +1603,17 @@ class MainActivity : AppCompatActivity() {
         val record = SessionStore.snapshot().find { it.number == number }
             ?: run { landingRefreshRecord = null; return }
         landingRefreshRecord = null
-        binding.feedbackTitle.text = record.feedbackTitle
-        binding.feedbackLabel.text = record.feedback
-        setStatus("Analysis complete", "Landing ${record.landing} attached · ${getString(R.string.results_note)}")
+        val refresh = landingRefresh.also { landingRefresh = null }
+        lastRecord = record
+        // The record is already amended; only repaint when that serve's result is still on
+        // screen (not after Try again, and not while the next serve is being analyzed).
+        if (!resultShown || binding.statusProgress.visibility == View.VISIBLE || refresh == null) return
+        setCue(refresh.cue.ifBlank { record.feedback })
+        val noteText = refresh.notes.filter { it.isNotBlank() }.joinToString("\n")
+        binding.feedbackNotes.text = noteText
+        binding.feedbackNotes.visibility = if (noteText.isBlank()) View.GONE else View.VISIBLE
+        binding.cueBadge.visibility = if (refresh.generalCue) View.VISIBLE else View.GONE
+        setStatus("Serve ${record.number} · landing ${record.landing} attached", "")
         binding.root.announceForAccessibility("Landing ${record.landing} attached. ${record.feedback}")
         speakLanding(record)
     }
@@ -1297,7 +1786,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun runInference(validFrames: Int, finalResult: Boolean = false): Pair<String, Float>? {
         val g = gru ?: return null
-        val generation = callbackGeneration.get() ?: resultGeneration
+        lastProbs = null
+        lastInferenceFailed = false
         val sampled = serveWindow.input()
         val window = sampled.tensor
         val inputFrames = sampled.validFrames
@@ -1325,33 +1815,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             emaProbs = smoothed
-
-            val (label, conf) = g.predict(smoothed)
-            val confColor = ContextCompat.getColor(this,
-                if (conf >= FeedbackEngine.MIN_CONFIDENCE) R.color.accent else R.color.warning)
-
-            postUi {
-                if (generation != resultGeneration) return@postUi
-                val plain = ServePresentation.classification(label, conf)
-                val verdict = if (conf >= FeedbackEngine.MIN_CONFIDENCE) getString(R.string.verdict_good)
-                    else getString(R.string.verdict_review)
-                binding.classLabel.text = verdict + plain
-                binding.classLabel.contentDescription = plain
-                binding.classLabel.setTextColor(confColor)
-                val finalSource = if (knnProbs != null) "Final hybrid" else "Final GRU"
-                binding.confLabel.text = "${"%.1f".format(conf * 100f)}% confidence · ${if (conf < FeedbackEngine.MIN_CONFIDENCE) "serve type uncertain" else "model prediction"}"
-                binding.confLabel.setTextColor(confColor)
-                binding.probDrive.text = "Drive   ${"%.0f".format(smoothed[0] * 100)}%"
-                binding.probLob.text = "Lob     ${"%.0f".format(smoothed[1] * 100)}%"
-                binding.probTopspin.text = "Topspin ${"%.0f".format(smoothed[2] * 100)}%"
-                binding.probDriveBar.progress = (smoothed[0] * 100).toInt()
-                binding.probLobBar.progress = (smoothed[1] * 100).toInt()
-                binding.probTopspinBar.progress = (smoothed[2] * 100).toInt()
-            }
+            // Shown with the result by updateFeedback (final inference only, so
+            // smoothed == combined here and the bars match the reported class).
+            lastProbs = smoothed.copyOf()
             return g.predict(combined)
         } catch (e: Throwable) {
             Log.e("MainActivity", "Inference failed", e)
-            postUi { binding.confLabel.text = "INFER ERR: ${e.message}" }
+            lastInferenceFailed = true
             return null
         }
     }
@@ -1377,10 +1847,17 @@ class MainActivity : AppCompatActivity() {
         if (modelsReady) startInput()
         // A landing scanned while the scanner covered this screen amends here.
         renderLandingRefresh()
+        updateServesButton()
+        if (SessionStore.size() == 0 && resultShown) { resultShown = false; clearCards() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean("permissionRequested", permissionRequested)
+        outState.putString("mode", mode.name)
+        outState.putInt("cameraFacing", cameraFacing)
+        outState.putBoolean("poseGpu", poseGpu)
+        outState.putBoolean("speakResults", speakResults)
+        outState.putString("screen", screen.name)
         super.onSaveInstanceState(outState)
     }
 
@@ -1398,9 +1875,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         foreground = false
-        if (modelsReady && binding.statusProgress.visibility == View.VISIBLE) {
+        cancelAutoStart()
+        if (modelsReady && binding.statusProgress.visibility == View.VISIBLE && sessionLive) {
             clearCards()
-            binding.feedbackLabel.text = "The attempt was interrupted. Start a new serve when you return."
+            setCue("The attempt was interrupted. Start a new serve when you return.")
         }
         stopInput()
         showcaseIndex = -1
@@ -1413,8 +1891,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.replayView.setImageDrawable(null)
         binding.replayView.visibility = View.GONE
-        binding.statusState.setText(R.string.paused)
-        binding.statusProgress.visibility = View.GONE
+        setStatus(getString(R.string.paused), "")
         super.onStop()
     }
 
@@ -1422,6 +1899,7 @@ class MainActivity : AppCompatActivity() {
         destroyed = true
         sessionEpoch.invalidate()
         clipReplay?.stop()
+        clipRecorder.close()
         runCatching { tts?.stop(); tts?.shutdown() }
         tts = null
         // Close each model after in-flight work, on its owning worker.
