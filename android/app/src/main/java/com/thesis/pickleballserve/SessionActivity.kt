@@ -161,6 +161,7 @@ class SessionActivity : AppCompatActivity() {
         }
         b.clipEmpty.visibility = View.GONE
         b.clipControls.visibility = View.VISIBLE
+        b.poseLegend.visibility = View.VISIBLE
         b.scrub.valueFrom = 0f
         b.scrub.valueTo = clip.durationMs.coerceAtLeast(1L).toFloat()
         b.scrub.value = 0f
@@ -172,6 +173,7 @@ class SessionActivity : AppCompatActivity() {
         b.clipEmpty.text = text
         b.clipEmpty.visibility = View.VISIBLE
         b.clipControls.visibility = View.GONE
+        b.poseLegend.visibility = View.GONE
         b.peakTick.visibility = View.GONE
     }
 

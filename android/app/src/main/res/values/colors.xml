@@ -48,4 +48,8 @@
     <color name="dot_alert">@color/dot_err</color>
     <color name="menu_surface">#FFFFFF</color>
     <color name="menu_stroke">@color/border_em</color>
+    <!-- Pose skeleton on the review clip: fixed on-camera colors, same in both themes. -->
+    <color name="pose_left">#FF5CCB</color>
+    <color name="pose_right">#FFCE2F</color>
+    <color name="pose_center">#FFFFFF</color>
 </resources>

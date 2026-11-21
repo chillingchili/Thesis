@@ -161,6 +161,9 @@
     <string name="about_note">Automatic capture can miss serves. A consistent two-second delivery is not established. Ball landing is a separate review tool.</string>
     <!-- Serves review. -->
     <string name="live">Live</string>
+    <string name="pose_left">Left</string>
+    <string name="pose_right">Right</string>
+    <string name="pose_legend_description">Skeleton colors: left side magenta, right side amber</string>
     <string name="show_all_cues">Show all cues (%1$d)</string>
     <string name="show_fewer_cues">Show fewer cues</string>
     <string name="session_clear_confirm">Removes every serve and clip from this session. This cannot be undone.</string>

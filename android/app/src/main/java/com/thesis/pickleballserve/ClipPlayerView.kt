@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 
 /**
  * Draws one frame of a [ServeClip], fit-centered, with the tracked pose on top.
+ * The skeleton is colored by body side (the player's left and right) so a limb can
+ * be identified at a glance; the trunk lines and head stay neutral.
  * Frame stepping is driven by the review screen; this view only renders.
  */
 class ClipPlayerView @JvmOverloads constructor(
@@ -27,20 +29,24 @@ class ClipPlayerView @JvmOverloads constructor(
     var showPose: Boolean = true
         set(value) { field = value; invalidate() }
 
+    private enum class Side { LEFT, RIGHT, CENTER }
+
     private var decoded: Bitmap? = null
     private var decodedIndex = -1
     private val dst = RectF()
     private val imagePaint = Paint(Paint.FILTER_BITMAP_FLAG)
+    private val strokeW = 3f * resources.displayMetrics.density
     private val bonePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, R.color.dot_warn)
-        strokeWidth = 3f * resources.displayMetrics.density
+        strokeWidth = strokeW
         strokeCap = Paint.Cap.ROUND
         style = Paint.Style.STROKE
     }
-    private val jointPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, R.color.dot_warn)
-        style = Paint.Style.FILL
-    }
+    private val jointPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+    private val colorOf = mapOf(
+        Side.LEFT to ContextCompat.getColor(context, R.color.pose_left),
+        Side.RIGHT to ContextCompat.getColor(context, R.color.pose_right),
+        Side.CENTER to ContextCompat.getColor(context, R.color.pose_center),
+    )
 
     override fun onDraw(canvas: Canvas) {
         val frames = clip?.frames ?: return
@@ -59,15 +65,29 @@ class ClipPlayerView @JvmOverloads constructor(
         if (!showPose) return
         fun x(i: Int) = dst.left + pose[i * 2] * dst.width()
         fun y(i: Int) = dst.top + pose[i * 2 + 1] * dst.height()
-        for ((a, b) in BONES) canvas.drawLine(x(a), y(a), x(b), y(b), bonePaint)
+        for ((a, b, side) in BONES) {
+            bonePaint.color = colorOf.getValue(side)
+            canvas.drawLine(x(a), y(a), x(b), y(b), bonePaint)
+        }
         val r = 3.5f * resources.displayMetrics.density
-        for (j in JOINTS) canvas.drawCircle(x(j), y(j), r, jointPaint)
+        for (j in JOINTS) {
+            jointPaint.color = colorOf.getValue(sideOf(j))
+            canvas.drawCircle(x(j), y(j), r, jointPaint)
+        }
     }
 
     private companion object {
-        // BlazePose indices: shoulders, arms, torso, legs.
-        val BONES = listOf(11 to 12, 11 to 13, 13 to 15, 12 to 14, 14 to 16,
-            11 to 23, 12 to 24, 23 to 24, 23 to 25, 25 to 27, 24 to 26, 26 to 28)
+        /** BlazePose labels the subject's own left and right: odd landmark indices are left, even are right. */
+        fun sideOf(i: Int) = when { i == 0 -> Side.CENTER; i % 2 == 1 -> Side.LEFT; else -> Side.RIGHT }
+
+        // Shoulders, arms, torso, legs. Trunk cross-lines (shoulders, hips) are neutral.
+        val BONES = listOf(
+            Triple(11, 12, Side.CENTER), Triple(23, 24, Side.CENTER),
+            Triple(11, 13, Side.LEFT), Triple(13, 15, Side.LEFT), Triple(11, 23, Side.LEFT),
+            Triple(23, 25, Side.LEFT), Triple(25, 27, Side.LEFT),
+            Triple(12, 14, Side.RIGHT), Triple(14, 16, Side.RIGHT), Triple(12, 24, Side.RIGHT),
+            Triple(24, 26, Side.RIGHT), Triple(26, 28, Side.RIGHT),
+        )
         val JOINTS = intArrayOf(0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28)
     }
 }
