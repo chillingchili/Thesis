@@ -92,6 +92,8 @@ class MainActivity : AppCompatActivity() {
     private enum class Check { OK, WARN, PENDING }
 
     private var screen = Screen.SETUP
+    /** Screen to reopen after a recreation (Theme change); null on a fresh launch. */
+    private var restoredScreen: Screen? = null
     /** Read on the analysis worker: the motion gate only arms during a live session. */
     @Volatile private var sessionLive = false
     /** True while the pill shows "Player not visible", so the next pose restores it. */
@@ -119,6 +121,11 @@ class MainActivity : AppCompatActivity() {
     private val autoStartHoldMs = 1000L
     private val autoStartCountdownMs = 3000L
     private val autoStartTick = Runnable { tickAutoStart() }
+    private val autoStartGraceMs = 400L
+    private var framingBadSinceMs = 0L
+    private var lastSpokenCount = -1
+    /** Set by a manual return to setup; cleared once the player has left the outline. */
+    private var autoStartBlocked = false
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var cameraExecutor: ExecutorService
@@ -249,6 +256,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionRequested = savedInstanceState?.getBoolean("permissionRequested") ?: false
+        // A Theme change recreates this screen: keep the user's session settings across it.
+        savedInstanceState?.let { s ->
+            mode = runCatching { RunMode.valueOf(s.getString("mode") ?: mode.name) }.getOrDefault(mode)
+            cameraFacing = s.getInt("cameraFacing", cameraFacing)
+            poseGpu = s.getBoolean("poseGpu", poseGpu)
+            speakResults = s.getBoolean("speakResults", speakResults)
+            restoredScreen = runCatching { Screen.valueOf(s.getString("screen") ?: "") }.getOrNull()
+        }
         posePriority = intent.getBooleanExtra("research_pose_priority", true)
         revisedEnd = intent.getBooleanExtra("research_end_v2", false)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -310,14 +325,14 @@ class MainActivity : AppCompatActivity() {
         // Every launch opens on the camera setup check (Figure 7.2a); research
         // replays skip it and run the live path directly.
         clearCards()
-        applyMode(if (intent.getStringExtra(EXTRA_REPLAY_CLIP) != null) Screen.LIVE else Screen.SETUP)
+        applyMode(if (intent.getStringExtra(EXTRA_REPLAY_CLIP) != null) Screen.LIVE else restoredScreen ?: Screen.SETUP)
         paddleExecutor.execute {
             paddleStream = PaddleStream.load(applicationContext)
             if (paddleStream == null) Log.e("MainActivity", "Paddle stream unavailable")
         }
         analysisExecutor.execute {
             try {
-                gru = GruClassifier.load(applicationContext, ensemble = true)
+                gru = GruClassifier.load(applicationContext, ensemble = mode != RunMode.SINGLE)
                 knn = runCatching { KnnClassifier.load(applicationContext) }.getOrNull()
                 shiftDetector = ShiftDetector.load(applicationContext)
                 feedbackEngine = runCatching {
@@ -387,6 +402,8 @@ class MainActivity : AppCompatActivity() {
         if (fullscreen) setFullscreen(false)
         cancelAutoStart()
         val setup = next == Screen.SETUP
+        // Back to setup from a session: do not jump straight back to LIVE while the player is in frame.
+        if (setup && wasLive) autoStartBlocked = true
         if (!setup) SessionStore.markStart(SystemClock.elapsedRealtime())
         binding.setupPanel.visibility = if (setup) View.VISIBLE else View.GONE
         binding.resultsScroll.visibility = if (setup) View.GONE else View.VISIBLE
@@ -430,10 +447,12 @@ class MainActivity : AppCompatActivity() {
             else framing?.takeIf { seen }?.message ?: getString(R.string.stand_in_outline)
         binding.startSessionButton.isEnabled = modelsReady
         binding.startSessionButton.setText(if (modelsReady) R.string.start_now else R.string.setup_waiting_models)
-        if (framing?.ok == true) maybeStartAutoStart() else cancelAutoStart()
+        // A manual return to setup stays put until the player has left the outline once.
+        if (framing != null && !framing.ok) autoStartBlocked = false
+        if (framing?.ok == true) maybeStartAutoStart() else if (framingOkSinceMs == 0L) cancelAutoStart()
     }
 
-    private fun autoStartAllowed() = screen == Screen.SETUP && modelsReady && inputRunning && foreground &&
+    private fun autoStartAllowed() = screen == Screen.SETUP && !autoStartBlocked && modelsReady && inputRunning && foreground &&
         !destroyed && showcaseIndex < 0 && intent.getStringExtra(EXTRA_REPLAY_CLIP) == null
 
     private fun maybeStartAutoStart() {
@@ -446,17 +465,23 @@ class MainActivity : AppCompatActivity() {
     /** Hold still ~1 s inside the outline, then a 3 s countdown; leaving the outline cancels. */
     private fun tickAutoStart() {
         binding.root.removeCallbacks(autoStartTick)
-        if (!autoStartAllowed() || lastFraming?.ok != true) { cancelAutoStart(); return }
+        if (!autoStartAllowed()) { cancelAutoStart(); return }
         val now = SystemClock.uptimeMillis()
+        // Grace period: one jittery frame at the outline edge must not reset the countdown.
+        if (lastFraming?.ok != true) {
+            if (framingBadSinceMs == 0L) framingBadSinceMs = now
+            if (now - framingBadSinceMs > autoStartGraceMs) { cancelAutoStart(); return }
+        } else framingBadSinceMs = 0L
         if (now - framingOkSinceMs < autoStartHoldMs) { binding.root.postDelayed(autoStartTick, 200); return }
         if (countdownEndMs == 0L) countdownEndMs = now + autoStartCountdownMs
         val left = ((countdownEndMs - now + 999) / 1000).toInt()
         if (left <= 0) {
             cancelAutoStart()
             applyMode(Screen.LIVE)
-            speakText(getString(R.string.spoken_ready))
+            speakText(getString(R.string.spoken_ready), force = true)
             return
         }
+        if (left != lastSpokenCount) { lastSpokenCount = left; speakText(left.toString(), force = true) }
         setStatus(getString(R.string.hold_still, left), "", busy = true)
         binding.startSessionNote.text = getString(R.string.starting_in, left)
         binding.root.postDelayed(autoStartTick, 200)
@@ -466,8 +491,10 @@ class MainActivity : AppCompatActivity() {
         binding.root.removeCallbacks(autoStartTick)
         val wasCounting = countdownEndMs != 0L
         framingOkSinceMs = 0L
+        framingBadSinceMs = 0L
         countdownEndMs = 0L
-        binding.startSessionNote.setText(R.string.starts_by_itself)
+        lastSpokenCount = -1
+        binding.startSessionNote.setText(if (autoStartBlocked) R.string.starts_after_step_out else R.string.starts_by_itself)
         if (wasCounting && screen == Screen.SETUP && binding.recoveryButton.visibility != View.VISIBLE) readyStatus()
     }
 
@@ -641,7 +668,7 @@ class MainActivity : AppCompatActivity() {
         binding.classLabel.contentDescription = "Serve type ${serve.value}. ${serve.detail}"
         binding.classLabel.setTextColor(color(if (serve.reliable) R.color.text_primary else R.color.warn))
         binding.confLabel.text = if (serve.reliable && confidence != null)
-            String.format(Locale.getDefault(), "%d%%", (confidence * 100).toInt()) else ""
+            "${ServePresentation.pct(confidence)}%" else ""
         showChip(binding.serveChip, when {
             serve.reliable -> null
             serve.value == "Not measured" -> getString(R.string.badge_partial)
@@ -697,6 +724,11 @@ class MainActivity : AppCompatActivity() {
             if (cameraFacing == CameraSelector.LENS_FACING_FRONT) R.id.action_camera_front
             else R.id.action_camera_back
         ).isChecked = true
+        popup.menu.findItem(when (savedNightMode()) {
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO -> R.id.action_theme_light
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES -> R.id.action_theme_dark
+            else -> R.id.action_theme_system
+        }).isChecked = true
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_setup -> {
@@ -743,10 +775,25 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_change_model -> { changeMode(); true }
                 R.id.action_about -> { showAbout(); true }
+                R.id.action_theme_system -> { applyNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM); true }
+                R.id.action_theme_light -> { applyNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO); true }
+                R.id.action_theme_dark -> { applyNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES); true }
                 else -> false
             }
         }
         popup.show()
+    }
+
+    private fun savedNightMode(): Int = getSharedPreferences(ServeApp.PREFS, MODE_PRIVATE)
+        .getInt(ServeApp.KEY_NIGHT_MODE, androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+    /** Theme menu: remember the choice and apply it; open screens recreate in the new theme. */
+    private fun applyNightMode(mode: Int) {
+        if (mode == savedNightMode()) return
+        // Recreating mid-analysis would drop the serve being analyzed.
+        if (sessionLive && binding.statusProgress.visibility == View.VISIBLE) { notify(R.string.theme_busy); return }
+        getSharedPreferences(ServeApp.PREFS, MODE_PRIVATE).edit().putInt(ServeApp.KEY_NIGHT_MODE, mode).apply()
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     private fun showInfo(titleRes: Int, bodyRes: Int) {
@@ -826,8 +873,9 @@ class MainActivity : AppCompatActivity() {
     }
     private fun notify(@StringRes res: Int, long: Boolean = true) = notify(getString(res), long)
 
-    private fun speakText(text: String) {
-        if (!speakResults) return
+    /** Status speech; force = always spoken (session start cues the player hears from the baseline). */
+    private fun speakText(text: String, force: Boolean = false) {
+        if (!speakResults && !force) return
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "status")
     }
 
@@ -1527,13 +1575,20 @@ class MainActivity : AppCompatActivity() {
             placementActive = true, placementZone = result.zone,
         ))
         val title = feedbackTitleFor(re, snap.confidence)
+        val general = re.status == FeedbackEngine.Status.CORRECTIVE &&
+            (snap.confidence ?: 0f) < FeedbackEngine.MIN_CONFIDENCE
         if (!SessionStore.update(snap.recordNumber) {
-            it.copy(landing = result.zone, feedbackTitle = title, feedback = re.text)
+            it.copy(landing = result.zone, feedbackTitle = title, feedback = re.text, generalCue = general)
         }) return
         Log.i("Feedback", "landing_attached serve=${snap.recordNumber} zone=${result.zone} status=${re.status}")
+        // Same split as a fresh result: messages are the cue, notifications the note line.
+        landingRefresh = LandingRefresh(ServePresentation.coachingText(re.messages), re.notifications, general)
         landingRefreshRecord = snap.recordNumber
         runOnUiThread { renderLandingRefresh() }
     }
+
+    private class LandingRefresh(val cue: String, val notes: List<String>, val generalCue: Boolean)
+    @Volatile private var landingRefresh: LandingRefresh? = null
 
     /** Refresh the feedback cards after a late landing; deferred to onResume when backgrounded. */
     private fun renderLandingRefresh() {
@@ -1543,9 +1598,16 @@ class MainActivity : AppCompatActivity() {
         val record = SessionStore.snapshot().find { it.number == number }
             ?: run { landingRefreshRecord = null; return }
         landingRefreshRecord = null
-        setCue(ServePresentation.coachingText(record.feedback.lines()))
-        binding.feedbackNotes.visibility = View.GONE
+        val refresh = landingRefresh.also { landingRefresh = null }
         lastRecord = record
+        // The record is already amended; only repaint when that serve's result is still on
+        // screen (not after Try again, and not while the next serve is being analyzed).
+        if (!resultShown || binding.statusProgress.visibility == View.VISIBLE || refresh == null) return
+        setCue(refresh.cue.ifBlank { record.feedback })
+        val noteText = refresh.notes.filter { it.isNotBlank() }.joinToString("\n")
+        binding.feedbackNotes.text = noteText
+        binding.feedbackNotes.visibility = if (noteText.isBlank()) View.GONE else View.VISIBLE
+        binding.cueBadge.visibility = if (refresh.generalCue) View.VISIBLE else View.GONE
         setStatus("Serve ${record.number} · landing ${record.landing} attached", "")
         binding.root.announceForAccessibility("Landing ${record.landing} attached. ${record.feedback}")
         speakLanding(record)
@@ -1786,6 +1848,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean("permissionRequested", permissionRequested)
+        outState.putString("mode", mode.name)
+        outState.putInt("cameraFacing", cameraFacing)
+        outState.putBoolean("poseGpu", poseGpu)
+        outState.putBoolean("speakResults", speakResults)
+        outState.putString("screen", screen.name)
         super.onSaveInstanceState(outState)
     }
 

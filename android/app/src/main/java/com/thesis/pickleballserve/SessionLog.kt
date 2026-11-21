@@ -54,6 +54,7 @@ object SessionStore {
     /** Session clock starts at the first live session of this log. */
     @Synchronized fun markStart(nowMs: Long) { if (startMs == 0L) startMs = nowMs }
     @Synchronized fun elapsedLabel(nowMs: Long): String {
+        if (startMs == 0L) startMs = nowMs  // first serve after Clear session restarts the clock
         val s = if (startMs == 0L) 0L else ((nowMs - startMs) / 1000L).coerceAtLeast(0L)
         return "${s / 60}:${(s % 60).toString().padStart(2, '0')}"
     }

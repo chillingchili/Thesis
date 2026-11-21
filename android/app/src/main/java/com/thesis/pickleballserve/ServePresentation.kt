@@ -98,5 +98,6 @@ object ServePresentation {
     fun coachingText(messages: List<String>): String =
         messages.filter { it.isNotBlank() }.joinToString("\n") { "• $it" }
 
-    private fun pct(v: Float) = (v * 100f).roundToInt()
+    /** Whole-percent confidence, rounded; the one formatter for live, review and speech. */
+    fun pct(v: Float) = (v * 100f).roundToInt()
 }

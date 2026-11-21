@@ -14,6 +14,17 @@
             </menu>
         </item>
     </group>
+    <group android:id="@+id/group_display">
+        <item android:id="@+id/action_theme" android:title="@string/theme_menu" android:icon="@drawable/ic_contrast">
+            <menu>
+                <group android:id="@+id/group_theme" android:checkableBehavior="single">
+                    <item android:id="@+id/action_theme_system" android:title="@string/theme_system" />
+                    <item android:id="@+id/action_theme_light" android:title="@string/theme_light" />
+                    <item android:id="@+id/action_theme_dark" android:title="@string/theme_dark" />
+                </group>
+            </menu>
+        </item>
+    </group>
     <group android:id="@+id/group_landing">
         <item android:id="@+id/action_landing" android:title="@string/landing_screen_title" android:icon="@drawable/ic_target" />
         <item android:id="@+id/action_scan_landing" android:title="@string/scan_landing" android:icon="@drawable/ic_qr" />

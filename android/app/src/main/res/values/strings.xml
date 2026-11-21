@@ -213,4 +213,10 @@
     <string name="compare_save">Save comparison</string>
     <string name="compare_foot">Saved as JSON with the model hashes. Confidence acceptance for the research model follows its validation.</string>
     <string name="compare_waiting">No video chosen yet.</string>
+    <string name="theme_menu">Theme</string>
+    <string name="theme_busy">Wait for this serve\'s result, then change the theme.</string>
+    <string name="starts_after_step_out">Step out of the outline and back in to start again, or tap Start now.</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
 </resources>

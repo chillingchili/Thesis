@@ -252,7 +252,7 @@ class SessionActivity : AppCompatActivity() {
         val paddle = ServePresentation.paddleCard(r.paddleAngle, r.paddleState, r.paddleLow, r.paddleHigh)
         b.rRows.removeAllViews()
         addRow(getString(R.string.serve_type_label), getString(R.string.gate_ref), serve.value,
-            if (serve.reliable && r.confidence != null) "${(r.confidence * 100).toInt()}%" else null,
+            if (serve.reliable && r.confidence != null) "${ServePresentation.pct(r.confidence)}%" else null,
             when { serve.reliable -> null; serve.value == "Not measured" -> getString(R.string.badge_partial)
                    else -> getString(R.string.badge_low_confidence) },
             ServePresentation.Tone.WARN, warnValue = !serve.reliable)
