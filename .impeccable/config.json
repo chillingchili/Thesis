@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "docs/demo/showcase/serve-coach.html"
+        ],
+        "createdAt": "2026-11-21T05:41:15.243Z",
+        "reason": "Claude triage: static detector pairs dark-theme text tokens with light-theme surfaces (e.g. #fafafa on #ffffff); every rendered pair uses DESIGN.md Astryx tokens that pass AA in their own theme"
+      }
+    ]
+  }
+}

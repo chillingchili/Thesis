@@ -1,0 +1,211 @@
+<title>Serve Coach</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow reading column; device footage runs wider than the text, like the app's camera beside its panel.
+   Tokens are the app's own Astryx Neutral values (docs/DESIGN.md). */
+:root {
+  --bg: #F1F1F1;
+  --surface: #FFFFFF;
+  --fg: #171717;
+  --muted: #525252;
+  --line: #00000014;
+  --line-strong: #D4D4D4;
+  --ok: #007004; --ok-bg: #C5E5C0;
+  --warn: #745B00; --warn-bg: #F8DA9D;
+  --stage: #0A0A0A;
+  --font: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px;
+  --measure: 62ch;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1B1B1B; --surface: #262626; --fg: #FAFAFA; --muted: #A3A3A3;
+  --line: #FFFFFF1A; --line-strong: #525252;
+  --ok: #9FE59B; --ok-bg: #84C9803D; --warn: #FDCF4F; --warn-bg: #DEB4333D; --stage: #000000;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1B1B1B; --surface: #262626; --fg: #FAFAFA; --muted: #A3A3A3;
+  --line: #FFFFFF1A; --line-strong: #525252;
+  --ok: #9FE59B; --ok-bg: #84C9803D; --warn: #FDCF4F; --warn-bg: #DEB4333D; --stage: #000000;
+  color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 17px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 56px 72px; display: grid; gap: 88px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(40px, 7vw, 72px); font-weight: 700; line-height: 1.02; }
+h2 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 600; line-height: 1.15; }
+h3 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+p { margin: 0; max-width: var(--measure); }
+.lede { font-size: clamp(18px, 2.2vw, 21px); color: var(--muted); }
+.small { font-size: 14px; color: var(--muted); }
+.label { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
+/* Hero */
+.hero { display: grid; gap: 28px; }
+.hero-text { display: grid; gap: 16px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 14px; font-weight: 500; padding: 4px 10px; border-radius: var(--r-sm);
+  background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+.stage { background: var(--stage); border-radius: var(--r-lg); overflow: hidden; }
+.stage video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: var(--stage); }
+.stage-note { margin-top: 10px; }
+
+/* Features: text beside real footage, alternating */
+.features { display: grid; gap: 72px; }
+.feature { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: center; }
+.feature:nth-child(even) .copy { order: 2; }
+.feature .copy { display: grid; gap: 14px; min-width: 0; }
+.shot { margin: 0; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); background: var(--stage); }
+.shot img, .shot video { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio: 2400 / 1080; object-fit: cover; }
+.shot.loop video { aspect-ratio: 1920 / 864; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 4px 0 0; padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); font-size: 15px; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.badge { display: inline-block; font-size: 14px; font-weight: 500; padding: 2px 8px; border-radius: var(--r-sm); }
+.b-ok { background: var(--ok-bg); color: var(--ok); }
+.b-warn { background: var(--warn-bg); color: var(--warn); }
+
+/* How it works: a real three-step sequence */
+.steps { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: step; }
+.steps li { counter-increment: step; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px; display: grid; gap: 8px; align-content: start; }
+.steps li::before { content: counter(step); font-weight: 700; font-size: 15px; width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; border: 1px solid var(--line-strong); color: var(--fg); }
+.steps p { font-size: 15px; color: var(--muted); }
+
+/* Limits */
+.limits { display: grid; gap: 16px; }
+.limits ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: var(--measure); }
+.limits li { color: var(--muted); }
+.limits li strong { color: var(--fg); font-weight: 600; }
+
+footer { border-top: 1px solid var(--line); padding-top: 24px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 760px) {
+  .wrap { padding-block: 32px 48px; gap: 64px; }
+  .feature { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .feature:nth-child(even) .copy { order: 0; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { video[autoplay] { display: none; } .shot.loop .poster { display: block !important; } }
+.shot.loop .poster { display: none; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <span class="label">Android · Thesis prototype</span>
+      <h1>Serve Coach</h1>
+      <p class="lede">Prop the phone on a tripod, serve, and read one clear coaching cue from the baseline. Pickleball serve feedback that runs entirely on the phone.</p>
+      <div class="meta">
+        <span class="chip">Serve type: drive, lob, topspin</span>
+        <span class="chip">Hip movement</span>
+        <span class="chip">Paddle angle</span>
+        <span class="chip">No uploads, no account</span>
+      </div>
+    </div>
+    <div>
+      <div class="stage">
+        <video controls playsinline preload="metadata" poster="media/demo-poster.jpg" aria-label="44-second demo of Serve Coach on an Android phone">
+          <source src="media/demo.mp4" type="video/mp4">
+        </video>
+      </div>
+      <p class="small stage-note">44-second demo, recorded on the phone. The serves are recorded study clips played through the app, not a live session.</p>
+    </div>
+  </header>
+
+  <section class="features" aria-label="What it does">
+    <article class="feature">
+      <div class="copy">
+        <h2>One cue you can read from the baseline</h2>
+        <p>After each serve the app gives one instruction in large type, then three measurements. The previous result stays on screen, dimmed, while the next serve is analyzed.</p>
+        <p class="small">Below 60% confidence the serve type reads "Not sure" and only general mechanics cues appear, labeled as such.</p>
+      </div>
+      <figure class="shot loop">
+        <video autoplay muted loop playsinline preload="metadata" poster="media/loop-result.jpg" aria-label="A serve is analyzed and the coaching cue appears">
+          <source src="media/loop-result.mp4" type="video/mp4">
+        </video>
+        <img class="poster" src="media/loop-result.jpg" alt="Live screen with a coaching cue and three measurement rows">
+      </figure>
+    </article>
+
+    <article class="feature">
+      <div class="copy">
+        <h2>Every number shows what it was measured against</h2>
+        <p>Each row carries its reference, and the help button explains where that reference comes from.</p>
+        <dl class="facts">
+          <dt>Hip movement</dt><dd>pass at ≥ 0.154 of body height</dd>
+          <dt>Paddle angle</dt><dd>reference band 13.4–165.7°</dd>
+          <dt>Serve type</dt><dd>coaching gate at 0.60 confidence</dd>
+        </dl>
+        <p class="small">Thresholds come from Coach A good-form clips (59 for hip, 52 for paddle).</p>
+      </div>
+      <figure class="shot"><img src="media/phone-help-dark.jpg" alt="Hip movement help dialog listing the measured value, the 0.154 threshold and its source" loading="lazy"></figure>
+    </article>
+
+    <article class="feature">
+      <div class="copy">
+        <h2>Replay any serve with the tracked pose</h2>
+        <p>Every serve in the session keeps a short clip with the pose drawn on. Scrub it, slow it to a quarter speed, and see where peak motion happened.</p>
+        <p class="small">Clips stay in the phone's memory for the session only.</p>
+      </div>
+      <figure class="shot loop">
+        <video autoplay muted loop playsinline preload="metadata" poster="media/loop-replay.jpg" aria-label="A serve clip replays with the pose skeleton">
+          <source src="media/loop-replay.mp4" type="video/mp4">
+        </video>
+        <img class="poster" src="media/loop-replay.jpg" alt="Serve review with the pose skeleton over the clip">
+      </figure>
+    </article>
+
+    <article class="feature">
+      <div class="copy">
+        <h2>The evidence behind each result</h2>
+        <p>A Research tab lays out each measurement against its reference, the class probabilities with the 0.60 gate, and which rule set produced the cue.</p>
+        <p><span class="badge b-ok">Passed</span> <span class="badge b-warn">Below gate</span> <span class="badge b-ok">Within</span></p>
+      </div>
+      <figure class="shot"><img src="media/phone-review-research-dark.jpg" alt="Research tab with a measure, value, reference and result table and probability bars" loading="lazy"></figure>
+    </article>
+
+    <article class="feature">
+      <div class="copy">
+        <h2>Light for sunny courts, dark for the gym</h2>
+        <p>Choose System default, Light or Dark from the menu. The camera and the session carry over when you switch.</p>
+      </div>
+      <figure class="shot loop">
+        <video autoplay muted loop playsinline preload="metadata" poster="media/loop-theme.jpg" aria-label="Switching the app from dark to light">
+          <source src="media/loop-theme.mp4" type="video/mp4">
+        </video>
+        <img class="poster" src="media/loop-theme.jpg" alt="Theme menu with System default, Light and Dark">
+      </figure>
+    </article>
+  </section>
+
+  <section aria-labelledby="how">
+    <h2 id="how">How a session works</h2>
+    <ol class="steps">
+      <li><h3>Set up the side view</h3><p>Put the phone on a tripod on your serving-hand side. The app checks that you are in frame and inside the outline.</p></li>
+      <li><h3>Hold still, then serve</h3><p>Stand still in the outline and a spoken countdown starts the session. Recording starts by itself when you serve.</p></li>
+      <li><h3>Read, then review</h3><p>The cue appears and is read aloud. Open All serves to replay clips and see the research detail.</p></li>
+    </ol>
+  </section>
+
+  <section class="limits" aria-labelledby="limits">
+    <h2 id="limits">What it does not do yet</h2>
+    <ul>
+      <li><strong>Right-handed serves only.</strong> The model was trained on right-handed side views.</li>
+      <li><strong>Subtypes are study categories.</strong> Drive, lob and topspin follow coaching literature; they are not validated biomechanical classes.</li>
+      <li><strong>General mechanics cues are unrated.</strong> Cues shown below the confidence gate come from a mobile policy that Coach C has not rated.</li>
+      <li><strong>Automatic capture can miss serves.</strong> A consistent two-second delivery is not established.</li>
+      <li><strong>Ball landing is separate.</strong> A second phone tracks the bounce and hands the zone over by QR code; it is a model estimate, not a line call.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span class="small">Serve Coach · Pascua–Leones thesis prototype</span>
+    <span class="small">All analysis runs on the phone. Screens and footage are from the app on a real device.</span>
+  </footer>
+</div>
