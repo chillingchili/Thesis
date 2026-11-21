@@ -547,6 +547,7 @@ class MainActivity : AppCompatActivity() {
      * dims it; otherwise one message replaces the metric rows.
      */
     private fun clearCards(analyzing: Boolean = false) {
+        serveAnalyzing = analyzing
         binding.feedbackActions.visibility = View.GONE
         if (analyzing && resultShown) { setResultDimmed(true); return }
         resultShown = false
@@ -572,6 +573,9 @@ class MainActivity : AppCompatActivity() {
         binding.backToSetupButton.visibility = View.GONE
         binding.feedbackActions.visibility = View.VISIBLE
     }
+
+    /** A serve is between its start and its result; a Theme change would drop it. */
+    private var serveAnalyzing = false
 
     /** Big cue at 24sp; long cues shrink after layout until the metric rows fit (fitCue). */
     private fun setCue(text: String) {
@@ -654,6 +658,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         resultShown = true
         setResultDimmed(false)
+        serveAnalyzing = false
         setCue(cues)
         binding.cueBadge.visibility = if (generalCue) View.VISIBLE else View.GONE
         val noteText = notes.filter { it.isNotBlank() }.joinToString("\n")
@@ -791,7 +796,7 @@ class MainActivity : AppCompatActivity() {
     private fun applyNightMode(mode: Int) {
         if (mode == savedNightMode()) return
         // Recreating mid-analysis would drop the serve being analyzed.
-        if (sessionLive && binding.statusProgress.visibility == View.VISIBLE) { notify(R.string.theme_busy); return }
+        if (serveAnalyzing) { notify(R.string.theme_busy); return }
         getSharedPreferences(ServeApp.PREFS, MODE_PRIVATE).edit().putInt(ServeApp.KEY_NIGHT_MODE, mode).apply()
         androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(mode)
     }
